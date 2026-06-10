@@ -1,0 +1,138 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+
+const valores = [
+  { ic: 'heart', t: 'A empresa, segunda pele', d: 'Vivemos e respiramos o Evolutto todos os dias — história, propósito e missão fazem parte de quem somos.' },
+  { ic: 'target', t: 'O cliente, nosso maior motivo', d: 'Cada ação e inovação nasce do compromisso de transformar a vida dos nossos clientes.' },
+  { ic: 'star', t: 'O sucesso é celebrado', d: 'Valorizamos cada conquista. Celebrar reforça que toda vitória fortalece a jornada.' },
+  { ic: 'users', t: 'Mais do que colegas', d: 'Construímos laços verdadeiros. Confiança e respeito mútuo nos tornam uma família.' },
+  { ic: 'zap', t: 'Apaixonados e motivados', d: 'A paixão pelo que fazemos é nossa maior energia, inspirando uns aos outros a ir além.' },
+  { ic: 'book-open', t: 'Aprendemos sempre', d: 'Temos sede de conhecimento. Aprender é parte do caminho para entregar o máximo.' },
+  { ic: 'shield', t: 'A verdade acima de tudo', d: 'A transparência é inegociável e guia nossas relações com clientes, parceiros e colegas.' },
+  { ic: 'share-2', t: 'O resultado é partilhado', d: 'Acreditamos no coletivo: só crescemos de verdade quando todos crescem juntos.' },
+  { ic: 'badge-check', t: 'Coerência com o discurso', d: 'Vivemos aquilo que pregamos. Credibilidade se constrói entre o que dizemos e entregamos.' },
+];
+
+const ritos = [
+  { ic: 'users', t: 'Grow Together', d: 'Toda quinta nos reunimos por uma hora para crescer juntos: troca de conhecimentos, novidades e boas práticas com foco no desenvolvimento.' },
+  { ic: 'star', t: 'Sino de Sucesso', d: 'O símbolo que celebra metas cumpridas, certificações e avanços dos clientes. Cada vitória é de toda a comunidade.' },
+  { ic: 'book-open', t: 'Leitura Diária', d: 'Cultivamos o hábito da leitura diária, compartilhando conteúdos e insights que ampliam o repertório e inspiram melhorias.' },
+];
+
+const sede = [
+  { img: '/img/office-kitchen.jpg', t: 'Espaço de convivência' },
+  { img: '/img/office-desk.jpg', t: 'Salas para criar e crescer' },
+  { img: '/img/office-stations.jpg', t: 'Unidade Florianópolis' },
+];
+---
+
+<Site title="Evolutto — Quem somos">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Sobre nós"
+    titleStart="Evolutto: temos "
+    accent="sede de crescimento"
+    titleEnd="."
+    image="/img/office-desk.jpg"
+    text="O Evolutto nasceu com a missão de dar aos nossos clientes o poder de se conectar e atender empresas em escala, globalmente."
+    checklist={['30 anos de experiência de mercado', 'Um time motivado e apaixonado', 'Presença no Brasil e em Portugal']}
+    primaryLabel="Faça parte do Evolutto"
+    primaryHref="/carreiras"
+    secondaryLabel="Conhecer a plataforma"
+    secondaryHref="/plataforma"
+  />
+
+  <!-- Diferencial -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Nosso diferencial</span>
+      <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-6 leading-tight">De tecnologia a gente entende. De <span class="text-evolutto-blue">gestão em escala</span> também.</h2>
+      <p class="text-lg text-gray-500 leading-relaxed">Nascemos dentro de uma consultoria, para resolver as dores reais da consultoria. Entendemos de processos, de padrão de qualidade e da jornada de transformação. Com essa base, fazemos a tecnologia trabalhar para que você atinja mais empresas, continue entregando valor e deixe um legado de sucesso.</p>
+    </div>
+  </section>
+
+  <!-- Valores -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Nossos valores</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">O que move o Evolutto.</h2>
+        <p class="text-lg text-gray-500">A transformação só acontece com alinhamento entre propósito, pessoas e práticas. Estes valores são o alicerce de cada decisão.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {valores.map((v) => (
+          <div class="bg-white rounded-[2rem] p-7 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg hover:shadow-evolutto-blue/5 transition-all">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={v.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{v.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{v.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Ritos -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Cultura</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Nossos ritos.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {ritos.map((r) => (
+          <div class="flashlight-card rounded-[2rem] bg-evolutto-black p-8">
+            <span class="flashlight-border"></span>
+            <div class="relative z-10">
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-evolutto-blue mb-5"><i class="w-6 h-6" data-lucide={r.ic}></i></div>
+              <h3 class="text-xl font-semibold text-white mb-3">{r.t}</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">{r.d}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Nossa sede -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Nossa casa</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Um espaço moderno para trabalhar, criar e crescer.</h2>
+        <p class="text-lg text-gray-500">Mais que um espaço físico, nossa sede é um ponto de encontro de ideias, energia e pertencimento — no Brasil e em Portugal.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {sede.map((s) => (
+          <figure class="group relative rounded-[2rem] overflow-hidden aspect-[4/5] shadow-lg">
+            <img src={s.img} alt={s.t} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-evolutto-black/80 via-transparent to-transparent"></div>
+            <figcaption class="absolute bottom-6 left-6 text-white font-semibold text-lg">{s.t}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-6 pt-20 lg:pt-28">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-gradient overflow-hidden px-6 py-20 md:px-16 text-center">
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Faça parte do Evolutto.</h2>
+          <p class="text-white/80 text-lg mb-10">Temos sede de crescimento — e um time apaixonado pelo que faz. Venha crescer com a gente.</p>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="/carreiras">Ver oportunidades <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

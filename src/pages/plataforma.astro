@@ -1,0 +1,131 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+
+const beneficios = [
+  { ic: 'rocket', t: 'Onboarding escalável', d: 'Escale o processo consultivo de implantação e adoção sem depender da presença física.' },
+  { ic: 'badge-check', t: 'Controle e rastreabilidade', d: 'Cronogramas, responsáveis e prazos acompanhados de ponta a ponta.' },
+  { ic: 'book-open', t: 'Trilhas e conteúdos', d: 'Conteúdos e trilhas que padronizam a adoção do ERP pelo cliente.' },
+  { ic: 'bar-chart-3', t: 'Dashboards e BI', d: 'Visão clara de progresso e resultados com o BI (EVA) embutido.' },
+];
+
+const cases = [
+  { q: 'Sem o Evolutto, escalar e digitalizar a nossa consultoria seria praticamente impossível. Vendemos mais de R$ 50 milhões em consultoria híbrida e atendemos de Porto Alegre a Manaus com processos, controle e previsibilidade.', n: 'Rodrigo Furniel', e: 'Templum Consultoria' },
+  { q: 'Implantamos o Evolutto há um ano e digitalizamos a consultoria. Treinamos equipes em várias cidades com conteúdos na plataforma e encontros semanais. A produtização abriu novos mercados com tickets acessíveis.', n: 'José Mário', e: 'SRD Gestão' },
+  { q: 'Em 3 a 4 meses alcançamos feitos históricos: batemos o recorde de vendas dos nossos 17 anos. A consultoria digital reduziu custos logísticos e qualificou o relacionamento com os clientes.', n: 'Danilo', e: 'GRV' },
+  { q: 'Depois de 20 anos no mercado, modernizar virou questão de sobrevivência. Produtizamos serviços, ganhamos escala e padronização. A barreira do deslocamento caiu e hoje atendemos qualquer estado.', n: 'Amplitude Consultoria', e: 'Cliente Evolutto' },
+];
+
+const integracoes = [
+  { ic: 'message-circle', t: 'WhatsApp' }, { ic: 'calendar', t: 'Cronogramas' }, { ic: 'bar-chart-3', t: 'Dashboards' },
+  { ic: 'file-text', t: 'Conteúdos' }, { ic: 'workflow', t: 'Automações' }, { ic: 'circle-check', t: 'Chamados' },
+  { ic: 'command', t: 'BI (EVA)' }, { ic: 'globe', t: 'Web & Mobile' },
+];
+
+const faqs = [
+  { q: 'O que é a Evolutto?', a: 'O ecossistema completo para escalar processos consultivos de onboarding e implantação de softwares, com método, tecnologia e comunidade.' },
+  { q: 'Como reduz o custo de implantação do ERP?', a: 'Digitalizando o processo consultivo: trilhas, conteúdos, cronogramas e acompanhamento remoto reduzem deslocamentos e retrabalho.' },
+  { q: 'Em quanto tempo posso implementar?', a: 'A implantação é guiada pela nossa equipe com planos de ação personalizados, para você começar a escalar rapidamente.' },
+  { q: 'Os dados estão seguros?', a: 'Sim. Rastreabilidade, controle de acesso e segurança dos registros de ponta a ponta.' },
+];
+---
+
+<Site title="Evolutto — Implementação de ERP em escala">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Implementação do seu ERP"
+    titleStart="Vamos escalar a implementação do seu "
+    accent="ERP"
+    image="/img/man-holo.jpg"
+    text="Plataforma inteligente, 100% web e mobile para escalar processos consultivos de onboarding e implantação/adoção de softwares ERP."
+    checklist={[
+      'Reduza o custo de implantação do seu software',
+      'Controle e rastreabilidade do diagnóstico à adoção',
+      'Escale o onboarding sem depender da presença física',
+    ]}
+  />
+
+  <!-- Benefícios -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">A solução</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">A melhor solução para reduzir custos de implantação do seu Software ERP.</h2>
+        <p class="text-lg text-gray-500">Automatizamos processos-chave e integramos todas as áreas da operação, atendendo consultorias de diferentes tamanhos e segmentos com a mesma eficiência.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {beneficios.map((b) => (
+          <div class="bg-white rounded-[2rem] p-7 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg hover:shadow-evolutto-blue/5 transition-all">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={b.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{b.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{b.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Prova / cases -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Avaliações dos clientes</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Mais de 300 empresas já usam o Evolutto para escalar a implantação.</h2>
+        <p class="text-lg text-gray-500">O Evolutto é sinônimo de transformação. Veja as histórias de alguns dos nossos clientes.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        {cases.map((d) => (
+          <figure class="bg-white rounded-[2rem] p-7 border border-gray-200 shadow-sm flex flex-col">
+            <i class="w-7 h-7 text-evolutto-blue/30 mb-4" data-lucide="quote"></i>
+            <blockquote class="text-[15px] text-gray-700 leading-relaxed flex-1">{d.q}</blockquote>
+            <figcaption class="mt-6 pt-5 border-t border-gray-100"><p class="text-sm font-semibold text-gray-900">{d.n}</p><p class="text-xs text-gray-400">{d.e}</p></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrações -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Integrações</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Integrações que potencializam a sua implementação.</h2>
+        <p class="text-lg text-gray-500">O Evolutto se conecta com as principais ferramentas que você já usa, ampliando a produtividade com segurança.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {integracoes.map((i) => (
+          <div class="bg-white rounded-2xl p-6 border border-gray-200 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-evolutto-blue/10 text-evolutto-blue shrink-0"><i class="w-5 h-5" data-lucide={i.ic}></i></div>
+            <span class="text-sm font-medium text-gray-800">{i.t}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section class="py-6">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-black overflow-hidden px-6 py-16 md:px-16 md:py-20 text-center">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-72 bg-evolutto-blue/20 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="relative z-10">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl mx-auto mb-4">Conheça na prática o Evolutto.</h2>
+          <p class="text-gray-400 mb-10">+ de 40.000 projetos simultâneos na plataforma.</p>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="/#cta">Agendar Demonstração <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} subtitle="Saiba mais sobre a plataforma e como ela escala a implantação do seu ERP." />
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

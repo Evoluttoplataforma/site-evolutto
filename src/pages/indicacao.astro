@@ -1,0 +1,113 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+
+const passos = [
+  { ic: 'users', t: 'Indique', d: 'Compartilhe a Evolutto com consultores e empresas da sua rede.' },
+  { ic: 'badge-check', t: 'Indicação aceita', d: 'Quando sua indicação fecha com a Evolutto, ela é validada.' },
+  { ic: 'trending-up', t: 'Receba cashback', d: 'Para cada indicação aceita, você recebe cashback. Simples assim.' },
+];
+const depoimentos = [
+  { q: 'Em 90 dias conquistei 45 clientes. Meu faturamento cresceu 152% e hoje somos 6 pessoas.', n: 'André de Souza Machado', e: 'SGE Soluções Empresariais' },
+  { q: 'No último ano o faturamento dobrou e gerenciamos centenas de projetos com tranquilidade.', n: 'Gui David', e: 'Donos de Construtoras' },
+  { q: 'Formei um time que atende até 50 projetos cada e quadruplicamos o faturamento.', n: 'Rogério Menossi', e: 'Time Produtivo' },
+];
+const faqs = [
+  { q: 'Como funciona o cashback?', a: 'Para cada indicação aceita — quando a empresa indicada fecha com a Evolutto — você recebe cashback do programa.' },
+  { q: 'Quem pode indicar?', a: 'Qualquer pessoa pode participar do programa de indicação da Evolutto.' },
+  { q: 'Tem limite de indicações?', a: 'Não. Quanto mais indicações aceitas, mais cashback você acumula.' },
+];
+const AVATARES: Record<string, string> = {
+  'Afonso Flatin': '/img/avatars/afonso.jpg',
+  'André de Souza Machado': '/img/avatars/andre.jpg',
+  'Gui David': '/img/avatars/gui.jpg',
+  'Heidy Milan': '/img/avatars/heidy.jpg',
+  'Kelly Nunes': '/img/avatars/kelly.jpg',
+  'Luciano Zorzal': '/img/avatars/luciano.jpg',
+  'Rogério Menossi': '/img/avatars/rogerio.jpg',
+};
+
+---
+
+<Site title="Evolutto — Indique e ganhe cashback">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Programa de Indicação"
+    titleStart="Para cada indicação aceita, você recebe "
+    accent="cashback"
+    titleEnd="."
+    image="/img/founder-platform.png"
+    imageFramed={false}
+    text="Participe do programa de Cashback Evolutto. Indique consultores e empresas e seja recompensado a cada nova parceria."
+    primaryLabel="Quero indicar"
+    primaryHref="/#cta"
+    secondaryLabel="Ver cases"
+    secondaryHref="#cases"
+  />
+
+  <!-- Como funciona -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Como funciona</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Indicar é simples — e recompensador.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {passos.map((p, i) => (
+          <div class="bg-white rounded-[2rem] p-8 border border-gray-200">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="text-3xl font-extrabold text-evolutto-blue/30">0{i + 1}</span>
+              <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-evolutto-blue/10 text-evolutto-blue"><i class="w-5 h-5" data-lucide={p.ic}></i></div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{p.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cases -->
+  <section id="cases" class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Cases</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Quem você indica entra em boa companhia.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {depoimentos.map((d) => (
+          <figure class="bg-white rounded-[2rem] p-7 border border-gray-200 shadow-sm flex flex-col">
+            <i class="w-7 h-7 text-evolutto-blue/30 mb-4" data-lucide="quote"></i>
+            <blockquote class="text-[15px] text-gray-700 leading-relaxed flex-1">{d.q}</blockquote>
+            <figcaption class="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">{AVATARES[d.n] && <img src={AVATARES[d.n]} alt={d.n} class="w-11 h-11 rounded-full object-cover border border-gray-200" loading="lazy" />}<span><span class="block text-sm font-semibold text-gray-900">{d.n}</span><span class="block text-xs text-gray-400">{d.e}</span></span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} subtitle="Sobre o programa de indicação da Evolutto." />
+
+  <!-- CTA -->
+  <section class="py-6 pb-20 lg:pb-28">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-gradient overflow-hidden px-6 py-20 md:px-16 text-center">
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Indique e ganhe cashback.</h2>
+          <p class="text-white/80 text-lg mb-10">Comece agora a transformar sua rede em recompensa.</p>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="/#cta">Quero indicar <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

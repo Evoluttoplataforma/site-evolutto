@@ -1,0 +1,186 @@
+---
+// Formulário inline. Modo "full" (diagnóstico) ou "simple" (garantir vaga: nome/telefone/e-mail).
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;       // aceita HTML (ex.: <span>)
+  subtitle?: string;
+  buttonLabel?: string;
+  simple?: boolean;
+  benefits?: string[];
+}
+const {
+  id = 'cta',
+  eyebrow = 'Diagnóstico gratuito',
+  title = 'Descubra o potencial de <span class="text-evolutto-blue">escala</span> da sua consultoria.',
+  subtitle = 'Responda algumas perguntas e nossa equipe prepara um diagnóstico personalizado para o seu momento.',
+  buttonLabel = 'Quero meu diagnóstico',
+  simple = false,
+  benefits = [
+    'Análise gratuita do potencial de escala da sua consultoria',
+    'Recomendações práticas para digitalizar e produtizar',
+    'Sem compromisso — você decide o próximo passo',
+  ],
+} = Astro.props;
+
+const euSou = [
+  'Ainda não sou consultor',
+  'Iniciando minha consultoria',
+  'Consultor autônomo',
+  'Funcionário de uma empresa de consultoria',
+  'Sócio/proprietário de uma empresa de consultoria',
+];
+const minhaEmpresa = [
+  'Terceiriza o serviço para o meu cliente',
+  'Assessoria',
+  'Faço pelo meu cliente',
+  'Consultoria',
+  'Meu cliente tem um cronograma para seguir',
+];
+const consultores = ['Somente eu', '2 a 3 consultores', '4 a 5 consultores', '6 a 9 consultores', '10 a 15 consultores', 'Mais de 15 consultores'];
+const projetos = ['Nenhum', '1 a 5', '5 a 10', 'Acima de 10'];
+const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 100 mil/mês', 'R$ 100 a 250 mil/mês', 'R$ 250 a 500 mil/mês', 'Acima de R$ 500 mil/mês'];
+---
+
+<section id={id} class="py-20 lg:py-28 bg-evolutto-black relative overflow-hidden">
+  <div class="absolute top-0 left-1/4 w-[50%] h-72 bg-evolutto-blue/20 blur-[140px] rounded-full pointer-events-none"></div>
+  <div class="relative z-10 max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+    <!-- Lado esquerdo -->
+    <div class="text-white">
+      <span class="text-[12px] font-bold uppercase tracking-[0.16em] text-evolutto-blue">{eyebrow}</span>
+      <h2 class="text-3xl lg:text-5xl font-bold tracking-tight mt-4 mb-6 leading-tight" set:html={title}></h2>
+      <p class="text-lg text-gray-400 leading-relaxed mb-8">{subtitle}</p>
+      <ul class="space-y-4">
+        {benefits.map((b) => (
+          <li class="flex items-start gap-3 text-[15px] text-gray-200">
+            <span class="w-6 h-6 min-w-6 rounded-full bg-evolutto-blue grid place-items-center mt-0.5"><i class="w-3.5 h-3.5 text-white" data-lucide="check"></i></span>
+            {b}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Formulário -->
+    <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl">
+      <form id="form-diagnostico" class="space-y-4">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="nome">Nome *</label>
+            <input id="nome" name="nome" type="text" required placeholder="Seu nome" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="telefone">Telefone *</label>
+            <input id="telefone" name="telefone" type="tel" required placeholder="(00) 00000-0000" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition" />
+          </div>
+        </div>
+
+        {simple && (
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="email">E-mail *</label>
+            <input id="email" name="email" type="email" required placeholder="voce@email.com" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition" />
+          </div>
+        )}
+
+        {!simple && (
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="empresa">Empresa</label>
+          <input id="empresa" name="empresa" type="text" placeholder="Nome da sua empresa" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition" />
+        </div>
+        )}
+
+        {!simple && (
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="oque">O que sua consultoria faz?</label>
+          <textarea id="oque" name="oque_faz" rows="2" placeholder="Descreva brevemente o seu serviço" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition resize-none"></textarea>
+        </div>
+        )}
+
+        {!simple && (
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="eu_sou">Eu sou *</label>
+          <select id="eu_sou" name="eu_sou" required class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition">
+            <option value="" disabled selected>Selecione</option>
+            {euSou.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        )}
+
+        {!simple && (
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="minha_empresa">Minha empresa</label>
+          <select id="minha_empresa" name="minha_empresa" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition">
+            <option value="" disabled selected>Selecione</option>
+            {minhaEmpresa.map((o) => <option value={o}>{o}</option>)}
+          </select>
+        </div>
+        )}
+
+        {!simple && (
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="consultores">Consultores no time</label>
+            <select id="consultores" name="consultores" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition">
+              <option value="" disabled selected>Selecione</option>
+              {consultores.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="faturamento">Faturamento mensal</label>
+            <select id="faturamento" name="faturamento" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition">
+              <option value="" disabled selected>Selecione</option>
+              {faturamento.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+        </div>
+        )}
+
+        {!simple && (
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="entregues">Projetos já entregues</label>
+            <select id="entregues" name="projetos_entregues" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition">
+              <option value="" disabled selected>Selecione</option>
+              {projetos.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="ativos">Projetos ativos</label>
+            <select id="ativos" name="projetos_ativos" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition">
+              <option value="" disabled selected>Selecione</option>
+              {projetos.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          </div>
+        </div>
+        )}
+
+        <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-evolutto-blue text-white text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all shadow-lg shadow-evolutto-blue/30">
+          {buttonLabel} <i class="w-4 h-4" data-lucide="arrow-up-right"></i>
+        </button>
+        <p class="text-[11px] text-gray-400 text-center">Seus dados estão seguros. Não enviamos spam.</p>
+      </form>
+
+      <!-- Sucesso -->
+      <div id="form-sucesso" class="hidden text-center py-10">
+        <div class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-evolutto-blue/10 text-evolutto-blue mb-5"><i class="w-8 h-8" data-lucide="circle-check"></i></div>
+        <h3 class="text-2xl font-bold text-gray-900 mb-2">Recebemos seu diagnóstico!</h3>
+        <p class="text-gray-500">Nossa equipe entrará em contato em breve pelo telefone informado.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('form-diagnostico') as HTMLFormElement | null;
+    const sucesso = document.getElementById('form-sucesso');
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      // TODO: integrar com RD Station / endpoint de lead. Por ora, captura local e redireciona:
+      const dados = Object.fromEntries(new FormData(form).entries());
+      try { sessionStorage.setItem('evolutto_lead', JSON.stringify(dados)); } catch (_) {}
+      window.location.href = '/obrigado';
+    });
+  </script>
+</section>

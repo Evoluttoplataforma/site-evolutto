@@ -1,0 +1,171 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+
+const pilares = [
+  { ic: 'cpu', t: 'Tecnologia', d: 'Plataforma com cronogramas, tarefas, chat, WhatsApp, dashboards e BI (EVA) para escalar com controle.' },
+  { ic: 'book-open', t: 'Educação', d: 'Conteúdo estratégico sobre marketing, vendas, produtização e gestão do novo modelo digital.' },
+  { ic: 'users', t: 'Comunidade', d: 'Rede colaborativa de mentores e especialistas que crescem juntos com networking de verdade.' },
+  { ic: 'target', t: 'Consultoria', d: 'Acompanhamento direto da equipe Evolutto para estruturar e crescer seu modelo digital.' },
+];
+const depoimentos = [
+  { q: 'De 2023 para 2024 nossa empresa triplicou de tamanho. Antes do Evolutto tudo dependia de mim.', n: 'Afonso Flatin', e: 'Bastidores da Advocacia' },
+  { q: 'Em 90 dias conquistei 45 clientes. Meu faturamento cresceu 152% e hoje somos 6 pessoas conectadas por um propósito.', n: 'André de Souza Machado', e: 'SGE Soluções Empresariais' },
+  { q: 'No último ano o faturamento dobrou e gerenciamos centenas de projetos com tranquilidade.', n: 'Gui David', e: 'Donos de Construtoras' },
+  { q: 'Antes atendíamos até 20 projetos por ano. Hoje são cerca de 100, com muito mais escala.', n: 'Heidy Milan', e: 'PariPassu' },
+  { q: 'Com o Evolutto escalei meus atendimentos, vendo mais, entrego melhor e ganhei qualidade de vida.', n: 'Kelly Nunes', e: 'Fluxo3' },
+  { q: 'Formei um time que atende até 50 projetos cada e quadruplicamos o faturamento.', n: 'Rogério Menossi', e: 'Time Produtivo' },
+];
+const integracoes = [
+  { ic: 'message-circle', t: 'WhatsApp' }, { ic: 'calendar', t: 'Cronogramas' }, { ic: 'bar-chart-3', t: 'Engajamento' },
+  { ic: 'file-text', t: 'Conteúdos' }, { ic: 'workflow', t: 'Automações' }, { ic: 'circle-check', t: 'Tarefas' },
+  { ic: 'command', t: 'BI (EVA)' }, { ic: 'globe', t: 'Web & Mobile' },
+];
+const faqs = [
+  { q: 'O que é a Evolutto?', a: 'O ecossistema completo para mentores e consultores digitalizarem, produtizarem e escalarem seus serviços.' },
+  { q: 'Como acompanho o engajamento dos mentorados?', a: 'Com dashboards de progresso, tarefas com validação e notificações — você vê quem avança e quem precisa de atenção.' },
+  { q: 'A plataforma é só para mentoria grande?', a: 'Não. Atende desde mentorias individuais até programas com muitas turmas, com a mesma eficiência.' },
+  { q: 'Os dados estão seguros?', a: 'Sim. Rastreabilidade, controle de acesso e segurança dos registros de ponta a ponta.' },
+];
+const AVATARES: Record<string, string> = {
+  'Afonso Flatin': '/img/avatars/afonso.jpg',
+  'André de Souza Machado': '/img/avatars/andre.jpg',
+  'Gui David': '/img/avatars/gui.jpg',
+  'Heidy Milan': '/img/avatars/heidy.jpg',
+  'Kelly Nunes': '/img/avatars/kelly.jpg',
+  'Luciano Zorzal': '/img/avatars/luciano.jpg',
+  'Rogério Menossi': '/img/avatars/rogerio.jpg',
+};
+
+---
+
+<Site title="Evolutto — Escale sua mentoria">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Mentorias"
+    titleStart="Acompanhe o engajamento dos mentorados e veja sua mentoria "
+    accent="se vender sozinha"
+    titleEnd="."
+    image="/img/mentoria-call.png"
+    imageFramed={false}
+    text="O ecossistema completo para mentores que querem digitalizar, produtizar e escalar seus serviços com método, tecnologia e comunidade."
+    checklist={[
+      'Monitore e intensifique o engajamento de cada mentorado',
+      'Entregue mais com agenda cheia e qualidade de vida',
+      'Diferencie sua entrega e multiplique a cada nova turma',
+    ]}
+  />
+
+  <!-- Máquina de resultados -->
+  <section class="py-20 lg:py-28 bg-evolutto-black text-white overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="relative order-2 lg:order-1">
+        <div class="absolute -inset-6 bg-evolutto-blue/20 rounded-[3rem] blur-[80px]"></div>
+        <img src="/img/founder-platform.png" alt="Mentoria na prática com a Evolutto" class="relative w-full drop-shadow-2xl" />
+      </div>
+      <div class="order-1 lg:order-2">
+        <span class="text-[12px] font-bold uppercase tracking-[0.16em] text-evolutto-blue">Máquina de resultados</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight mt-4 mb-6 leading-tight">Transforme sua mentoria em uma máquina de resultados.</h2>
+        <p class="text-lg text-gray-400 leading-relaxed mb-8">Faça a gestão completa da mentoria, monitore o engajamento e o desempenho dos mentorados e entregue muito mais — equilibrando agenda cheia, crescimento exponencial e qualidade de vida.</p>
+        <ul class="grid sm:grid-cols-2 gap-4 mb-10">
+          {[
+            { ic: 'trending-up', t: 'Engajamento que cresce' },
+            { ic: 'calendar', t: 'Trilhas e tarefas' },
+            { ic: 'bar-chart-3', t: 'Desempenho por turma' },
+            { ic: 'badge-check', t: 'Entrega padronizada' },
+          ].map((f) => (
+            <li class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-evolutto-blue"><i class="w-5 h-5" data-lucide={f.ic}></i></span>
+              <span class="text-[15px] text-gray-200 font-medium">{f.t}</span>
+            </li>
+          ))}
+        </ul>
+        <a class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-8 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/40" href="/#cta">Saiba mais <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pilares -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Como entregamos</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Quatro pilares que se reforçam.</h2>
+        <p class="text-lg text-gray-500">Para você conduzir cada mentorado com liberdade, lucro e controle.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {pilares.map((p) => (
+          <div class="bg-white rounded-[2rem] p-7 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg hover:shadow-evolutto-blue/5 transition-all">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={p.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{p.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Cases -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Cases</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Mentores que já atendem dezenas de clientes simultaneamente.</h2>
+        <p class="text-lg text-gray-500">De 1 para 60 clientes por mentor, com escala e qualidade.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {depoimentos.map((d) => (
+          <figure class="bg-white rounded-[2rem] p-7 border border-gray-200 shadow-sm flex flex-col">
+            <i class="w-7 h-7 text-evolutto-blue/30 mb-4" data-lucide="quote"></i>
+            <blockquote class="text-[15px] text-gray-700 leading-relaxed flex-1">{d.q}</blockquote>
+            <figcaption class="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">{AVATARES[d.n] && <img src={AVATARES[d.n]} alt={d.n} class="w-11 h-11 rounded-full object-cover border border-gray-200" loading="lazy" />}<span><span class="block text-sm font-semibold text-gray-900">{d.n}</span><span class="block text-xs text-gray-400">{d.e}</span></span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Integrações -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Integrações</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Integrações que potencializam a sua mentoria.</h2>
+        <p class="text-lg text-gray-500">Conecte as ferramentas que você já usa e automatize processos com segurança.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {integracoes.map((i) => (
+          <div class="bg-white rounded-2xl p-6 border border-gray-200 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-evolutto-blue/10 text-evolutto-blue shrink-0"><i class="w-5 h-5" data-lucide={i.ic}></i></div>
+            <span class="text-sm font-medium text-gray-800">{i.t}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section class="py-6 pt-0">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-gradient overflow-hidden px-6 py-20 md:px-16 text-center">
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Transforme sua mentoria em um negócio escalável.</h2>
+          <p class="text-white/80 text-lg mb-10">Digitalize, produtize e multiplique sua capacidade de entrega sem depender da presença física.</p>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="/#cta">Solicite uma Proposta <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} subtitle="Saiba mais sobre como a Evolutto escala a sua mentoria." />
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

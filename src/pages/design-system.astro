@@ -1,0 +1,1057 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+---
+
+<Base title="Design System — Evolutto">
+  <!-- Animações/efeitos extraídos das referências (border beam, marquee, flashlight, loaders) -->
+  <style is:global>
+    @keyframes ds-spin { to { transform: rotate(360deg); } }
+    @keyframes ds-radar { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(2.6); opacity: 0; } }
+    @keyframes ds-ring-dash {
+      0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+      50% { stroke-dasharray: 90, 200; stroke-dashoffset: -35px; }
+      100% { stroke-dasharray: 90, 200; stroke-dashoffset: -124px; }
+    }
+    @keyframes ds-dash-draw { 0% { stroke-dashoffset: 100; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: -100; } }
+    @keyframes ds-scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    @keyframes ds-rotate-beam { to { transform: rotate(360deg); } }
+
+    .marquee-content { animation: ds-scroll-left 30s linear infinite; }
+    .marquee-mask {
+      -webkit-mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+      mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
+    }
+
+    .btn-beam-container { position: relative; }
+    .btn-beam-container .beam-border {
+      position: absolute; inset: -2px; border-radius: 9999px; pointer-events: none; opacity: 0;
+      background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, #3363ff 60deg, transparent 120deg);
+      animation: ds-rotate-beam 2.5s linear infinite; transition: opacity .3s;
+    }
+    .btn-beam-container:hover .beam-border { opacity: 1; }
+
+    .flashlight-card { position: relative; overflow: hidden; }
+    .flashlight-card::before {
+      content: ""; position: absolute; inset: 0; border-radius: inherit; opacity: 0; pointer-events: none; transition: opacity .4s; z-index: 1;
+      background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(51,99,255,0.16), transparent 40%);
+    }
+    .flashlight-card .flashlight-border {
+      position: absolute; inset: 0; border-radius: inherit; padding: 1px; opacity: 0; pointer-events: none; transition: opacity .4s;
+      background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(51,99,255,0.8), transparent 40%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+    }
+    .flashlight-card:hover::before, .flashlight-card:hover .flashlight-border { opacity: 1; }
+
+    .rotator-card { position: absolute; inset: 2rem; transition: all .6s cubic-bezier(0.4, 0, 0.2, 1); }
+    .feature-btn.active-feature { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12) !important; }
+
+    @keyframes ds-shimmer { 100% { transform: translateX(100%); } }
+    .skeleton { position: relative; overflow: hidden; background: rgba(0,0,0,0.06); }
+    .skeleton::after { content: ""; position: absolute; inset: 0; transform: translateX(-100%); background: linear-gradient(90deg, transparent, rgba(0,0,0,0.05), transparent); animation: ds-shimmer 1.5s infinite; }
+  </style>
+  <script>
+    // Flashlight: segue o cursor (define --mouse-x/--mouse-y por card)
+    const cards = document.querySelectorAll('.flashlight-card');
+    cards.forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        (card as HTMLElement).style.setProperty('--mouse-x', e.clientX - r.left + 'px');
+        (card as HTMLElement).style.setProperty('--mouse-y', e.clientY - r.top + 'px');
+      });
+    });
+
+    // Feature switcher + rotator card
+    const featBtns = Array.from(document.querySelectorAll('.feature-btn'));
+    const rotCards = Array.from(document.querySelectorAll('.rotator-card'));
+    let rotCur = 0;
+    function setRot(i: number) {
+      rotCur = (i + rotCards.length) % rotCards.length;
+      rotCards.forEach((c, n) => {
+        const el = c as HTMLElement;
+        el.style.opacity = n === rotCur ? '1' : '0';
+        el.style.transform = n === rotCur ? 'scale(1)' : 'scale(0.92)';
+        el.style.pointerEvents = n === rotCur ? 'auto' : 'none';
+      });
+      featBtns.forEach((b, n) => b.classList.toggle('active-feature', n === rotCur));
+    }
+    featBtns.forEach((b, n) => b.addEventListener('click', () => setRot(n)));
+    document.querySelector('[data-rot-prev]')?.addEventListener('click', () => setRot(rotCur - 1));
+    document.querySelector('[data-rot-next]')?.addEventListener('click', () => setRot(rotCur + 1));
+    if (rotCards.length) setRot(0);
+  </script>
+
+  <!-- Main Container -->
+  <main
+    class="w-full max-w-[1400px] bg-[#F3F3F1] rounded-[2.5rem] shadow-2xl relative flex flex-col overflow-hidden"
+  >
+    <!-- Design System Navigation -->
+    <header
+      class="sticky top-0 z-50 bg-[#F3F3F1]/95 backdrop-blur-sm border-b border-gray-200/50"
+    >
+      <nav class="flex lg:px-12 pt-6 pr-8 pb-6 pl-8 items-center justify-between">
+        <!-- Logo oficial Evolutto -->
+        <Logo variant="dark" />
+        <!-- Design System Nav Links -->
+        <div class="hidden lg:flex items-center gap-6">
+          <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#hero">Hero</a>
+          <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#typography">Tipografia</a>
+          <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#colors">Cores</a>
+          <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#components">Componentes</a>
+          <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#layout">Layout</a>
+          <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#motion">Motion</a>
+          <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#icons">Ícones</a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- 0) Hero Section (Clone da estrutura, texto adaptado) -->
+    <section id="hero" class="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[70vh]">
+      <!-- Left Column: Typography -->
+      <div class="relative flex flex-col justify-center px-8 pb-12 pt-4 lg:px-12 xl:px-20 z-10">
+        <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-6">
+          Design System &amp; Pattern Library
+        </p>
+        <div class="relative mb-6">
+          <h1 class="text-7xl lg:text-8xl xl:text-9xl font-semibold tracking-tighter leading-[0.85] text-[#0A0A0A]">
+            DESIGN<br />SYSTEM
+          </h1>
+          <div class="absolute -bottom-4 left-0 lg:left-2 inline-flex items-center gap-2 bg-evolutto-black text-white px-4 py-2 rounded-full transform -rotate-2 hover:rotate-0 transition-transform cursor-default z-20 shadow-xl">
+            <span class="text-[0.65rem] font-bold uppercase tracking-widest">Componentes &amp; Padrões</span>
+          </div>
+        </div>
+        <div class="mt-8 max-w-lg">
+          <h2 class="text-xl font-medium tracking-tight text-gray-900 mb-4 leading-snug">
+            Um guia completo da <span class="text-evolutto-blue">linguagem visual</span> e dos componentes reutilizáveis do site da Evolutto.
+          </h2>
+          <p class="text-base text-gray-500 leading-relaxed font-normal mb-8">
+            Documenta tipografia, cores, componentes, layouts e interações. Todos os exemplos usam as classes e estilos exatos do design — tokenizados com a marca Evolutto (Manual 2023).
+          </p>
+        </div>
+      </div>
+      <!-- Right Column: Visual (gradiente oficial + glow) -->
+      <div class="relative h-[50vh] lg:h-auto overflow-hidden lg:rounded-tl-[4rem] group bg-evolutto-gradient">
+        <div class="absolute inset-0 bg-gradient-to-t to-transparent from-evolutto-black/60"></div>
+        <!-- Ambient glow -->
+        <div class="absolute top-1/4 right-1/4 w-72 h-72 bg-evolutto-blue/40 rounded-full blur-[100px] pointer-events-none"></div>
+        <!-- Floating Elements -->
+        <div class="absolute top-1/2 left-8 lg:left-12 transform -translate-y-1/2">
+          <div class="flex items-center justify-center w-12 h-12 rounded-full border border-white/30 backdrop-blur-md text-white/80 animate-pulse">
+            <i class="w-5 h-5" data-lucide="cpu"></i>
+          </div>
+        </div>
+        <div class="absolute bottom-12 right-8 lg:right-12">
+          <div class="px-4 py-2 rounded-full border border-white/40 bg-white/10 backdrop-blur-xl text-white text-[0.6rem] font-semibold uppercase tracking-widest hover:bg-white/20 transition-colors cursor-default">
+            #produtize
+          </div>
+        </div>
+        <div class="transform backdrop-blur-[2px] w-16 h-16 border-white/50 border rounded-lg mx-28 absolute top-1/3 right-1/4 rotate-12"></div>
+      </div>
+    </section>
+
+    <!-- 1) Typography Section -->
+    <section id="typography" class="lg:px-16 xl:px-24 pt-16 pr-8 pb-20 pl-8">
+      <div class="flex flex-col gap-2 mb-16">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Tipografia</span>
+        <h2 class="text-3xl font-medium tracking-tight text-gray-900">Escala &amp; Hierarquia — Inter</h2>
+      </div>
+
+      <div class="space-y-12">
+        <!-- Heading 1 -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Heading 1</p>
+            <h1 class="text-7xl lg:text-8xl xl:text-9xl font-semibold tracking-tighter leading-[0.85] text-[#0A0A0A]">
+              PRODUTIZE
+            </h1>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-4">
+            <div>112px / 95px</div>
+            <div class="text-xs mt-1">lg: 128px</div>
+            <div class="text-xs">xl: 144px</div>
+          </div>
+        </div>
+
+        <!-- Heading 2 -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Heading 2</p>
+            <h2 class="text-xl font-medium tracking-tight text-gray-900 leading-snug">
+              Software feito para escalar consultorias
+            </h2>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-2">20px / 28px</div>
+        </div>
+
+        <!-- Heading 3 (Large / Dark) -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Heading 3 (Large / Dark)</p>
+            <h3 class="text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight text-white leading-[1.15] bg-evolutto-black px-6 py-4 rounded-lg">
+              Inovação para consultorias de todos os tamanhos
+            </h3>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-2">
+            <div>30px / 35px</div>
+            <div class="text-xs mt-1">md: 36px</div>
+            <div class="text-xs">lg: 48px</div>
+          </div>
+        </div>
+
+        <!-- Heading 3 (Título de seção) -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Heading 3 (Título de seção)</p>
+            <h3 class="text-4xl lg:text-5xl font-medium tracking-tight text-gray-900">
+              Pilares da consultoria eficaz
+            </h3>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-2">
+            <div>36px / 40px</div>
+            <div class="text-xs mt-1">lg: 48px</div>
+          </div>
+        </div>
+
+        <!-- Section Label -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Label de Seção</p>
+            <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Texto de Label</span>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-1">10.4px / 16px</div>
+        </div>
+
+        <!-- Navigation Link -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Link de Navegação</p>
+            <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#">Link de Navegação</a>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-1">11.2px / 16px</div>
+        </div>
+
+        <!-- Badge Text (Bold) -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Badge (Bold)</p>
+            <span class="text-[0.65rem] font-bold uppercase tracking-widest bg-evolutto-black text-white px-4 py-2 rounded-full">Badge Bold</span>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-1">10.4px / 16px</div>
+        </div>
+
+        <!-- Paragraph (Base) -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Parágrafo (Base)</p>
+            <p class="text-base text-gray-500 leading-relaxed font-normal">
+              Plataforma inteligente 100% web e mobile para digitalização e escala de consultorias, mentorias e processos de implantação de softwares.
+            </p>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-2">16px / 24px</div>
+        </div>
+
+        <!-- Paragraph (Large) -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Parágrafo (Large)</p>
+            <p class="text-lg text-gray-500 leading-relaxed font-normal">
+              Automatizamos processos-chave e integramos todas as áreas da sua consultoria, tornando o seu sucesso uma realidade.
+            </p>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-2">18px / 28px</div>
+        </div>
+
+        <!-- Paragraph (Large Dark) -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1 bg-evolutto-black px-6 py-4 rounded-lg">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Parágrafo (Large Dark)</p>
+            <p class="text-lg md:text-2xl font-normal text-gray-400 leading-relaxed">
+              Eficiência para todos os tamanhos e segmentos. Usado sobre fundos escuros com tamanho ampliado em telas maiores.
+            </p>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-2">
+            <div>18px / 28px</div>
+            <div class="text-xs mt-1">md: 24px</div>
+          </div>
+        </div>
+
+        <!-- Small Text -->
+        <div class="flex items-start justify-between gap-8 pb-8 border-b border-gray-200">
+          <div class="flex-1">
+            <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400 mb-4">Texto Pequeno</p>
+            <p class="text-white font-medium text-sm tracking-wide bg-evolutto-black px-4 py-2 rounded inline-block">Texto pequeno (small)</p>
+          </div>
+          <div class="text-right text-sm text-gray-500 font-mono pt-1">14px / 20px</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2) Colors & Surfaces Section -->
+    <section id="colors" class="lg:px-16 xl:px-24 pt-8 pr-8 pb-20 pl-8 bg-white/50">
+      <div class="flex flex-col gap-2 mb-16">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Cores &amp; Superfícies</span>
+        <h2 class="text-3xl font-medium tracking-tight text-gray-900">Paleta da Marca &amp; Fundos</h2>
+      </div>
+
+      <!-- Cores principais -->
+      <div class="mb-12">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Cores principais</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="flex flex-col gap-2">
+            <div class="w-full h-24 rounded-xl bg-white border border-gray-200 shadow-sm"></div>
+            <p class="text-sm font-medium text-gray-900">Branco</p>
+            <p class="text-xs text-gray-500 font-mono">#ffffff</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="w-full h-24 rounded-xl bg-evolutto-blue border border-gray-200 shadow-sm"></div>
+            <p class="text-sm font-medium text-gray-900">Azul principal</p>
+            <p class="text-xs text-gray-500 font-mono">#3363ff</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="w-full h-24 rounded-xl bg-evolutto-red border border-gray-200 shadow-sm"></div>
+            <p class="text-sm font-medium text-gray-900">Vermelho</p>
+            <p class="text-xs text-gray-500 font-mono">#d93e3f</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="w-full h-24 rounded-xl bg-evolutto-black border border-gray-200 shadow-sm"></div>
+            <p class="text-sm font-medium text-gray-900">Preto</p>
+            <p class="text-xs text-gray-500 font-mono">#222222</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cores elementos -->
+      <div class="mb-12">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Cores de elementos</h3>
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="flex flex-col gap-2">
+            <div class="w-full h-24 rounded-xl bg-evolutto-purple border border-gray-200 shadow-sm"></div>
+            <p class="text-sm font-medium text-gray-900">Roxo</p>
+            <p class="text-xs text-gray-500 font-mono">#6959dc</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="w-full h-24 rounded-xl bg-evolutto-pink border border-gray-200 shadow-sm"></div>
+            <p class="text-sm font-medium text-gray-900">Rosa</p>
+            <p class="text-xs text-gray-500 font-mono">#db697a</p>
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="w-full h-24 rounded-xl bg-evolutto-amber border border-gray-200 shadow-sm"></div>
+            <p class="text-sm font-medium text-gray-900">Amarelo</p>
+            <p class="text-xs text-gray-500 font-mono">#f3c87f</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gradiente oficial -->
+      <div class="mb-12">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Gradiente oficial</h3>
+        <div class="flex items-center gap-6">
+          <div class="flex-1 h-28 rounded-2xl bg-evolutto-gradient border border-gray-200 shadow-sm"></div>
+          <div class="max-w-xs">
+            <p class="text-sm font-medium text-gray-900">Preto → Azul</p>
+            <p class="text-xs text-gray-500 font-mono">#222222 → #2d5eff</p>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">Transição suave do azul para o preto, preservando traços identificáveis da cor anterior na identidade.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Backgrounds / Superfícies -->
+      <div>
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Superfícies</h3>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4">
+            <div class="w-24 h-24 rounded-xl bg-[#F3F3F1] border border-gray-200 shadow-sm"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Fundo da página (container)</p>
+              <p class="text-xs text-gray-500 font-mono">bg-[#F3F3F1]</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-24 h-24 rounded-xl bg-stone-300 border border-gray-200 shadow-sm"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Fundo externo</p>
+              <p class="text-xs text-gray-500 font-mono">bg-stone-300</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-24 h-24 rounded-xl bg-evolutto-black border border-gray-200 shadow-sm"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Seção escura</p>
+              <p class="text-xs text-gray-500 font-mono">bg-evolutto-black</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="w-24 h-24 rounded-xl bg-white/10 backdrop-blur-xl border border-white/40 shadow-sm bg-evolutto-gradient"></div>
+            <div>
+              <p class="text-sm font-medium text-gray-900">Glass (sobre gradiente)</p>
+              <p class="text-xs text-gray-500 font-mono">bg-white/10 backdrop-blur-xl</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3) UI Components Section -->
+    <section id="components" class="lg:px-16 xl:px-24 pt-16 pr-8 pb-20 pl-8">
+      <div class="flex flex-col gap-2 mb-16">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Componentes</span>
+        <h2 class="text-3xl font-medium tracking-tight text-gray-900">Componentes de UI</h2>
+      </div>
+
+      <!-- Buttons -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Botões</h3>
+        <div class="flex flex-wrap items-center gap-6">
+          <!-- Primary Button -->
+          <button class="flex items-center gap-2 bg-evolutto-black text-white text-[0.7rem] font-medium uppercase tracking-widest px-6 py-3 rounded-full hover:bg-black hover:scale-105 transition-all shadow-lg shadow-gray-300/50">
+            Começar <i class="w-3 h-3" data-lucide="arrow-up-right"></i>
+          </button>
+          <!-- Accent Button (azul Evolutto) -->
+          <button class="flex items-center gap-2 bg-evolutto-blue text-white text-[0.7rem] font-medium uppercase tracking-widest px-6 py-3 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/30">
+            Quero conhecer <i class="w-3 h-3" data-lucide="arrow-up-right"></i>
+          </button>
+          <!-- Secondary Button -->
+          <button class="flex items-center gap-2 text-[0.7rem] font-medium uppercase tracking-widest text-gray-500 hover:text-black transition-colors px-4 py-2 rounded-full hover:bg-gray-200">
+            Login <i class="w-3 h-3" data-lucide="arrow-right"></i>
+          </button>
+          <!-- Link Button -->
+          <a class="inline-flex items-center gap-3 bg-black text-white px-8 py-4 rounded-full text-xs font-medium uppercase tracking-widest hover:bg-gray-800 hover:scale-105 transition-all shadow-xl shadow-gray-200" href="#">
+            Ver mais <i class="w-4 h-4" data-lucide="folder"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Badges & Tags -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Badges &amp; Tags</h3>
+        <div class="flex flex-wrap items-center gap-4">
+          <div class="inline-flex items-center gap-2 bg-evolutto-black text-white px-4 py-2 rounded-full transform -rotate-2 hover:rotate-0 transition-transform cursor-default z-20 shadow-xl">
+            <span class="text-[0.65rem] font-bold uppercase tracking-widest">#produtize</span>
+          </div>
+          <div class="px-4 py-2 rounded-full border border-white/40 text-white text-[0.6rem] font-semibold uppercase tracking-widest hover:brightness-110 transition-all cursor-default bg-evolutto-blue">
+            Plataforma
+          </div>
+          <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Label de Seção</span>
+        </div>
+      </div>
+
+      <!-- Cards -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Cards</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <!-- Image Card (com glow azul) -->
+          <div class="group aspect-square lg:aspect-[4/3] overflow-hidden flex bg-gray-200 opacity-100 w-full rounded-[2.5rem] relative shadow-inner items-center justify-center">
+            <div class="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-evolutto-blue rounded-full blur-3xl opacity-20"></div>
+            <div class="overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-500 bg-evolutto-black w-[90%] h-[90%] border-evolutto-blue border-8 rounded-[2rem] relative shadow-2xl">
+              <div class="w-full h-full bg-evolutto-gradient flex items-center justify-center">
+                <span class="text-white text-sm font-medium">Conteúdo do card</span>
+              </div>
+            </div>
+          </div>
+          <!-- Content Card -->
+          <div class="flex flex-col justify-center items-start lg:pr-12 bg-white/50 p-8 rounded-[2rem]">
+            <h3 class="text-4xl lg:text-5xl font-medium tracking-tight text-gray-900 mb-6">Card de Conteúdo</h3>
+            <p class="text-lg text-gray-500 leading-relaxed font-normal mb-8 max-w-lg">
+              Exemplo de card de conteúdo com título e parágrafo, usado nos blocos de seção do site.
+            </p>
+            <a class="inline-flex items-center gap-3 bg-black text-white px-8 py-4 rounded-full text-xs font-medium uppercase tracking-widest hover:bg-gray-800 hover:scale-105 transition-all shadow-xl shadow-gray-200" href="#">
+              Ação <i class="w-4 h-4" data-lucide="arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Card (do feed Evolutto) -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Cards de Métrica</h3>
+        <div class="grid grid-cols-3 gap-4 max-w-2xl">
+          <div class="bg-evolutto-black rounded-2xl p-6 text-center">
+            <p class="text-4xl font-bold text-white">15x</p>
+            <p class="text-[0.6rem] uppercase tracking-widest text-gray-400 mt-2 leading-snug">Média de clientes por consultor</p>
+          </div>
+          <div class="bg-evolutto-black rounded-2xl p-6 text-center">
+            <p class="text-4xl font-bold text-white">8K</p>
+            <p class="text-[0.6rem] uppercase tracking-widest text-gray-400 mt-2 leading-snug">Usuários utilizam a Evolutto</p>
+          </div>
+          <div class="bg-evolutto-black rounded-2xl p-6 text-center">
+            <p class="text-4xl font-bold text-white">5x</p>
+            <p class="text-[0.6rem] uppercase tracking-widest text-gray-400 mt-2 leading-snug">Crescimento no faturamento</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Feature Grid</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {[
+            { ic: 'trending-up', t: 'Escale o faturamento', d: 'Média de 5x de crescimento com processos digitalizados.' },
+            { ic: 'users', t: 'Atenda mais clientes', d: 'Até 15x mais clientes por consultor com automação.' },
+            { ic: 'shield', t: 'Controle e qualidade', d: 'Registros com rastreabilidade e segurança.' },
+            { ic: 'zap', t: 'Produtividade', d: 'Automatize processos-chave de ponta a ponta.' },
+          ].map((f) => (
+            <div class="bg-white/60 rounded-[2rem] p-6 border border-gray-200 group hover:border-evolutto-blue/40 transition-colors">
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors">
+                <i class="w-6 h-6" data-lucide={f.ic}></i>
+              </div>
+              <h4 class="text-lg font-medium text-gray-900 mb-2">{f.t}</h4>
+              <p class="text-sm text-gray-500 leading-relaxed">{f.d}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Loaders -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Loaders</h3>
+        <div class="bg-evolutto-black rounded-[2rem] p-8 grid grid-cols-3 lg:grid-cols-6 gap-4">
+          <!-- Spinner -->
+          <div class="flex flex-col items-center justify-center gap-3 py-6 rounded-2xl bg-white/5">
+            <svg class="text-evolutto-blue" style="animation: ds-spin 1s linear infinite" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="3"></circle><circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="60"></circle></svg>
+            <span class="text-[10px] uppercase tracking-widest text-gray-500">Spinner</span>
+          </div>
+          <!-- Dots -->
+          <div class="flex flex-col items-center justify-center gap-3 py-6 rounded-2xl bg-white/5">
+            <svg width="44" height="40" viewBox="0 0 44 40" fill="#fff"><circle cx="10" cy="20" r="3"><animate attributeName="cy" dur="0.6s" repeatCount="indefinite" values="20;14;20"></animate></circle><circle cx="22" cy="20" r="3"><animate attributeName="cy" begin="0.1s" dur="0.6s" repeatCount="indefinite" values="20;14;20"></animate></circle><circle cx="34" cy="20" r="3"><animate attributeName="cy" begin="0.2s" dur="0.6s" repeatCount="indefinite" values="20;14;20"></animate></circle></svg>
+            <span class="text-[10px] uppercase tracking-widest text-gray-500">Dots</span>
+          </div>
+          <!-- Pulse -->
+          <div class="flex flex-col items-center justify-center gap-3 py-6 rounded-2xl bg-white/5">
+            <div class="relative flex items-center justify-center w-11 h-11">
+              <span class="absolute w-3 h-3 rounded-full bg-evolutto-blue z-10 shadow-[0_0_10px_#3363ff]"></span>
+              <span class="absolute w-full h-full border border-evolutto-blue rounded-full" style="animation: ds-radar 2s infinite"></span>
+              <span class="absolute w-full h-full border border-evolutto-blue rounded-full" style="animation: ds-radar 2s 0.6s infinite"></span>
+            </div>
+            <span class="text-[10px] uppercase tracking-widest text-gray-500">Pulse</span>
+          </div>
+          <!-- Bars -->
+          <div class="flex flex-col items-center justify-center gap-3 py-6 rounded-2xl bg-white/5">
+            <svg width="40" height="40" viewBox="0 0 40 40" stroke="#fff" stroke-width="3" stroke-linecap="round"><line x1="12" y1="15" x2="12" y2="25"><animate attributeName="y1" dur="0.6s" repeatCount="indefinite" values="15;10;15"></animate><animate attributeName="y2" dur="0.6s" repeatCount="indefinite" values="25;30;25"></animate></line><line x1="20" y1="15" x2="20" y2="25"><animate attributeName="y1" begin="0.1s" dur="0.6s" repeatCount="indefinite" values="15;10;15"></animate><animate attributeName="y2" begin="0.1s" dur="0.6s" repeatCount="indefinite" values="25;30;25"></animate></line><line x1="28" y1="15" x2="28" y2="25"><animate attributeName="y1" begin="0.2s" dur="0.6s" repeatCount="indefinite" values="15;10;15"></animate><animate attributeName="y2" begin="0.2s" dur="0.6s" repeatCount="indefinite" values="25;30;25"></animate></line></svg>
+            <span class="text-[10px] uppercase tracking-widest text-gray-500">Bars</span>
+          </div>
+          <!-- Ring -->
+          <div class="flex flex-col items-center justify-center gap-3 py-6 rounded-2xl bg-white/5">
+            <svg class="w-10 h-10" style="animation: ds-spin 2s linear infinite" viewBox="25 25 50 50"><circle cx="50" cy="50" r="20" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="4"></circle><circle cx="50" cy="50" r="20" fill="none" stroke="#3363ff" stroke-width="4" stroke-linecap="round" style="animation: ds-ring-dash 1.5s ease-in-out infinite"></circle></svg>
+            <span class="text-[10px] uppercase tracking-widest text-gray-500">Ring</span>
+          </div>
+          <!-- Infinity -->
+          <div class="flex flex-col items-center justify-center gap-3 py-6 rounded-2xl bg-white/5">
+            <svg width="60" height="30" viewBox="0 0 60 30"><path d="M15,15 C15,5 25,5 30,15 C35,25 45,25 45,15 C45,5 35,5 30,15 C25,25 15,25 15,15 Z" fill="none" stroke="#3363ff" stroke-width="2" stroke-linecap="round" stroke-dasharray="100" style="animation: ds-dash-draw 2s linear infinite"></path></svg>
+            <span class="text-[10px] uppercase tracking-widest text-gray-500">Infinity</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão Border Beam -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Botão Border Beam</h3>
+        <div class="bg-evolutto-black rounded-[2rem] p-12 flex items-center justify-center gap-8 flex-wrap">
+          <div class="btn-beam-container inline-flex rounded-full">
+            <span class="beam-border"></span>
+            <button class="relative flex items-center gap-2 bg-[#0c0c0c] border border-white/15 text-white text-[0.7rem] font-medium uppercase tracking-widest px-8 py-4 rounded-full hover:bg-black transition-colors">
+              Começar agora <i class="w-3 h-3" data-lucide="arrow-up-right"></i>
+            </button>
+          </div>
+          <p class="text-sm text-gray-400 max-w-xs">Borda em <span class="text-white">conic-gradient</span> girando no hover — CTA premium. <code class="text-[11px] text-gray-500">.btn-beam-container</code></p>
+        </div>
+      </div>
+
+      <!-- Marquee -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Marquee (loop infinito)</h3>
+        <div class="marquee-mask overflow-hidden bg-evolutto-black rounded-[2rem] py-8">
+          <div class="marquee-content flex items-center gap-16 w-max">
+            {[...Array(2)].map(() => (
+              <>
+                <span class="flex items-center gap-2 text-white/70"><i class="w-5 h-5" data-lucide="figma"></i><span class="text-sm font-medium">Figma</span></span>
+                <span class="flex items-center gap-2 text-white/70"><i class="w-5 h-5" data-lucide="github"></i><span class="text-sm font-medium">GitHub</span></span>
+                <span class="flex items-center gap-2 text-white/70"><i class="w-5 h-5" data-lucide="framer"></i><span class="text-sm font-medium">Framer</span></span>
+                <span class="flex items-center gap-2 text-white/70"><i class="w-5 h-5" data-lucide="command"></i><span class="text-sm font-medium">Command</span></span>
+                <span class="flex items-center gap-2 text-white/70"><i class="w-5 h-5" data-lucide="globe"></i><span class="text-sm font-medium">Globe</span></span>
+                <span class="flex items-center gap-2 text-white/70"><i class="w-5 h-5" data-lucide="cpu"></i><span class="text-sm font-medium">Compute</span></span>
+              </>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Flashlight Cards -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Flashlight Cards</h3>
+        <p class="text-sm text-gray-500 mb-6">O brilho azul segue o cursor sobre cada card (passe o mouse).</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {[
+            { ic: 'zap', t: 'Automação', d: 'Processos-chave automatizados de ponta a ponta.' },
+            { ic: 'trending-up', t: 'Escala', d: 'Crescimento previsível com dados em tempo real.' },
+            { ic: 'shield', t: 'Segurança', d: 'Registros com rastreabilidade e controle.' },
+          ].map((f) => (
+            <div class="flashlight-card rounded-[2rem] bg-evolutto-black p-8">
+              <span class="flashlight-border"></span>
+              <div class="relative z-10">
+                <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-evolutto-blue mb-5"><i class="w-6 h-6" data-lucide={f.ic}></i></div>
+                <h4 class="text-lg font-medium text-white mb-2">{f.t}</h4>
+                <p class="text-sm text-gray-400 leading-relaxed">{f.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Sidebar Nav -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Sidebar Nav</h3>
+        <aside class="w-full max-w-xs bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div class="flex items-center justify-between border-b border-gray-200 p-5">
+            <button class="flex items-center gap-2 text-sm font-medium bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 hover:shadow-sm transition-all">
+              <i class="w-4 h-4 text-gray-600" data-lucide="layers"></i>
+              <span class="text-gray-800">Evolutto</span>
+              <i class="w-4 h-4 text-gray-400" data-lucide="chevron-down"></i>
+            </button>
+            <div class="relative">
+              <div class="w-10 h-10 rounded-xl bg-evolutto-gradient"></div>
+              <div class="absolute -top-1 -right-1 w-4 h-4 bg-evolutto-blue rounded-full border-2 border-white"></div>
+            </div>
+          </div>
+          <div class="px-5 pt-5">
+            <button class="w-full flex items-center justify-center gap-2 bg-evolutto-black text-white rounded-xl px-4 py-3 font-medium hover:bg-black transition-all">
+              <i class="w-4 h-4" data-lucide="pencil"></i> Novo projeto
+            </button>
+          </div>
+          <nav class="text-sm pt-5 pb-2 px-2">
+            <a class="flex items-center gap-3 px-4 py-3 mx-1 bg-evolutto-blue/10 text-evolutto-black rounded-xl" href="#"><i class="w-5 h-5 text-evolutto-blue" data-lucide="inbox"></i><span class="font-medium">Visão geral</span><span class="ml-auto bg-evolutto-blue text-white text-xs px-2 py-0.5 rounded-full font-medium">24</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 mx-1 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-xl transition-colors" href="#"><i class="w-5 h-5" data-lucide="star"></i><span>Favoritos</span><span class="ml-auto text-xs text-gray-400">8</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 mx-1 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-xl transition-colors" href="#"><i class="w-5 h-5" data-lucide="users"></i><span>Clientes</span></a>
+            <a class="flex items-center gap-3 px-4 py-3 mx-1 text-gray-600 hover:bg-gray-100 hover:text-gray-900 rounded-xl transition-colors" href="#"><i class="w-5 h-5" data-lucide="bar-chart-3"></i><span>Relatórios</span><span class="ml-auto text-xs text-gray-400">3</span></a>
+          </nav>
+          <div class="px-4 pb-2">
+            <p class="text-gray-400 uppercase text-xs tracking-wider font-medium mb-3 px-1">Etiquetas</p>
+            <div class="space-y-1">
+              <button class="flex items-center gap-3 w-full px-4 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"><span class="w-2 h-2 rounded-full bg-evolutto-blue"></span><span>Consultoria</span><span class="ml-auto text-xs text-gray-400">12</span></button>
+              <button class="flex items-center gap-3 w-full px-4 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"><span class="w-2 h-2 rounded-full bg-evolutto-purple"></span><span>Mentoria</span><span class="ml-auto text-xs text-gray-400">7</span></button>
+              <button class="flex items-center gap-3 w-full px-4 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors"><span class="w-2 h-2 rounded-full bg-evolutto-amber"></span><span>Implantação</span><span class="ml-auto text-xs text-gray-400">5</span></button>
+            </div>
+          </div>
+          <!-- Storage meter -->
+          <div class="m-4 mt-2 p-4 rounded-xl bg-gray-50 border border-gray-200">
+            <div class="flex items-center justify-between mb-2"><span class="text-xs font-medium text-gray-700">Armazenamento</span><span class="text-xs text-gray-400">6,5 / 10 GB</span></div>
+            <div class="h-2 rounded-full bg-gray-200 overflow-hidden"><div class="h-full rounded-full bg-evolutto-gradient" style="width:65%"></div></div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Progress & Meters -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Progress &amp; Meters</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-3xl">
+          <div class="bg-white/60 rounded-2xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-3"><span class="text-sm font-medium text-gray-700">Digitalização</span><span class="text-sm text-gray-400">82%</span></div>
+            <div class="h-2 rounded-full bg-gray-200 overflow-hidden"><div class="h-full rounded-full bg-evolutto-blue" style="width:82%"></div></div>
+          </div>
+          <div class="bg-white/60 rounded-2xl p-6 border border-gray-200">
+            <div class="flex items-center justify-between mb-3"><span class="text-sm font-medium text-gray-700">Implantação</span><span class="text-sm text-gray-400">45%</span></div>
+            <div class="h-2 rounded-full bg-gray-200 overflow-hidden"><div class="h-full rounded-full bg-evolutto-purple" style="width:45%"></div></div>
+          </div>
+          <div class="bg-white/60 rounded-2xl p-6 border border-gray-200 flex items-center gap-4">
+            <svg class="w-14 h-14 -rotate-90" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" fill="none" stroke="#e5e7eb" stroke-width="3"></circle><circle cx="18" cy="18" r="15" fill="none" stroke="#3363ff" stroke-width="3" stroke-linecap="round" stroke-dasharray="94.2" stroke-dashoffset="28"></circle></svg>
+            <div><p class="text-2xl font-semibold text-gray-900">70%</p><p class="text-xs text-gray-400">Meta do mês</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Charts</h3>
+        <div class="bg-evolutto-black rounded-[2rem] p-6 lg:p-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Area / Line -->
+          <div class="bg-white/5 rounded-2xl p-6 md:col-span-2">
+            <div class="flex justify-between items-center mb-6">
+              <h4 class="text-xs font-semibold uppercase tracking-widest text-white">Faturamento</h4>
+              <div class="flex gap-4 text-[11px] text-gray-400">
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-evolutto-blue"></span>Atual</span>
+                <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-evolutto-purple"></span>Projetado</span>
+              </div>
+            </div>
+            <svg viewBox="0 0 600 160" class="w-full h-40" preserveAspectRatio="none">
+              <defs><linearGradient id="ds-area" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3363ff" stop-opacity="0.35"></stop><stop offset="100%" stop-color="#3363ff" stop-opacity="0"></stop></linearGradient></defs>
+              <path d="M0,120 L75,95 L150,105 L225,65 L300,80 L375,40 L450,55 L525,25 L600,30 L600,160 L0,160 Z" fill="url(#ds-area)"></path>
+              <path d="M0,120 L75,95 L150,105 L225,65 L300,80 L375,40 L450,55 L525,25 L600,30" fill="none" stroke="#3363ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M0,140 L75,130 L150,135 L225,115 L300,125 L375,100 L450,110 L525,90 L600,95" fill="none" stroke="#6959dc" stroke-width="2.5" stroke-dasharray="5 5" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"></path>
+            </svg>
+          </div>
+          <!-- Bars -->
+          <div class="bg-white/5 rounded-2xl p-6">
+            <h4 class="text-xs font-semibold uppercase tracking-widest text-white mb-6">Aquisição</h4>
+            <svg viewBox="0 0 300 140" class="w-full h-36">
+              {[60, 90, 45, 110, 75, 130, 100].map((h, i) => (
+                <rect x={20 + i * 40} y={140 - h} width="22" height={h} rx="5" fill={i === 5 ? '#3363ff' : 'rgba(255,255,255,0.18)'}></rect>
+              ))}
+            </svg>
+          </div>
+          <!-- Donut -->
+          <div class="bg-white/5 rounded-2xl p-6 flex flex-col">
+            <h4 class="text-xs font-semibold uppercase tracking-widest text-white mb-6">Origem dos leads</h4>
+            <div class="flex items-center gap-6">
+              <svg viewBox="0 0 42 42" class="w-28 h-28 shrink-0">
+                <g transform="rotate(-90 21 21)">
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="#3363ff" stroke-width="6" stroke-dasharray="55 45" stroke-dashoffset="0"></circle>
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="#6959dc" stroke-width="6" stroke-dasharray="30 70" stroke-dashoffset="-55"></circle>
+                  <circle cx="21" cy="21" r="15.915" fill="none" stroke="#f3c87f" stroke-width="6" stroke-dasharray="15 85" stroke-dashoffset="-85"></circle>
+                </g>
+              </svg>
+              <ul class="space-y-2 text-xs text-gray-300">
+                <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-evolutto-blue"></span>Orgânico · 55%</li>
+                <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-evolutto-purple"></span>Indicação · 30%</li>
+                <li class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-evolutto-amber"></span>Ads · 15%</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Switcher + Rotator Card -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Feature Switcher</h3>
+        <div class="bg-evolutto-black rounded-[2rem] p-8 lg:p-12 grid lg:grid-cols-2 gap-12 items-center">
+          <div class="space-y-4">
+            <button class="feature-btn w-full text-left p-4 rounded-xl border border-transparent hover:bg-white/5 transition-colors">
+              <div class="flex items-center gap-3 mb-1"><i class="w-5 h-5 text-evolutto-blue" data-lucide="zap"></i><span class="text-white font-medium">Automação em tempo real</span></div>
+              <p class="text-sm text-gray-400 pl-8">Processos propagam instantaneamente entre as áreas.</p>
+            </button>
+            <button class="feature-btn w-full text-left p-4 rounded-xl border border-transparent hover:bg-white/5 transition-colors">
+              <div class="flex items-center gap-3 mb-1"><i class="w-5 h-5 text-evolutto-blue" data-lucide="shield"></i><span class="text-white font-medium">Segurança</span></div>
+              <p class="text-sm text-gray-400 pl-8">Criptografia ponta a ponta e rastreabilidade total.</p>
+            </button>
+            <button class="feature-btn w-full text-left p-4 rounded-xl border border-transparent hover:bg-white/5 transition-colors">
+              <div class="flex items-center gap-3 mb-1"><i class="w-5 h-5 text-evolutto-blue" data-lucide="bar-chart-3"></i><span class="text-white font-medium">Analytics</span></div>
+              <p class="text-sm text-gray-400 pl-8">Insights com relatórios detalhados e tendências.</p>
+            </button>
+          </div>
+          <div class="relative h-[360px] w-full bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
+            <!-- Card 1 -->
+            <div class="rotator-card bg-gradient-to-br from-white/10 to-transparent rounded-xl border border-white/10 p-6 flex flex-col justify-between" style="opacity:1;transform:scale(1)">
+              <div class="w-12 h-12 rounded-lg bg-evolutto-blue/20 flex items-center justify-center text-evolutto-blue mb-4"><i class="w-6 h-6" data-lucide="zap"></i></div>
+              <div class="space-y-2"><div class="h-2 w-2/3 bg-white/15 rounded"></div><div class="h-2 w-1/2 bg-white/15 rounded"></div><div class="h-2 w-3/4 bg-white/15 rounded"></div></div>
+              <div class="mt-6 p-4 bg-white/5 rounded-lg border border-white/10 flex items-center justify-between text-xs text-gray-400"><span>Status</span><span class="text-evolutto-blue">Ativo</span></div>
+            </div>
+            <!-- Card 2 -->
+            <div class="rotator-card bg-gradient-to-br from-white/10 to-transparent rounded-xl border border-white/10 p-6 flex flex-col justify-between" style="opacity:0;transform:scale(0.92)">
+              <div class="w-12 h-12 rounded-lg bg-evolutto-purple/20 flex items-center justify-center text-evolutto-purple mb-4"><i class="w-6 h-6" data-lucide="shield"></i></div>
+              <div class="flex items-center justify-center h-28"><i class="w-16 h-16 text-white/15" data-lucide="lock"></i></div>
+              <div class="mt-2 text-center text-xs text-evolutto-blue bg-evolutto-blue/10 py-2 rounded border border-evolutto-blue/30">Criptografia 256-bit</div>
+            </div>
+            <!-- Card 3 -->
+            <div class="rotator-card bg-gradient-to-br from-white/10 to-transparent rounded-xl border border-white/10 p-6 flex flex-col justify-between" style="opacity:0;transform:scale(0.92)">
+              <div class="w-12 h-12 rounded-lg bg-evolutto-amber/20 flex items-center justify-center text-evolutto-amber mb-4"><i class="w-6 h-6" data-lucide="bar-chart-3"></i></div>
+              <div class="flex items-end justify-between h-28 gap-2 px-2"><div class="w-full bg-white/15 rounded-t" style="height:40%"></div><div class="w-full bg-white/25 rounded-t" style="height:70%"></div><div class="w-full bg-evolutto-blue rounded-t" style="height:55%"></div><div class="w-full bg-white/15 rounded-t" style="height:85%"></div></div>
+            </div>
+            <!-- Controls -->
+            <div class="absolute bottom-4 right-4 flex gap-2 z-20">
+              <button data-rot-prev class="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 border border-white/10 transition-colors"><i class="w-4 h-4" data-lucide="chevron-left"></i></button>
+              <button data-rot-next class="p-2 rounded-full bg-white/10 text-white hover:bg-white/20 border border-white/10 transition-colors"><i class="w-4 h-4" data-lucide="chevron-right"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skeleton & Pagination -->
+      <div class="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Skeleton Loader</h3>
+          <div class="bg-white/60 rounded-[2rem] p-6 border border-gray-200 max-w-sm">
+            <div class="flex items-center gap-4 mb-5">
+              <div class="skeleton w-12 h-12 rounded-full"></div>
+              <div class="flex-1 space-y-2"><div class="skeleton h-3 w-1/2 rounded"></div><div class="skeleton h-3 w-1/3 rounded"></div></div>
+            </div>
+            <div class="skeleton h-32 w-full rounded-xl mb-4"></div>
+            <div class="space-y-2"><div class="skeleton h-3 w-full rounded"></div><div class="skeleton h-3 w-5/6 rounded"></div></div>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Pagination Dots</h3>
+          <div class="bg-evolutto-black rounded-[2rem] p-12 flex items-center justify-center">
+            <div class="flex items-center gap-2.5">
+              <span class="h-2.5 w-7 rounded-full bg-evolutto-blue transition-all"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-white/25 transition-all"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-white/25 transition-all"></span>
+              <span class="h-2.5 w-2.5 rounded-full bg-white/25 transition-all"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logo -->
+      <div>
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Logo</h3>
+        <div class="flex flex-wrap items-center gap-8">
+          <!-- Sobre fundo claro (versão escura) -->
+          <div class="flex flex-col gap-3">
+            <div class="px-8 py-6 rounded-2xl bg-[#F3F3F1] border border-gray-200 flex items-center justify-center">
+              <Logo variant="dark" height={36} href={null} />
+            </div>
+            <p class="text-xs text-gray-500 font-mono text-center">sobre fundo claro</p>
+          </div>
+          <!-- Sobre fundo escuro (versão branca) -->
+          <div class="flex flex-col gap-3">
+            <div class="px-8 py-6 rounded-2xl bg-evolutto-black border border-gray-800 flex items-center justify-center">
+              <Logo variant="white" height={36} href={null} />
+            </div>
+            <p class="text-xs text-gray-500 font-mono text-center">sobre fundo escuro</p>
+          </div>
+          <!-- Sobre gradiente -->
+          <div class="flex flex-col gap-3">
+            <div class="px-8 py-6 rounded-2xl bg-evolutto-gradient border border-gray-800 flex items-center justify-center">
+              <Logo variant="white" height={36} href={null} />
+            </div>
+            <p class="text-xs text-gray-500 font-mono text-center">sobre gradiente</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4) Layout & Spacing Section -->
+    <section id="layout" class="lg:px-16 xl:px-24 pt-8 pr-8 pb-20 pl-8 bg-white/50">
+      <div class="flex flex-col gap-2 mb-16">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Layout</span>
+        <h2 class="text-3xl font-medium tracking-tight text-gray-900">Padrões de Layout &amp; Espaçamento</h2>
+      </div>
+
+      <!-- Container -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Container principal</h3>
+        <div class="w-full max-w-[1400px] bg-[#F3F3F1] rounded-[2.5rem] shadow-2xl p-8 border-2 border-dashed border-gray-300">
+          <p class="text-sm text-gray-500 font-mono">max-w-[1400px] rounded-[2.5rem]</p>
+        </div>
+      </div>
+
+      <!-- Grid Layouts -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Grids</h3>
+        <div class="mb-8">
+          <p class="text-sm font-medium text-gray-700 mb-4">Grid 2 colunas (padrão Hero)</p>
+          <div class="grid grid-cols-1 lg:grid-cols-2 lg:min-h-[30vh] gap-8">
+            <div class="bg-gray-200 rounded-[2rem] p-8 flex items-center justify-center">
+              <span class="text-gray-600">Coluna Esquerda</span>
+            </div>
+            <div class="bg-evolutto-gradient rounded-[2rem] p-8 flex items-center justify-center">
+              <span class="text-white">Coluna Direita</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-700 mb-4">Grid de projetos (alternado)</p>
+          <div class="group grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-center">
+            <div class="aspect-square lg:aspect-[4/3] bg-gray-200 rounded-[2.5rem] flex items-center justify-center">
+              <span class="text-gray-600">Card de Imagem</span>
+            </div>
+            <div class="flex flex-col justify-center items-start lg:pr-12">
+              <h3 class="text-4xl lg:text-5xl font-medium tracking-tight text-gray-900 mb-6">Coluna de Conteúdo</h3>
+              <p class="text-lg text-gray-500 leading-relaxed font-normal">Demonstra o padrão de grid alternado usado nas seções de destaque.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spacing Scale -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Escala de espaçamento</h3>
+        <div class="space-y-4">
+          <div class="flex items-center gap-4"><div class="w-2 h-2 bg-evolutto-black rounded-full"></div><span class="text-sm text-gray-600">gap-1 (4px)</span></div>
+          <div class="flex items-center gap-4"><div class="w-4 h-4 bg-evolutto-black rounded-full"></div><span class="text-sm text-gray-600">gap-2 (8px)</span></div>
+          <div class="flex items-center gap-4"><div class="w-6 h-6 bg-evolutto-black rounded-full"></div><span class="text-sm text-gray-600">gap-4 (16px)</span></div>
+          <div class="flex items-center gap-4"><div class="w-8 h-8 bg-evolutto-black rounded-full"></div><span class="text-sm text-gray-600">gap-8 (32px)</span></div>
+          <div class="flex items-center gap-4"><div class="w-12 h-12 bg-evolutto-black rounded-full"></div><span class="text-sm text-gray-600">gap-12 (48px)</span></div>
+          <div class="flex items-center gap-4"><div class="w-16 h-16 bg-evolutto-black rounded-full"></div><span class="text-sm text-gray-600">gap-20 (80px)</span></div>
+          <div class="flex items-center gap-4"><div class="w-24 h-24 bg-evolutto-black rounded-full"></div><span class="text-sm text-gray-600">gap-24 (96px)</span></div>
+        </div>
+      </div>
+
+      <!-- Section Padding -->
+      <div>
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Padding de seção</h3>
+        <div class="space-y-4">
+          <div class="bg-gray-100 p-4 lg:p-8 rounded-lg"><p class="text-sm font-mono text-gray-600">p-4 lg:p-8</p></div>
+          <div class="bg-gray-100 px-8 py-12 lg:px-12 xl:px-20 rounded-lg"><p class="text-sm font-mono text-gray-600">px-8 py-12 lg:px-12 xl:px-20</p></div>
+          <div class="bg-gray-100 pt-8 pr-8 pb-20 pl-8 lg:px-16 xl:px-24 rounded-lg"><p class="text-sm font-mono text-gray-600">pt-8 pr-8 pb-20 pl-8 lg:px-16 xl:px-24</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5) Motion & Interaction Section -->
+    <section id="motion" class="lg:px-16 xl:px-24 pt-16 pr-8 pb-20 pl-8">
+      <div class="flex flex-col gap-2 mb-16">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Motion</span>
+        <h2 class="text-3xl font-medium tracking-tight text-gray-900">Motion &amp; Interações</h2>
+      </div>
+
+      <!-- Hover Effects -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Efeitos de Hover</h3>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="group">
+            <p class="text-sm text-gray-600 mb-4">Scale no hover</p>
+            <button class="flex items-center gap-2 bg-evolutto-black text-white text-[0.7rem] font-medium uppercase tracking-widest px-6 py-3 rounded-full hover:bg-black hover:scale-105 transition-all shadow-lg shadow-gray-300/50">
+              Passe o mouse
+            </button>
+          </div>
+          <div class="group">
+            <p class="text-sm text-gray-600 mb-4">Transform rotate</p>
+            <div class="inline-flex items-center gap-2 bg-evolutto-black text-white px-4 py-2 rounded-full transform -rotate-2 hover:rotate-0 transition-transform cursor-default z-20 shadow-xl">
+              <span class="text-[0.65rem] font-bold uppercase tracking-widest">Passe o mouse</span>
+            </div>
+          </div>
+          <div class="group">
+            <p class="text-sm text-gray-600 mb-4">Translate Y</p>
+            <div class="overflow-hidden transform group-hover:translate-y-[-10px] transition-transform duration-500 bg-gray-100 w-full h-32 border-evolutto-blue border-8 rounded-[2.5rem] relative shadow-2xl flex items-center justify-center">
+              <span class="text-gray-600 font-medium">Passe o mouse</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transitions -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Transições</h3>
+        <div class="space-y-6">
+          <div>
+            <p class="text-sm text-gray-600 mb-4">transition-colors</p>
+            <a class="text-[0.7rem] font-medium uppercase tracking-[0.2em] text-gray-500 hover:text-black transition-colors" href="#">Link de navegação (passe o mouse para ver a mudança de cor)</a>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600 mb-4">transition-transform duration-500</p>
+            <div class="group inline-block">
+              <div class="overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-500 bg-evolutto-black w-64 h-32 border-evolutto-blue border-8 rounded-[2rem] relative shadow-2xl flex items-center justify-center">
+                <span class="text-white font-medium">Passe o mouse</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600 mb-4">transition-transform duration-700</p>
+            <div class="relative h-48 w-full overflow-hidden rounded-[2rem] group">
+              <div class="absolute inset-0 bg-evolutto-gradient transition-transform duration-700 group-hover:scale-105"></div>
+              <span class="absolute inset-0 flex items-center justify-center text-white font-medium">Passe o mouse</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Animations -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Animações</h3>
+        <div class="flex items-center gap-8">
+          <div>
+            <p class="text-sm text-gray-600 mb-4">animate-pulse</p>
+            <div class="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 backdrop-blur-md text-gray-600 animate-pulse bg-gray-100">
+              <i class="w-5 h-5" data-lucide="cpu"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group Hover Effects -->
+      <div>
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Group Hover</h3>
+        <div class="group grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div class="aspect-square bg-gray-200 rounded-[2.5rem] relative shadow-inner flex items-center justify-center">
+            <div class="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-evolutto-blue rounded-full blur-3xl opacity-20"></div>
+            <div class="overflow-hidden transform group-hover:scale-[1.02] transition-transform duration-500 bg-evolutto-black w-[90%] h-[90%] border-evolutto-blue border-8 rounded-[2rem] relative shadow-2xl flex items-center justify-center">
+              <span class="text-white font-medium">Passe o mouse no pai</span>
+            </div>
+          </div>
+          <div class="flex flex-col justify-center">
+            <p class="text-lg text-gray-500 mb-4">Passe o mouse no container pai para o filho transformar</p>
+            <p class="text-sm text-gray-400 font-mono">group-hover:scale-[1.02]</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6) Icons Section -->
+    <section id="icons" class="lg:px-16 xl:px-24 pt-8 pr-8 pb-20 pl-8 bg-white/50">
+      <div class="flex flex-col gap-2 mb-16">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Ícones</span>
+        <h2 class="text-3xl font-medium tracking-tight text-gray-900">Sistema de Ícones</h2>
+      </div>
+
+      <div class="mb-8">
+        <p class="text-base text-gray-500 leading-relaxed font-normal mb-8">
+          O design usa <strong>Lucide Icons</strong> com o atributo <code class="bg-gray-100 px-2 py-1 rounded text-xs font-mono">data-lucide</code>. Os ícones herdam a cor do texto e podem ser dimensionados com classes de largura/altura do Tailwind.
+        </p>
+      </div>
+
+      <!-- Chips de ícone -->
+      <div class="mb-12">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Chips de ícone</h3>
+        <div class="flex flex-wrap items-center gap-4">
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue text-white shadow-lg shadow-evolutto-blue/30"><i class="w-6 h-6" data-lucide="zap"></i></div>
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-black text-white"><i class="w-6 h-6" data-lucide="cpu"></i></div>
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-purple text-white"><i class="w-6 h-6" data-lucide="users"></i></div>
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-gray-100 text-evolutto-blue border border-gray-200"><i class="w-6 h-6" data-lucide="shield"></i></div>
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-gray-900 border border-gray-200 shadow-sm"><i class="w-6 h-6" data-lucide="bar-chart-3"></i></div>
+        </div>
+      </div>
+
+      <!-- Grade completa de ícones -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Biblioteca de ícones</h3>
+        <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
+          {['aperture','bar-chart-3','trending-up','gauge','cpu','code','command','workflow','layers','globe','inbox','mail','send','settings','shield','badge-check','lock','users','figma','framer','github','file-text','pencil','scissors','plus','check','star','zap','rocket','sparkles','play-circle','arrow-right','arrow-up-right','chevron-down','chevron-right','log-out','type'].map((ic) => (
+            <div class="flex flex-col items-center gap-2 bg-white rounded-xl py-4 border border-gray-200">
+              <i class="w-6 h-6 text-gray-900" data-lucide={ic === 'play-circle' ? 'circle-play' : ic}></i>
+              <span class="text-[9px] text-gray-400 font-mono text-center px-1 leading-tight">{ic}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Icon Sizes -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Tamanhos</h3>
+        <div class="flex items-center gap-8">
+          <div class="flex flex-col items-center gap-2"><i class="w-3 h-3 text-gray-900" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">w-3 h-3</span></div>
+          <div class="flex flex-col items-center gap-2"><i class="w-4 h-4 text-gray-900" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">w-4 h-4</span></div>
+          <div class="flex flex-col items-center gap-2"><i class="w-5 h-5 text-gray-900" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">w-5 h-5</span></div>
+          <div class="flex flex-col items-center gap-2"><i class="w-6 h-6 text-gray-900" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">w-6 h-6</span></div>
+        </div>
+      </div>
+
+      <!-- Icon Colors -->
+      <div class="mb-16">
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Cores</h3>
+        <div class="flex flex-wrap items-center gap-8">
+          <div class="flex flex-col items-center gap-2"><i class="w-5 h-5 text-gray-500" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">text-gray-500</span></div>
+          <div class="flex flex-col items-center gap-2"><i class="w-5 h-5 text-black" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">text-black</span></div>
+          <div class="flex flex-col items-center gap-2"><i class="w-5 h-5 text-white bg-evolutto-black p-2 rounded" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">text-white</span></div>
+          <div class="flex flex-col items-center gap-2"><i class="w-5 h-5 text-evolutto-blue" data-lucide="arrow-right"></i><span class="text-xs text-gray-500 font-mono">text-evolutto-blue</span></div>
+        </div>
+      </div>
+
+      <!-- Icon Usage Examples -->
+      <div>
+        <h3 class="text-2xl font-medium tracking-tight text-gray-900 mb-8">Exemplos de uso</h3>
+        <div class="space-y-6">
+          <div>
+            <p class="text-sm text-gray-600 mb-4">Botão com ícone</p>
+            <button class="flex items-center gap-2 bg-evolutto-black text-white text-[0.7rem] font-medium uppercase tracking-widest px-6 py-3 rounded-full hover:bg-black hover:scale-105 transition-all shadow-lg shadow-gray-300/50">
+              Botão <i class="w-3 h-3" data-lucide="arrow-up-right"></i>
+            </button>
+          </div>
+          <div>
+            <p class="text-sm text-gray-600 mb-4">Ícone em círculo</p>
+            <div class="flex items-center justify-center w-12 h-12 rounded-full border border-gray-300 backdrop-blur-md text-gray-600 bg-gray-100">
+              <i class="w-5 h-5" data-lucide="cpu"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="p-8 lg:px-16 xl:px-24 border-t border-gray-200">
+      <div class="text-center">
+        <p class="text-sm text-gray-500">Design System Evolutto</p>
+        <p class="text-xs text-gray-400 mt-2">Linguagem visual baseada na referência, tokenizada com a marca Evolutto (Manual 2023)</p>
+      </div>
+    </footer>
+  </main>
+</Base>

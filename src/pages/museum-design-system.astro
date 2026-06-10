@@ -1,0 +1,516 @@
+---
+import MuseumBase from '../layouts/MuseumBase.astro';
+import Logo from '../components/Logo.astro';
+---
+
+<MuseumBase title="Design System — Evolutto (Editorial)">
+  <!-- Navigation -->
+  <nav class="sticky top-0 z-50 w-full px-6 py-5 md:px-12 flex items-center justify-between bg-white/90 backdrop-blur-md border-b border-stone-200">
+    <Logo variant="dark" height={26} />
+    <div class="hidden lg:flex items-center gap-6 text-sm text-stone-500">
+      <a class="hover:text-evolutto-black transition-colors" href="#hero">Hero</a>
+      <a class="hover:text-evolutto-black transition-colors" href="#typography">Tipografia</a>
+      <a class="hover:text-evolutto-black transition-colors" href="#colors">Cores</a>
+      <a class="hover:text-evolutto-black transition-colors" href="#components">Componentes</a>
+      <a class="hover:text-evolutto-black transition-colors" href="#layout">Layout</a>
+      <a class="hover:text-evolutto-black transition-colors" href="#motion">Motion</a>
+      <a class="hover:text-evolutto-black transition-colors" href="#icons">Ícones</a>
+    </div>
+    <a class="hidden md:flex items-center justify-center px-5 py-2.5 bg-evolutto-black text-white rounded-full text-sm font-medium transition-transform hover:scale-105 active:scale-95" href="#">Começar</a>
+  </nav>
+
+  <!-- 0) Hero Section (estrutura clonada, marca Evolutto) -->
+  <section id="hero" class="flex-grow flex flex-col md:px-12 lg:flex-row lg:gap-20 lg:pb-12 w-full max-w-7xl mr-auto ml-auto pr-6 pb-12 pl-6 relative gap-x-12 gap-y-12 items-center justify-center">
+    <!-- Left Content -->
+    <div class="flex-1 w-full flex flex-col items-start pt-8 lg:pt-0 z-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-stone-300 bg-stone-50 text-sm text-stone-600 mb-8">
+        <span class="w-2 h-2 rounded-full bg-evolutto-blue animate-pulse"></span>
+        <span>Plataforma 100% web e mobile</span>
+      </div>
+      <h1 class="text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight text-evolutto-black mb-6 font-newsreader font-light">
+        <span class="block text-stone-400 font-newsreader font-light">Evolutto</span>
+        Design
+        System
+      </h1>
+      <p class="text-lg md:text-xl text-stone-500 max-w-lg leading-relaxed mb-10">
+        A documentação completa da linguagem visual — tipografia, cores, componentes, layouts e interações. Versão editorial dos tokens da marca Evolutto (Manual 2023).
+      </p>
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto mb-16">
+        <button class="w-full sm:w-auto px-8 py-4 bg-evolutto-black text-white rounded-full text-lg font-medium flex items-center justify-center gap-3 group transition-all hover:bg-black shadow-xl shadow-evolutto-black/10">
+          <span>Explorar componentes</span>
+          <iconify-icon class="group-hover:translate-x-1 transition-transform" icon="lucide:arrow-right" width="20"></iconify-icon>
+        </button>
+        <button class="w-full sm:w-auto px-8 py-4 bg-transparent border border-stone-300 text-evolutto-black rounded-full text-lg font-medium flex items-center justify-center gap-3 hover:bg-stone-100 transition-colors">
+          <iconify-icon icon="lucide:palette" width="20"></iconify-icon>
+          <span>Ver tokens</span>
+        </button>
+      </div>
+    </div>
+    <!-- Right Content: Visual Composition (gradiente da marca) -->
+    <div class="flex-1 w-full h-full relative flex items-center justify-center lg:justify-end py-10 lg:py-20">
+      <iconify-icon class="absolute top-0 right-10 text-stone-300 hidden lg:block" icon="lucide:sparkles" width="48"></iconify-icon>
+      <div class="relative w-full max-w-md aspect-[3/4]">
+        <!-- Arched Card -->
+        <div class="absolute inset-0 rounded-t-[10rem] rounded-b-[2rem] overflow-hidden shadow-2xl shadow-evolutto-black/20 group bg-evolutto-gradient">
+          <div class="absolute top-1/3 right-1/4 w-56 h-56 bg-evolutto-blue/40 rounded-full blur-[90px]"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-evolutto-black/60 via-transparent to-transparent"></div>
+          <div class="absolute top-8 left-0 right-0 flex justify-center">
+            <Logo variant="white" height={26} href={null} />
+          </div>
+          <div class="absolute bottom-6 left-6 right-6 flex items-center justify-between text-white">
+            <div>
+              <p class="text-sm font-medium opacity-80 mb-1">Padrão em destaque</p>
+              <p class="text-2xl font-newsreader font-light">Card em arco</p>
+            </div>
+            <button class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center hover:bg-white/30 transition-colors">
+              <iconify-icon icon="lucide:navigation" width="24"></iconify-icon>
+            </button>
+          </div>
+        </div>
+        <!-- Floating Ticket (azul Evolutto) -->
+        <div class="absolute -bottom-12 -left-4 md:-left-12 w-72 bg-evolutto-blue shadow-2xl rounded-lg overflow-hidden transform rotate-[-4deg] hover:rotate-0 transition-transform duration-500 z-20">
+          <div class="p-5 border-b border-white/20 flex justify-between items-start">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-widest text-white/70 mb-1">Acesso</p>
+              <p class="text-xl text-white leading-tight font-semibold">Biblioteca de componentes</p>
+            </div>
+            <iconify-icon class="text-white" icon="lucide:ticket" width="24"></iconify-icon>
+          </div>
+          <div class="p-5 relative">
+            <div class="space-y-3">
+              <div><p class="text-xs text-white/70 mb-0.5">Versão</p><p class="text-sm font-medium text-white">v1.0</p></div>
+              <div><p class="text-xs text-white/70 mb-0.5">Tokens</p><p class="text-sm font-medium text-white">Cores · Tipografia · Motion</p></div>
+            </div>
+            <div class="mt-5 flex items-end justify-between gap-1 h-10 opacity-80">
+              <div class="w-1 bg-white h-full"></div><div class="w-0.5 bg-white h-full"></div><div class="w-2 bg-white h-full"></div><div class="w-1 bg-white h-3/4"></div><div class="w-3 bg-white h-full"></div><div class="w-0.5 bg-white h-full"></div><div class="w-1 bg-white h-3/4"></div><div class="w-4 bg-white h-full"></div><div class="w-1 bg-white h-full"></div><div class="w-0.5 bg-white h-3/4"></div><div class="w-2 bg-white h-full"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Floating Card escuro -->
+        <div class="hidden md:block absolute top-12 -right-12 w-48 bg-evolutto-black rounded-2xl p-4 shadow-2xl z-30 transform rotate-[3deg] hover:rotate-0 transition-transform duration-500 border border-stone-700">
+          <div class="flex items-center justify-between text-stone-400 mb-3">
+            <iconify-icon icon="lucide:arrow-left" width="16"></iconify-icon>
+            <div class="flex gap-2">
+              <iconify-icon icon="lucide:share-2" width="16"></iconify-icon>
+              <iconify-icon icon="lucide:heart" width="16"></iconify-icon>
+            </div>
+          </div>
+          <div class="w-full aspect-square rounded-lg overflow-hidden mb-3 relative bg-evolutto-gradient">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <iconify-icon class="text-white/80" icon="lucide:image" width="32"></iconify-icon>
+            </div>
+          </div>
+          <div>
+            <p class="text-xs text-stone-400 mb-0.5">Padrão</p>
+            <p class="text-lg text-white leading-tight font-semibold">Card de perfil</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1) Typography -->
+  <section id="typography" class="w-full bg-evolutto-black py-24 px-6 md:px-12 border-t border-stone-800">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center gap-2 text-stone-500 mb-12">
+        <iconify-icon icon="lucide:type" width="18"></iconify-icon>
+        <span class="text-xs font-medium uppercase tracking-widest">Tipografia — Inter</span>
+      </div>
+
+      <div class="space-y-10">
+        <!-- Display 1 -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-8 border-b border-stone-800">
+          <div class="flex-1">
+            <p class="text-xs font-medium uppercase tracking-widest text-stone-500 mb-4">Display 1 — Inter Light</p>
+            <h1 class="text-6xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight font-newsreader font-light text-white">Produtize sua consultoria</h1>
+          </div>
+          <div class="text-stone-500 text-sm font-mono shrink-0">96px / 0.95 · light</div>
+        </div>
+
+        <!-- Display 2 -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-8 border-b border-stone-800">
+          <div class="flex-1">
+            <p class="text-xs font-medium uppercase tracking-widest text-stone-500 mb-4">Display 2 — Inter Light</p>
+            <h2 class="text-3xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight font-newsreader font-light text-stone-300">Plataforma inteligente para digitalização e escala de <span class="text-evolutto-blue font-normal">consultorias</span>.</h2>
+          </div>
+          <div class="text-stone-500 text-sm font-mono shrink-0">60px / 1.1</div>
+        </div>
+
+        <!-- Heading 3 -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-8 border-b border-stone-800">
+          <div class="flex-1">
+            <p class="text-xs font-medium uppercase tracking-widest text-stone-500 mb-4">Heading 3 — Inter Medium</p>
+            <h3 class="text-2xl font-newsreader font-medium text-white">Pilares da consultoria eficaz</h3>
+          </div>
+          <div class="text-stone-500 text-sm font-mono shrink-0">24px · medium</div>
+        </div>
+
+        <!-- Accent -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-8 border-b border-stone-800">
+          <div class="flex-1">
+            <p class="text-xs font-medium uppercase tracking-widest text-stone-500 mb-4">Accent — Inter Italic</p>
+            <p class="italic text-3xl text-stone-300 font-light">Transformando consultorias</p>
+          </div>
+          <div class="text-stone-500 text-sm font-mono shrink-0">30px · italic</div>
+        </div>
+
+        <!-- Body Large -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-8 border-b border-stone-800">
+          <div class="flex-1">
+            <p class="text-xs font-medium uppercase tracking-widest text-stone-500 mb-4">Body Large — Inter Regular</p>
+            <p class="text-lg md:text-xl text-stone-300 max-w-2xl leading-relaxed">Automatizamos processos-chave e integramos todas as áreas da sua consultoria, tornando o seu sucesso uma realidade.</p>
+          </div>
+          <div class="text-stone-500 text-sm font-mono shrink-0">20px / relaxed</div>
+        </div>
+
+        <!-- Body -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-8 border-b border-stone-800">
+          <div class="flex-1">
+            <p class="text-xs font-medium uppercase tracking-widest text-stone-500 mb-4">Body — Inter Regular</p>
+            <p class="text-base text-stone-400 max-w-2xl leading-relaxed">Plataforma inteligente 100% web e mobile para digitalização e escala de consultorias, mentorias e processos de implantação de softwares.</p>
+          </div>
+          <div class="text-stone-500 text-sm font-mono shrink-0">16px / relaxed</div>
+        </div>
+
+        <!-- Label -->
+        <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+          <div class="flex-1">
+            <p class="text-xs font-medium uppercase tracking-widest text-stone-500 mb-4">Label — Uppercase Tracking</p>
+            <span class="text-xs font-semibold uppercase tracking-[0.2em] text-stone-400">#produtize · Transformando consultorias</span>
+          </div>
+          <div class="text-stone-500 text-sm font-mono shrink-0">12px · tracking-[0.2em]</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2) Colors & Surfaces (paleta Evolutto) -->
+  <section id="colors" class="w-full bg-white py-24 px-6 md:px-12 border-t border-stone-200">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center gap-2 text-stone-500 mb-12">
+        <iconify-icon icon="lucide:palette" width="18"></iconify-icon>
+        <span class="text-xs font-medium uppercase tracking-widest">Cores &amp; Superfícies</span>
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Cores principais</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-white"><div class="h-24 bg-white border-b border-stone-100"></div><div class="p-3"><p class="text-sm font-medium text-evolutto-black">Branco</p><p class="text-xs text-stone-500 font-mono">#ffffff</p></div></div>
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-white"><div class="h-24 bg-evolutto-blue"></div><div class="p-3"><p class="text-sm font-medium text-evolutto-black">Azul principal</p><p class="text-xs text-stone-500 font-mono">#3363ff</p></div></div>
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-white"><div class="h-24 bg-evolutto-red"></div><div class="p-3"><p class="text-sm font-medium text-evolutto-black">Vermelho</p><p class="text-xs text-stone-500 font-mono">#d93e3f</p></div></div>
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-white"><div class="h-24 bg-evolutto-black"></div><div class="p-3"><p class="text-sm font-medium text-evolutto-black">Preto</p><p class="text-xs text-stone-500 font-mono">#222222</p></div></div>
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Cores de elementos</h3>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-white"><div class="h-20 bg-evolutto-purple"></div><div class="p-3"><p class="text-sm font-medium text-evolutto-black">Roxo</p><p class="text-xs text-stone-500 font-mono">#6959dc</p></div></div>
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-white"><div class="h-20 bg-evolutto-pink"></div><div class="p-3"><p class="text-sm font-medium text-evolutto-black">Rosa</p><p class="text-xs text-stone-500 font-mono">#db697a</p></div></div>
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-white"><div class="h-20 bg-evolutto-amber"></div><div class="p-3"><p class="text-sm font-medium text-evolutto-black">Amarelo</p><p class="text-xs text-stone-500 font-mono">#f3c87f</p></div></div>
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Gradiente &amp; Superfícies</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm"><div class="h-24 bg-evolutto-gradient"></div><div class="p-3 bg-white"><p class="text-sm font-medium text-evolutto-black">Gradiente oficial</p><p class="text-xs text-stone-500 font-mono">#222222 → #2d5eff</p></div></div>
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm"><div class="h-24 bg-[#F3F3F1]"></div><div class="p-3 bg-white"><p class="text-sm font-medium text-evolutto-black">Superfície clara</p><p class="text-xs text-stone-500 font-mono">#F3F3F1</p></div></div>
+        <div class="rounded-2xl overflow-hidden border border-stone-200 shadow-sm"><div class="h-24 bg-evolutto-black"></div><div class="p-3 bg-white"><p class="text-sm font-medium text-evolutto-black">Seção escura</p><p class="text-xs text-stone-500 font-mono">#222222</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3) UI Components -->
+  <section id="components" class="w-full bg-[#F3F3F1] py-24 px-6 md:px-12 border-t border-stone-200">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center gap-2 text-stone-500 mb-12">
+        <iconify-icon icon="lucide:layout-grid" width="18"></iconify-icon>
+        <span class="text-xs font-medium uppercase tracking-widest">Componentes</span>
+      </div>
+
+      <!-- Buttons -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Botões</h3>
+      <div class="flex flex-wrap items-center gap-4 mb-16">
+        <button class="px-8 py-4 bg-evolutto-black text-white rounded-full text-lg font-medium flex items-center gap-3 group transition-all hover:bg-black shadow-xl shadow-evolutto-black/10">
+          <span>Começar agora</span>
+          <iconify-icon class="group-hover:translate-x-1 transition-transform" icon="lucide:arrow-right" width="20"></iconify-icon>
+        </button>
+        <button class="group inline-flex items-center gap-3 px-6 py-4 bg-evolutto-blue hover:brightness-110 text-white rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-evolutto-blue/30">
+          <span>Quero conhecer</span>
+          <iconify-icon class="group-hover:translate-x-1 transition-transform duration-300" icon="lucide:arrow-right" width="20"></iconify-icon>
+        </button>
+        <button class="px-8 py-4 bg-transparent border border-stone-300 text-evolutto-black rounded-full text-lg font-medium flex items-center gap-3 hover:bg-stone-100 transition-colors">
+          <iconify-icon icon="lucide:circle-play" width="20"></iconify-icon>
+          <span>Ver demo</span>
+        </button>
+      </div>
+
+      <!-- Badges -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Badges &amp; Pills</h3>
+      <div class="flex flex-wrap items-center gap-4 mb-16">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-stone-300 bg-white text-sm text-stone-600">
+          <span class="w-2 h-2 rounded-full bg-evolutto-blue animate-pulse"></span>
+          <span>Plataforma online</span>
+        </div>
+        <span class="inline-block px-3 py-1 rounded-full bg-evolutto-blue text-xs font-semibold text-white tracking-wide uppercase">Mais popular</span>
+        <span class="inline-block px-3 py-1 rounded-full bg-stone-200 text-xs font-semibold text-stone-600 tracking-wide uppercase">#produtize</span>
+      </div>
+
+      <!-- Cards -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Cards de plano</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 mb-16 items-start">
+        <!-- Light -->
+        <div class="bg-white rounded-3xl p-8 border border-stone-200 shadow-sm flex flex-col justify-between group hover:border-evolutto-blue/40 transition-colors duration-300">
+          <div>
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-12 h-12 rounded-xl bg-stone-100 flex items-center justify-center text-stone-600"><iconify-icon icon="lucide:rocket" width="24"></iconify-icon></div>
+              <span class="inline-block px-3 py-1 rounded-full bg-stone-100 text-xs font-semibold text-stone-600 tracking-wide uppercase">Essencial</span>
+            </div>
+            <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-2">Plano Starter</h3>
+            <div class="flex items-baseline gap-1 mb-6"><span class="text-4xl font-light font-newsreader text-evolutto-black">R$ 49</span><span class="text-stone-500 text-sm">/mês</span></div>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center gap-3 text-sm text-stone-700"><iconify-icon class="text-stone-400 shrink-0" icon="lucide:circle-check" width="20"></iconify-icon>Gestão de consultorias</li>
+              <li class="flex items-center gap-3 text-sm text-stone-700"><iconify-icon class="text-stone-400 shrink-0" icon="lucide:circle-check" width="20"></iconify-icon>Até 3 usuários</li>
+            </ul>
+          </div>
+          <button class="w-full py-4 rounded-xl border border-stone-200 text-evolutto-black font-medium hover:bg-stone-50 transition-colors">Assinar</button>
+        </div>
+        <!-- Featured dark -->
+        <div class="bg-evolutto-black rounded-3xl p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden md:-translate-y-2">
+          <div class="absolute top-0 right-0 p-32 bg-evolutto-blue/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div class="relative z-10">
+            <div class="flex justify-between items-start mb-6">
+              <div class="w-12 h-12 rounded-xl bg-stone-800 flex items-center justify-center text-evolutto-blue"><iconify-icon icon="lucide:user" width="24"></iconify-icon></div>
+              <span class="inline-block px-3 py-1 rounded-full bg-evolutto-blue text-xs font-semibold text-white tracking-wide uppercase">Mais popular</span>
+            </div>
+            <h3 class="text-2xl font-newsreader font-medium text-white mb-2">Plano Pro</h3>
+            <div class="flex items-baseline gap-1 mb-6"><span class="text-4xl font-light font-newsreader text-white">R$ 149</span><span class="text-stone-400 text-sm">/mês</span></div>
+            <ul class="space-y-4 mb-8">
+              <li class="flex items-center gap-3 text-sm text-stone-200"><iconify-icon class="text-evolutto-blue shrink-0" icon="lucide:circle-check" width="20"></iconify-icon>Usuários ilimitados</li>
+              <li class="flex items-center gap-3 text-sm text-stone-200"><iconify-icon class="text-evolutto-blue shrink-0" icon="lucide:circle-check" width="20"></iconify-icon>Automações e integrações</li>
+            </ul>
+          </div>
+          <button class="w-full py-4 rounded-xl bg-evolutto-blue text-white font-medium hover:brightness-110 transition-all relative z-10">Assinar Pro</button>
+        </div>
+        <!-- Ticket -->
+        <div class="bg-evolutto-blue shadow-2xl rounded-lg overflow-hidden transform rotate-[-3deg] hover:rotate-0 transition-transform duration-500">
+          <div class="p-5 border-b border-white/20 flex justify-between items-start">
+            <div>
+              <p class="text-xs font-medium uppercase tracking-widest text-white/70 mb-1">Acesso</p>
+              <p class="text-xl text-white leading-tight font-semibold">Evolutto Plataforma</p>
+            </div>
+            <iconify-icon class="text-white" icon="lucide:ticket" width="24"></iconify-icon>
+          </div>
+          <div class="p-5 relative">
+            <div class="space-y-3">
+              <div><p class="text-xs text-white/70 mb-0.5">Usuários</p><p class="text-sm font-medium text-white">+8 mil</p></div>
+              <div><p class="text-xs text-white/70 mb-0.5">Alcance</p><p class="text-sm font-medium text-white">4 continentes</p></div>
+            </div>
+            <div class="mt-5 flex items-end justify-between gap-1 h-10 opacity-80">
+              <div class="w-1 bg-white h-full"></div><div class="w-0.5 bg-white h-full"></div><div class="w-2 bg-white h-full"></div><div class="w-1 bg-white h-3/4"></div><div class="w-3 bg-white h-full"></div><div class="w-0.5 bg-white h-full"></div><div class="w-1 bg-white h-3/4"></div><div class="w-4 bg-white h-full"></div><div class="w-1 bg-white h-full"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Grid -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Feature Grid</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-16">
+        {[
+          { ic: 'lucide:trending-up', t: 'Escale o faturamento', d: 'Média de 5x de crescimento com processos digitalizados.' },
+          { ic: 'lucide:users', t: 'Atenda mais clientes', d: 'Até 15x mais clientes por consultor com automação.' },
+          { ic: 'lucide:shield-check', t: 'Controle e qualidade', d: 'Todos os registros com rastreabilidade e segurança.' },
+          { ic: 'lucide:zap', t: 'Produtividade', d: 'Automatize processos-chave de ponta a ponta.' },
+        ].map((f) => (
+          <div class="bg-white rounded-3xl p-6 border border-stone-200 shadow-sm group hover:border-evolutto-blue/40 transition-colors">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors">
+              <iconify-icon icon={f.ic} width="26"></iconify-icon>
+            </div>
+            <h4 class="text-lg font-semibold text-evolutto-black mb-2">{f.t}</h4>
+            <p class="text-sm text-stone-500 leading-relaxed">{f.d}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Stat cards (estilo dashboard, borda em gradiente) -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Stat Cards</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-16">
+        <div class="relative rounded-3xl p-6 bg-evolutto-black text-white overflow-hidden shadow-lg">
+          <div class="absolute top-0 right-0 p-24 bg-evolutto-blue/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+          <div class="relative z-10 flex items-center justify-between mb-6">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white/10 border border-white/20"><iconify-icon class="text-evolutto-blue" icon="lucide:trending-up" width="22"></iconify-icon></div>
+            <span class="rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium border border-white/20">Live</span>
+          </div>
+          <p class="relative z-10 text-4xl font-semibold tracking-tight">5x</p>
+          <p class="relative z-10 text-sm text-stone-400 mt-1">Crescimento no faturamento</p>
+        </div>
+        <div class="rounded-3xl p-6 bg-white border border-stone-200 shadow-sm">
+          <div class="flex items-center justify-between mb-6">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-evolutto-purple/10 text-evolutto-purple"><iconify-icon icon="lucide:users" width="22"></iconify-icon></div>
+            <span class="rounded-full bg-stone-100 px-2.5 py-1 text-[11px] font-medium text-stone-600">Usuários</span>
+          </div>
+          <p class="text-4xl font-semibold tracking-tight text-evolutto-black">8K+</p>
+          <p class="text-sm text-stone-500 mt-1">Usam a Evolutto</p>
+        </div>
+        <div class="rounded-3xl p-6 bg-white border border-stone-200 shadow-sm">
+          <div class="flex items-center justify-between mb-6">
+            <div class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue"><iconify-icon icon="lucide:briefcase" width="22"></iconify-icon></div>
+            <!-- Toggle -->
+            <button class="relative inline-flex h-6 w-11 items-center rounded-full bg-evolutto-blue transition" aria-label="toggle">
+              <span class="absolute right-0.5 h-5 w-5 rounded-full bg-white shadow"></span>
+            </button>
+          </div>
+          <p class="text-4xl font-semibold tracking-tight text-evolutto-black">15x</p>
+          <p class="text-sm text-stone-500 mt-1">Clientes por consultor</p>
+        </div>
+      </div>
+
+      <!-- Input -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Inputs</h3>
+      <form class="w-full max-w-md relative flex items-center group" onsubmit="return false">
+        <iconify-icon class="absolute left-4 text-stone-400 transition-colors group-focus-within:text-evolutto-blue" icon="lucide:mail" width="24"></iconify-icon>
+        <input class="w-full pl-12 pr-32 py-4 bg-white border border-stone-300 rounded-full focus:outline-none focus:ring-2 focus:ring-evolutto-blue/20 focus:border-evolutto-blue transition-all text-evolutto-black placeholder:text-stone-400" placeholder="voce@consultoria.com" type="email" />
+        <button class="absolute right-1.5 top-1.5 bottom-1.5 px-6 bg-evolutto-black text-white rounded-full text-sm font-medium hover:scale-95 transition-transform" type="submit">Enviar</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 4) Layout & Spacing -->
+  <section id="layout" class="w-full bg-white py-24 px-6 md:px-12 border-t border-stone-200">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center gap-2 text-stone-500 mb-12">
+        <iconify-icon icon="lucide:layers" width="18"></iconify-icon>
+        <span class="text-xs font-medium uppercase tracking-widest">Layout &amp; Espaçamento</span>
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Container</h3>
+      <div class="w-full max-w-7xl border-2 border-dashed border-stone-300 rounded-2xl p-8 mb-12">
+        <p class="text-sm text-stone-500 font-mono">max-w-7xl mx-auto · px-6 md:px-12</p>
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Grid de 3 colunas</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch mb-12">
+        <div class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-evolutto-gradient shadow-2xl shadow-black/20">
+          <div class="absolute inset-0 bg-gradient-to-t from-evolutto-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6"><p class="text-stone-300 text-sm mb-1">Digitalização</p><p class="text-white font-newsreader text-xl">Processos-chave</p></div>
+        </div>
+        <div class="group relative rounded-2xl overflow-hidden aspect-[3/4] bg-evolutto-black shadow-2xl shadow-black/20">
+          <div class="absolute top-1/3 left-1/3 w-40 h-40 bg-evolutto-purple/40 rounded-full blur-[70px]"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-evolutto-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-6 left-6"><p class="text-stone-300 text-sm mb-1">Escala</p><p class="text-white font-newsreader text-xl">Crescimento 5x</p></div>
+        </div>
+        <div class="flex flex-col justify-end p-2 md:pl-8 pb-4">
+          <h3 class="text-3xl text-evolutto-black font-newsreader font-light mb-6">Consultorias <span class="italic text-stone-500">de todos os tamanhos</span></h3>
+          <button class="group w-full md:w-auto inline-flex items-center justify-center gap-3 px-6 py-4 bg-evolutto-blue hover:brightness-110 text-white rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-evolutto-blue/30">
+            <span>Conhecer</span>
+            <iconify-icon class="group-hover:translate-x-1 transition-transform duration-300" icon="lucide:arrow-right" width="20"></iconify-icon>
+          </button>
+        </div>
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Padding de seção</h3>
+      <div class="space-y-4">
+        <div class="bg-[#F3F3F1] rounded-xl px-6 py-6"><p class="text-sm font-mono text-stone-600">py-24 px-6 md:px-12</p></div>
+        <div class="bg-[#F3F3F1] rounded-xl px-6 py-6"><p class="text-sm font-mono text-stone-600">gap-6 lg:gap-8 (grids)</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5) Motion -->
+  <section id="motion" class="w-full bg-evolutto-black py-24 px-6 md:px-12 border-t border-stone-800">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center gap-2 text-stone-500 mb-12">
+        <iconify-icon icon="lucide:mouse-pointer-2" width="18"></iconify-icon>
+        <span class="text-xs font-medium uppercase tracking-widest">Motion &amp; Interação</span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div>
+          <p class="text-sm text-stone-400 mb-4">hover:scale-105</p>
+          <a class="inline-flex items-center justify-center px-5 py-2.5 bg-stone-800 text-white rounded-full text-base font-medium transition-transform hover:scale-105 active:scale-95" href="#">Passe o mouse</a>
+        </div>
+        <div>
+          <p class="text-sm text-stone-400 mb-4">hover:-translate-y-1</p>
+          <button class="inline-flex items-center gap-3 px-6 py-4 bg-evolutto-blue hover:brightness-110 text-white rounded-xl font-medium transition-all duration-300 transform hover:-translate-y-1">Passe o mouse</button>
+        </div>
+        <div>
+          <p class="text-sm text-stone-400 mb-4">group-hover:translate-x-1</p>
+          <button class="group inline-flex items-center gap-3 text-white"><span>Ler mais</span><iconify-icon class="group-hover:translate-x-1 transition-transform" icon="lucide:arrow-right" width="20"></iconify-icon></button>
+        </div>
+        <div>
+          <p class="text-sm text-stone-400 mb-4">rotate-[-4deg] hover:rotate-0</p>
+          <div class="w-40 h-24 bg-evolutto-blue rounded-lg shadow-2xl transform rotate-[-4deg] hover:rotate-0 transition-transform duration-500 flex items-center justify-center"><span class="text-white font-medium">Ticket</span></div>
+        </div>
+        <div>
+          <p class="text-sm text-stone-400 mb-4">group-hover:scale-105 (duration-700)</p>
+          <div class="group relative rounded-2xl overflow-hidden h-24 w-40 bg-evolutto-gradient">
+            <div class="absolute inset-0 transition-transform duration-700 group-hover:scale-105 bg-evolutto-gradient"></div>
+          </div>
+        </div>
+        <div>
+          <p class="text-sm text-stone-400 mb-4">arco + group-hover:scale-105</p>
+          <div class="group relative rounded-t-[3rem] rounded-b-xl overflow-hidden h-24 w-40 bg-evolutto-gradient">
+            <div class="absolute inset-0 transition-transform duration-700 group-hover:scale-105 bg-evolutto-gradient"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6) Icons -->
+  <section id="icons" class="w-full bg-[#F3F3F1] py-24 px-6 md:px-12 border-t border-stone-200">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center gap-2 text-stone-500 mb-12">
+        <iconify-icon icon="lucide:star" width="18"></iconify-icon>
+        <span class="text-xs font-medium uppercase tracking-widest">Ícones</span>
+      </div>
+
+      <p class="text-base text-stone-600 leading-relaxed mb-10 max-w-2xl">
+        Sistema de ícones <strong>Lucide</strong> (linha geométrica e consistente, padrão de SaaS moderno) via <code class="bg-white px-2 py-1 rounded text-xs font-mono">&lt;iconify-icon&gt;</code>. Herdam a cor do texto e usam o atributo <code class="bg-white px-1 py-0.5 rounded text-xs font-mono">width</code>.
+      </p>
+
+      <!-- Chips de ícone (padrão de UI) -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Chips de ícone</h3>
+      <div class="flex flex-wrap items-center gap-4 mb-12">
+        <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue text-white shadow-lg shadow-evolutto-blue/30"><iconify-icon icon="lucide:bar-chart-3" width="24"></iconify-icon></div>
+        <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-black text-white"><iconify-icon icon="lucide:rocket" width="24"></iconify-icon></div>
+        <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-purple text-white"><iconify-icon icon="lucide:users" width="24"></iconify-icon></div>
+        <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-stone-100 text-evolutto-blue border border-stone-200"><iconify-icon icon="lucide:shield-check" width="24"></iconify-icon></div>
+        <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-evolutto-black border border-stone-200 shadow-sm"><iconify-icon icon="lucide:zap" width="24"></iconify-icon></div>
+      </div>
+
+      <!-- Biblioteca de ícones (Lucide) -->
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Biblioteca de ícones</h3>
+      <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-9 gap-3 mb-12">
+        {['lucide:bar-chart-3','lucide:trending-up','lucide:pie-chart','lucide:line-chart','lucide:rocket','lucide:zap','lucide:users','lucide:user','lucide:settings','lucide:shield-check','lucide:wallet','lucide:dollar-sign','lucide:briefcase','lucide:clipboard-check','lucide:calendar','lucide:clock','lucide:file-text','lucide:layers','lucide:lightbulb','lucide:target','lucide:message-circle','lucide:bell','lucide:layout-grid','lucide:search','lucide:ticket','lucide:mail','lucide:circle-check','lucide:star','lucide:heart','lucide:share-2','lucide:circle-play','lucide:arrow-right','lucide:palette','lucide:globe','lucide:lock','lucide:send'].map((ic) => (
+          <div class="flex flex-col items-center gap-2 bg-white rounded-xl py-4 border border-stone-200">
+            <iconify-icon class="text-evolutto-black" icon={ic} width="26"></iconify-icon>
+            <span class="text-[9px] text-stone-500 font-mono text-center px-1 leading-tight">{ic.replace('lucide:', '')}</span>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Tamanhos</h3>
+      <div class="flex items-end gap-8 mb-12">
+        <div class="flex flex-col items-center gap-2"><iconify-icon class="text-evolutto-black" icon="lucide:arrow-right" width="16"></iconify-icon><span class="text-xs text-stone-500 font-mono">16</span></div>
+        <div class="flex flex-col items-center gap-2"><iconify-icon class="text-evolutto-black" icon="lucide:arrow-right" width="20"></iconify-icon><span class="text-xs text-stone-500 font-mono">20</span></div>
+        <div class="flex flex-col items-center gap-2"><iconify-icon class="text-evolutto-black" icon="lucide:arrow-right" width="24"></iconify-icon><span class="text-xs text-stone-500 font-mono">24</span></div>
+        <div class="flex flex-col items-center gap-2"><iconify-icon class="text-evolutto-black" icon="lucide:arrow-right" width="32"></iconify-icon><span class="text-xs text-stone-500 font-mono">32</span></div>
+        <div class="flex flex-col items-center gap-2"><iconify-icon class="text-evolutto-black" icon="lucide:arrow-right" width="48"></iconify-icon><span class="text-xs text-stone-500 font-mono">48</span></div>
+      </div>
+
+      <h3 class="text-2xl font-newsreader font-medium text-evolutto-black mb-6">Cores</h3>
+      <div class="flex flex-wrap items-center gap-8">
+        <iconify-icon class="text-evolutto-black" icon="lucide:rocket" width="28"></iconify-icon>
+        <iconify-icon class="text-stone-400" icon="lucide:rocket" width="28"></iconify-icon>
+        <iconify-icon class="text-evolutto-blue" icon="lucide:rocket" width="28"></iconify-icon>
+        <div class="bg-evolutto-black rounded-lg p-2"><iconify-icon class="text-white" icon="lucide:rocket" width="28"></iconify-icon></div>
+        <div class="bg-evolutto-black rounded-lg p-2"><iconify-icon class="text-evolutto-blue" icon="lucide:rocket" width="28"></iconify-icon></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-evolutto-black text-stone-400 border-t border-stone-800 py-12 px-6 md:px-12">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <Logo variant="white" height={24} />
+      <span class="text-xs text-stone-500">Design System Evolutto — tema editorial · tokens do Manual de Marca 2023</span>
+    </div>
+  </footer>
+</MuseumBase>

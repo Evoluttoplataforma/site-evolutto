@@ -1,0 +1,186 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+
+const principios = [
+  { ic: 'clock', t: 'Disponibilidade', d: 'Estar presente já não é o mais relevante. Sua disponibilidade conta muito mais — e você não perde valor por isso.' },
+  { ic: 'target', t: 'Autonomia', d: 'Seu cliente quer consumir no tempo dele. Seu serviço precisa estar disponível 24/7 para ele.' },
+  { ic: 'shield', t: 'Rastreabilidade', d: 'Rastreabilidade e transparência são fundamentais em qualquer serviço hoje em dia.' },
+  { ic: 'sparkles', t: 'Facilidade', d: 'Tudo que é complexo afasta. Não complique a vida do seu cliente.' },
+];
+
+const mudancas = [
+  'Visão total da carteira com alertas automáticos e progresso por contrato',
+  'Reutilização inteligente do método: aplique o mesmo processo em escala',
+  'Liberação de tempo dos consultores para atividades de maior valor',
+  'Foco total na transformação do cliente, com menos esforço manual',
+  'Redução de retrabalho, gargalos e dependência da presença física',
+];
+
+const stats = [
+  { ic: 'trending-up', v: '+R$ 1B', l: 'por ano em serviços prestados na plataforma' },
+  { ic: 'map-pin', v: '+350k', l: 'deslocamentos evitados todo ano' },
+  { ic: 'users', v: '+25', l: 'projetos por especialista na comunidade' },
+];
+
+const depoimentos = [
+  { q: 'De 2023 para 2024 nossa empresa triplicou de tamanho. Antes do Evolutto tudo dependia de mim.', n: 'Afonso Flatin', e: 'Bastidores da Advocacia' },
+  { q: 'Em 90 dias conquistei 45 clientes. Meu faturamento cresceu 152% e hoje somos 6 pessoas conectadas por um propósito.', n: 'André de Souza Machado', e: 'SGE Soluções Empresariais' },
+  { q: 'No último ano o faturamento dobrou e gerenciamos centenas de projetos com tranquilidade. Atuo como empresário, não só consultor.', n: 'Gui David', e: 'Donos de Construtoras' },
+  { q: 'Antes atendíamos até 20 projetos por ano. Hoje são cerca de 100, com muito mais escala e produtividade.', n: 'Heidy Milan', e: 'PariPassu' },
+  { q: 'Triplicamos a produtividade e deixei de ser refém da agenda. Foi a virada de chave que precisávamos.', n: 'Luciano Zorzal', e: 'Zorzal Gestão' },
+  { q: 'Formei um time que atende até 50 projetos cada, quadruplicamos o faturamento e ganhei liberdade para focar no estratégico.', n: 'Rogério Menossi', e: 'Time Produtivo' },
+];
+
+const faqs = [
+  { q: 'O que é a Evolutto?', a: 'O ecossistema completo para consultores digitalizarem, produtizarem e escalarem seus serviços com método, tecnologia e comunidade.' },
+  { q: 'A plataforma é só para consultoria grande?', a: 'Não. Atende desde consultorias boutique até operações com dezenas de consultores, com a mesma eficiência.' },
+  { q: 'Como a plataforma ajuda a acompanhar os projetos?', a: 'Visão total da carteira, alertas automáticos e progresso por contrato — do diagnóstico à entrega.' },
+  { q: 'Em quanto tempo posso implementar?', a: 'A implantação é guiada pela nossa equipe com planos de ação personalizados, para você escalar rapidamente.' },
+];
+const AVATARES: Record<string, string> = {
+  'Afonso Flatin': '/img/avatars/afonso.jpg',
+  'André de Souza Machado': '/img/avatars/andre.jpg',
+  'Gui David': '/img/avatars/gui.jpg',
+  'Heidy Milan': '/img/avatars/heidy.jpg',
+  'Kelly Nunes': '/img/avatars/kelly.jpg',
+  'Luciano Zorzal': '/img/avatars/luciano.jpg',
+  'Rogério Menossi': '/img/avatars/rogerio.jpg',
+};
+
+---
+
+<Site title="Evolutto — Escale sua consultoria e atenda 10x mais clientes">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Consultoria"
+    titleStart="Escale sua consultoria e atenda "
+    accent="10x mais clientes"
+    titleEnd=" com o mesmo time."
+    image="/img/man-checks.jpg"
+    text="Digitalizar é o primeiro passo para escalar: consultorias que abandonam o modelo de encontros individuais crescem de forma exponencial."
+    checklist={[
+      'Transforme seu método em um produto digital escalável',
+      'Aplique o mesmo processo em escala, sem perder qualidade',
+      'Menos dependência da presença física, mais margem e liberdade',
+    ]}
+  />
+
+  <!-- Statement -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="text-2xl md:text-4xl font-medium tracking-tight text-gray-900 leading-snug">
+        Sua consultoria vende. Seus clientes confiam. Seu método funciona. Mas, para cada novo contrato, você precisa de mais horas, mais reuniões, mais gente. <span class="text-evolutto-blue">Esse modelo escala… até parar.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- Princípios -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Como entregar melhor</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">O problema não está no seu método — está na forma como você entrega.</h2>
+        <p class="text-lg text-gray-500">Você não precisa escolher entre qualidade e crescimento. E isso tem solução.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {principios.map((p) => (
+          <div class="bg-white rounded-[2rem] p-7 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg hover:shadow-evolutto-blue/5 transition-all">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={p.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{p.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats band -->
+  <section class="py-6">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-black overflow-hidden px-6 py-16 md:px-16">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-72 bg-evolutto-blue/20 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="relative z-10 text-center mb-12">
+          <h2 class="text-2xl md:text-4xl font-bold tracking-tight text-white">O Evolutto é sinônimo de transformação.</h2>
+        </div>
+        <div class="relative z-10 grid sm:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {stats.map((s) => (
+            <div class="text-center">
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/10 text-evolutto-blue mb-4"><i class="w-5 h-5" data-lucide={s.ic}></i></div>
+              <p class="text-4xl font-bold text-white">{s.v}</p>
+              <p class="text-sm text-gray-400 mt-2 max-w-[220px] mx-auto">{s.l}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- O que muda -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-evolutto-blue/10 rounded-[2.5rem] blur-2xl"></div>
+        <img src="/img/woman-workflow.jpg" alt="Consultora escalando com tecnologia" class="relative rounded-[2rem] w-full object-cover shadow-2xl border border-gray-200" />
+      </div>
+      <div>
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Escala com tecnologia</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-6 leading-tight">O que muda quando você escala com tecnologia.</h2>
+        <p class="text-lg text-gray-500 leading-relaxed mb-8">Não é só modernizar ferramentas — é uma ruptura estratégica com o modelo tradicional.</p>
+        <ul class="space-y-4">
+          {mudancas.map((m) => (
+            <li class="flex items-start gap-3 text-[15px] text-gray-700 leading-snug">
+              <span class="w-6 h-6 min-w-6 rounded-full bg-evolutto-blue/10 text-evolutto-blue grid place-items-center mt-0.5"><i class="w-3.5 h-3.5" data-lucide="check"></i></span>
+              {m}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cases -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Cases</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Consultores que já atendem dezenas de clientes simultaneamente.</h2>
+        <p class="text-lg text-gray-500">De consultorias estagnadas a negócios digitais escaláveis. De 1 para 60 clientes por consultor.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {depoimentos.map((d) => (
+          <figure class="bg-white rounded-[2rem] p-7 border border-gray-200 shadow-sm flex flex-col">
+            <i class="w-7 h-7 text-evolutto-blue/30 mb-4" data-lucide="quote"></i>
+            <blockquote class="text-[15px] text-gray-700 leading-relaxed flex-1">{d.q}</blockquote>
+            <figcaption class="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">{AVATARES[d.n] && <img src={AVATARES[d.n]} alt={d.n} class="w-11 h-11 rounded-full object-cover border border-gray-200" loading="lazy" />}<span><span class="block text-sm font-semibold text-gray-900">{d.n}</span><span class="block text-xs text-gray-400">{d.e}</span></span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section class="py-6 pt-20 lg:pt-28">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-gradient overflow-hidden px-6 py-20 md:px-16 text-center">
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Sua jornada para uma consultoria escalável começa aqui.</h2>
+          <p class="text-white/80 text-lg mb-10">Operar com eficiência. Entregar com método. Escalar com segurança.</p>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="/#cta">Solicite uma Demonstração <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} subtitle="Saiba mais sobre como a Evolutto escala a sua consultoria." />
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

@@ -1,0 +1,130 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+
+const vagas = [
+  { ic: 'code', t: 'Desenvolvedor Fullstack', d: 'Desenvolvimento e manutenção da plataforma web e apps — do front-end ao back-end.', tag: 'Tecnologia' },
+  { ic: 'inbox', t: 'Analista de Suporte', d: 'Liderar o suporte no dia a dia, garantindo processos ágeis e foco total na satisfação do cliente.', tag: 'Suporte' },
+  { ic: 'trending-up', t: 'Executivo de Vendas Sênior', d: 'Conduzir leads inbound e outbound do início ao fechamento e gerir a carteira no CRM (Pipedrive).', tag: 'Vendas' },
+  { ic: 'target', t: 'Sales Development Representative', d: 'Movido por resultados e aprendizado contínuo, trabalhando com uma solução consolidada no Brasil.', tag: 'Vendas' },
+];
+
+const stack = [
+  { ic: 'globe', t: 'Google PRO', d: 'Workspace e Gemini: produtividade com ferramentas reconhecidas mundialmente.' },
+  { ic: 'circle-check', t: 'ClickUp', d: 'Centro de organização e produtividade — gestão de projetos como grandes equipes globais.' },
+  { ic: 'send', t: 'Stack de Marketing', d: 'Meta Ads, LinkedIn Ads, ManyChat e Make: domine plataformas de alto impacto.' },
+  { ic: 'cpu', t: 'Stack de Tecnologia', d: 'Automações, integrações por API e low-code/no-code em projetos inovadores.' },
+  { ic: 'graduation-cap', t: 'Treinamento Contínuo', d: 'Mentoria, capacitação e projetos reais para crescer junto com a empresa.' },
+  { ic: 'bar-chart-3', t: 'PipeDrive', d: 'CRM de ponta para desenvolver visão estratégica de funil e relacionamento.' },
+];
+
+const sede = [
+  { img: '/img/office-kitchen.jpg', t: 'Espaço de convivência' },
+  { img: '/img/office-desk.jpg', t: 'Salas para criar e crescer' },
+  { img: '/img/office-stations.jpg', t: 'Unidade Florianópolis' },
+];
+---
+
+<Site title="Evolutto — Carreiras">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Faça parte do Evolutto"
+    titleStart="Vamos crescer "
+    accent="juntos"
+    titleEnd="?"
+    image="/img/office-stations.jpg"
+    text="Faça parte de um time engajado e inovador, que valoriza colaboração, aprendizado e crescimento contínuo."
+    checklist={['Um time motivado e apaixonado', 'Aprendizado prático e projetos reais', 'Presença no Brasil e em Portugal']}
+    primaryLabel="Enviar Currículo"
+    primaryHref="#vagas"
+    secondaryLabel="Conhecer a cultura"
+    secondaryHref="/quem-somos"
+  />
+
+  <!-- Vagas -->
+  <section id="vagas" class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Vagas abertas</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Faça parte da nossa jornada.</h2>
+        <p class="text-lg text-gray-500">Junte-se a um time que valoriza inovação, colaboração e crescimento contínuo.</p>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        {vagas.map((v) => (
+          <a href="#enviar" class="group bg-white rounded-[2rem] p-7 border border-gray-200 hover:border-evolutto-blue/40 hover:shadow-lg transition-all flex items-start gap-5">
+            <div class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={v.ic}></i></div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[0.6rem] font-semibold uppercase tracking-widest text-evolutto-blue">{v.tag}</span>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-900 mb-1">{v.t}</h3>
+              <p class="text-sm text-gray-500 leading-relaxed">{v.d}</p>
+            </div>
+            <i class="w-5 h-5 text-gray-300 group-hover:text-evolutto-blue group-hover:translate-x-1 transition-all shrink-0 mt-1" data-lucide="arrow-right"></i>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Stack / por que trabalhar aqui -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Por que trabalhar aqui</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Você cresce com as melhores ferramentas do mercado.</h2>
+        <p class="text-lg text-gray-500">Mais do que acesso, você aprende a dominar plataformas de alto impacto para a sua carreira.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {stack.map((s) => (
+          <div class="bg-white rounded-[2rem] p-7 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg hover:shadow-evolutto-blue/5 transition-all">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={s.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{s.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{s.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Sede -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Nossa casa</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Um espaço moderno para trabalhar, criar e crescer.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {sede.map((s) => (
+          <figure class="group relative rounded-[2rem] overflow-hidden aspect-[4/5] shadow-lg">
+            <img src={s.img} alt={s.t} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div class="absolute inset-0 bg-gradient-to-t from-evolutto-black/80 via-transparent to-transparent"></div>
+            <figcaption class="absolute bottom-6 left-6 text-white font-semibold text-lg">{s.t}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section id="enviar" class="py-6 pb-20 lg:pb-28">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-gradient overflow-hidden px-6 py-20 md:px-16 text-center">
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Não encontrou sua vaga? Envie seu currículo.</h2>
+          <p class="text-white/80 text-lg mb-10">Estamos sempre de olho em talentos que queiram crescer com a gente.</p>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="mailto:contato@evolutto.com">Enviar Currículo <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

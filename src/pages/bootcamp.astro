@@ -1,0 +1,168 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+
+const temas = [
+  { ic: 'trending-up', t: 'Marketing e Vendas Previsíveis', d: 'Posicione sua consultoria, gere tráfego qualificado e nunca mais dependa só de indicação.' },
+  { ic: 'package', t: 'Produtização Inteligente', d: 'Transforme serviços em produtos digitais escaláveis, com margens maiores e menos dependência da sua hora.' },
+  { ic: 'target', t: 'Precificação de Alto Valor', d: 'Defina preços sem se desvalorizar e cobre pelo impacto, não pelo tempo.' },
+  { ic: 'sparkles', t: 'Mindset de Crescimento', d: 'Adote a mentalidade que separa consultorias comuns das que realmente escalam.' },
+  { ic: 'cpu', t: 'IA como Alavanca', d: 'Use Inteligência Artificial para ganhar tempo, aumentar entrega e surpreender seus clientes.' },
+];
+
+const masterclasses = [
+  { t: 'Google Ads — Abrindo a Caixa-Preta das Campanhas que Vendem', by: 'com Rodrigo Souza' },
+  { t: 'Vídeos com IA — Criativos que Vendem', by: 'com Bernardo Marchiori' },
+  { t: 'Meta Ads — Funis que Convertem', by: '' },
+  { t: 'Manychat + Automação — Atendimento que Não Perde Vendas', by: '' },
+  { t: 'MarVendas — Marketing + Vendas que Trabalham Juntos', by: 'com Rodrigo Souza e Gabriel Carvente' },
+];
+
+const entregaveis = [
+  { ic: 'package', t: 'Canvas de Produtização', d: 'Mapa visual para desenhar modelos digitais que escalam e geram previsibilidade.' },
+  { ic: 'send', t: 'Framework de Pitch', d: 'Estrutura validada para apresentar sua proposta de valor e fechar contratos com segurança.' },
+  { ic: 'cpu', t: 'Kit de Ferramentas de IA', d: 'Modelos prontos para aplicar inteligência artificial no dia a dia da consultoria.' },
+  { ic: 'trending-up', t: 'Kit de Marketing', d: 'Modelos, scripts e estratégias do anúncio à conversão para gerar demanda previsível.' },
+  { ic: 'circle-check', t: 'Checklist de Marketing e Vendas', d: 'Passo a passo para gerar demanda, conquistar clientes e criar previsibilidade de receita.' },
+  { ic: 'bar-chart-3', t: 'Planilha de Precificação', d: 'Defina preços de forma estratégica, sem depender de hora-homem.' },
+];
+---
+
+<Site title="Evolutto — Bootcamp da Virada">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Bootcamp da Virada"
+    titleStart="Prepare sua consultoria para o "
+    accent="último trimestre"
+    titleEnd=" do ano."
+    image="/img/bootcamp-soldier.png"
+    imageFramed={false}
+    text="Bootcamp de +3 horas + 5 Masterclasses. Vamos abrir a caixa-preta e mostrar como escalar sua consultoria, criar produtos digitais, precificar certo e converter mais. O ponto de virada para fechar o ano no azul."
+    primaryLabel="Entrar na fila de espera"
+    primaryHref="#inscricao"
+    secondaryLabel="Ver masterclasses"
+    secondaryHref="#masterclasses"
+  />
+
+  <!-- Temas -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Em 3 horas</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">A virada da sua consultoria, na prática.</h2>
+        <p class="text-lg text-gray-500">O treinamento mais intenso da sua trajetória como consultor — com ferramentas aplicáveis no dia seguinte.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {temas.map((t) => (
+          <div class="bg-white rounded-[2rem] p-7 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg hover:shadow-evolutto-blue/5 transition-all">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={t.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{t.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{t.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Masterclasses -->
+  <section id="masterclasses" class="py-20 lg:py-28 bg-evolutto-black text-white">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[12px] font-bold uppercase tracking-[0.16em] text-evolutto-blue">5 Masterclasses</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight mt-4 leading-tight">As masterclasses da última edição.</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        {masterclasses.map((m, i) => (
+          <div class="flashlight-card rounded-[2rem] bg-white/5 p-7 flex items-start gap-5">
+            <span class="flashlight-border"></span>
+            <div class="relative z-10 flex items-start gap-5">
+              <div class="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-evolutto-blue/20 text-evolutto-blue"><i class="w-6 h-6" data-lucide="circle-play"></i></div>
+              <div>
+                <span class="text-[0.6rem] font-semibold uppercase tracking-widest text-gray-500">Masterclass {i + 1}</span>
+                <h3 class="text-lg font-semibold text-white leading-snug mt-1">{m.t}</h3>
+                {m.by && <p class="text-sm text-gray-400 mt-1">{m.by}</p>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Entregáveis -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Você sai com</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Ao final do Bootcamp, você leva:</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {entregaveis.map((e) => (
+          <div class="bg-[#F3F3F1] rounded-[2rem] p-7 border border-gray-200">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-evolutto-blue border border-gray-200 mb-5"><i class="w-6 h-6" data-lucide={e.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{e.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{e.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Para quem -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Para quem é</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Este Bootcamp é para você que:</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-white rounded-[2rem] p-8 border border-gray-200">
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue text-white mb-5"><i class="w-6 h-6" data-lucide="rocket"></i></div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Já decidiu pelo Evolutto</h3>
+          <p class="text-gray-500 leading-relaxed">Quer acelerar a digitalização e evitar os erros mais comuns no caminho.</p>
+        </div>
+        <div class="bg-white rounded-[2rem] p-8 border border-gray-200">
+          <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5"><i class="w-6 h-6" data-lucide="target"></i></div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Ainda está em dúvida</h3>
+          <p class="text-gray-500 leading-relaxed">Quer enxergar na prática como digitalizar, quebrar paradigmas e decidir com segurança.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instrutor -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-evolutto-blue/10 rounded-[2.5rem] blur-2xl"></div>
+        <img src="/img/igor-furniel.jpg" alt="Igor Furniel" class="relative rounded-[2rem] w-full object-cover shadow-2xl border border-gray-200" />
+      </div>
+      <div>
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Seu instrutor</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-2 leading-tight">Igor Furniel</h2>
+        <p class="text-evolutto-blue font-semibold mb-6">CEO da Evolutto e da Templum</p>
+        <p class="text-lg text-gray-500 leading-relaxed">23 anos empreendendo e apoiando centenas de empresas a crescerem. Fundou o Evolutto, plataforma que ajudou +300 empresas a criarem um Segundo Motor de Crescimento, com faturamento anual acima de R$ 7 milhões. Referência em estratégias de crescimento e experiência do cliente.</p>
+      </div>
+    </div>
+  </section>
+
+  <DiagnosticoForm
+    id="inscricao"
+    simple
+    eyebrow="Próxima turma"
+    title='Garanta sua vaga na <span class="text-evolutto-blue">próxima turma</span>.'
+    subtitle="Entre na fila de espera do Bootcamp da Virada. Avisamos você assim que as inscrições abrirem."
+    buttonLabel="Garantir minha vaga"
+    benefits={[
+      'Bootcamp de +3 horas + 5 masterclasses',
+      'Materiais e ferramentas aplicáveis no dia seguinte',
+      '100% online — não é mais um evento, é o divisor de águas',
+    ]}
+  />
+
+  <SiteFooter />
+</Site>

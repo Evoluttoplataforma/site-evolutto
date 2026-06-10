@@ -1,0 +1,47 @@
+---
+// Layout das páginas do site (marketing) — full-bleed, base clara, Inter + Lucide.
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const { title = 'Evolutto', description = 'Transforme sua consultoria em um negócio escalável.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
+    <slot />
+
+    <script>
+      import {
+        createIcons,
+        ArrowRight, ArrowUpRight, ArrowLeft, Folder, Cpu, Aperture, Check, ChevronDown,
+        ChevronLeft, ChevronRight, Code, Command, FileText, Figma, Framer, Globe, Inbox, Layers, Lock,
+        LogOut, Mail, Plus, Scissors, Send, Settings, Shield, Star, Type, Users, Zap,
+        Github, BarChart3, Pencil, CirclePlay, Sparkles, Rocket, Gauge, Workflow,
+        BadgeCheck, TrendingUp, Menu, Briefcase, GraduationCap, Package, Target,
+        BookOpen, MessageCircle, Calendar, CircleCheck, Quote, PlugZap, Phone,
+        MapPin, Clock, Building2,
+      } from 'lucide';
+      createIcons({
+        icons: {
+          ArrowRight, ArrowUpRight, ArrowLeft, Folder, Cpu, Aperture, Check, ChevronDown,
+          ChevronLeft, ChevronRight, Code, Command, FileText, Figma, Framer, Globe, Inbox, Layers, Lock,
+          LogOut, Mail, Plus, Scissors, Send, Settings, Shield, Star, Type, Users, Zap,
+          Github, BarChart3, Pencil, CirclePlay, Sparkles, Rocket, Gauge, Workflow,
+          BadgeCheck, TrendingUp, Menu, Briefcase, GraduationCap, Package, Target,
+          BookOpen, MessageCircle, Calendar, CircleCheck, Quote, PlugZap, Phone,
+          MapPin, Clock, Building2,
+        },
+      });
+    </script>
+  </body>
+</html>

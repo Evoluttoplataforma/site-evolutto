@@ -1,0 +1,50 @@
+---
+// Tema "Editorial" — estrutura/layout da referência green-museum,
+// porém tokenizado com a marca Evolutto (Manual 2023): fonte Inter + paleta da marca.
+// Estilos escopados em .evolutto-editorial para não afetar as outras páginas.
+import '@fontsource/inter/300.css';
+import '@fontsource/inter/400.css';
+import '@fontsource/inter/500.css';
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/inter/800.css';
+
+interface Props {
+  title?: string;
+}
+const { title = 'Evolutto — Editorial' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <style is:global>
+      /* Marca Evolutto: tudo em Inter. Mapeia as classes de fonte da referência para Inter. */
+      .evolutto-editorial {
+        font-family: 'Inter', sans-serif;
+        background-color: #ffffff;
+        color: #222222;
+      }
+      .evolutto-editorial .font-sans,
+      .evolutto-editorial .font-serif,
+      .evolutto-editorial .font-newsreader {
+        font-family: 'Inter', sans-serif !important;
+      }
+      /* Displays grandes: Inter com tracking apertado para um ar editorial moderno. */
+      .evolutto-editorial .font-newsreader {
+        letter-spacing: -0.02em;
+      }
+    </style>
+  </head>
+  <body class="evolutto-editorial min-h-screen flex flex-col overflow-x-hidden selection:bg-evolutto-blue selection:text-white">
+    <slot />
+
+    <!-- Iconify (web component) — set Solar -->
+    <script>
+      import 'iconify-icon';
+    </script>
+  </body>
+</html>

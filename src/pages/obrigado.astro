@@ -1,0 +1,107 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+const aula = [
+  'Como transformar sua consultoria artesanal em método',
+  'Os segredos de um modelo de negócio de consultoria com receita previsível',
+  'Quais são as características de uma consultoria escalável',
+];
+const depoimentos = [
+  { q: 'Formei um time que atende até 50 projetos cada, quadruplicamos o faturamento e ganhei liberdade para focar no estratégico.', n: 'Rogério Menossi', e: 'Time Produtivo' },
+  { q: 'Triplicamos a produtividade e deixei de ser refém da agenda presencial. Foi a virada de chave que precisávamos.', n: 'Luciano Zorzal', e: 'Zorzal Gestão' },
+  { q: 'Com o Evolutto escalei meus atendimentos, vendo mais, entrego melhor e ganhei qualidade de vida.', n: 'Kelly Nunes', e: 'Fluxo3' },
+];
+const AVATARES: Record<string, string> = {
+  'Afonso Flatin': '/img/avatars/afonso.jpg',
+  'André de Souza Machado': '/img/avatars/andre.jpg',
+  'Gui David': '/img/avatars/gui.jpg',
+  'Heidy Milan': '/img/avatars/heidy.jpg',
+  'Kelly Nunes': '/img/avatars/kelly.jpg',
+  'Luciano Zorzal': '/img/avatars/luciano.jpg',
+  'Rogério Menossi': '/img/avatars/rogerio.jpg',
+};
+
+---
+
+<Site title="Evolutto — Obrigado!" description="Recebemos seu interesse. Nosso time entrará em contato.">
+  <SiteHeader />
+
+  <!-- Hero obrigado -->
+  <section class="relative bg-evolutto-black text-white overflow-hidden flex items-center">
+    <div class="absolute inset-0">
+      <div class="absolute top-[10%] left-1/2 -translate-x-1/2 w-[70%] h-[420px] bg-evolutto-blue/25 blur-[130px] rounded-full"></div>
+      <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+    </div>
+    <div class="relative z-10 max-w-2xl mx-auto px-6 py-24 text-center">
+      <div class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-evolutto-blue text-white mb-8 shadow-lg shadow-evolutto-blue/40">
+        <i class="w-10 h-10" data-lucide="circle-check"></i>
+      </div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-[1.05] mb-5">Muito obrigado pelo seu interesse!</h1>
+      <p class="text-lg text-gray-400 leading-relaxed">Nosso time já vai entrar em contato com você.</p>
+    </div>
+  </section>
+
+  <!-- Aula gratuita -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div>
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Aula gratuita</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-6 leading-tight">Assista à aula e aprenda:</h2>
+        <ul class="space-y-4 mb-10">
+          {aula.map((a) => (
+            <li class="flex items-start gap-3 text-[15px] text-gray-700 leading-snug">
+              <span class="w-6 h-6 min-w-6 rounded-full bg-evolutto-blue/10 text-evolutto-blue grid place-items-center mt-0.5"><i class="w-3.5 h-3.5" data-lucide="check"></i></span>
+              {a}
+            </li>
+          ))}
+        </ul>
+        <a class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-8 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/30" href="https://www.evolutto.com/do-zero-a-escala">Ver curso completo <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+      </div>
+      <div class="relative rounded-[2rem] overflow-hidden border border-gray-200 shadow-2xl aspect-video bg-evolutto-black">
+        <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/Qa1VmN37pq4" title="Aula gratuita — Evolutto" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Eventos presenciais -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Comunidade</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Nossos eventos de educação presencial.</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <figure class="group relative rounded-[2rem] overflow-hidden aspect-[16/10] shadow-lg">
+          <img src="/img/evento-palco.jpg" alt="Evento presencial Evolutto" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        </figure>
+        <figure class="group relative rounded-[2rem] overflow-hidden aspect-[16/10] shadow-lg">
+          <img src="/img/evento-grupo.jpg" alt="Comunidade Evolutto" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cases -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Cases</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Consultores que já atendem dezenas de clientes simultaneamente.</h2>
+        <p class="text-lg text-gray-500">De 1 para 60 clientes por consultor.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {depoimentos.map((d) => (
+          <figure class="bg-white rounded-[2rem] p-7 border border-gray-200 shadow-sm flex flex-col">
+            <i class="w-7 h-7 text-evolutto-blue/30 mb-4" data-lucide="quote"></i>
+            <blockquote class="text-[15px] text-gray-700 leading-relaxed flex-1">{d.q}</blockquote>
+            <figcaption class="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">{AVATARES[d.n] && <img src={AVATARES[d.n]} alt={d.n} class="w-11 h-11 rounded-full object-cover border border-gray-200" loading="lazy" />}<span><span class="block text-sm font-semibold text-gray-900">{d.n}</span><span class="block text-xs text-gray-400">{d.e}</span></span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <SiteFooter />
+</Site>

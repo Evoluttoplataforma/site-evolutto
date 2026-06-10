@@ -1,0 +1,129 @@
+---
+// Top banner + header sticky com dropdowns (desktop) e menu hambúrguer (mobile).
+import Logo from './Logo.astro';
+
+const solucoes = [
+  { ic: 'briefcase', t: 'Consultoria', d: 'Escale e atenda 10x mais', href: '/consultoria' },
+  { ic: 'graduation-cap', t: 'Mentorias', d: 'Engajamento e escala', href: '/mentorias' },
+  { ic: 'package', t: 'Plataforma (ERP)', d: 'Implantação em escala', href: '/plataforma' },
+];
+const aprenda = [
+  { ic: 'rocket', t: 'Bootcamp', d: 'O ponto de virada', href: '/bootcamp' },
+  { ic: 'book-open', t: 'Do Zero a Escala', d: 'Trilha completa', href: '/do-zero-a-escala' },
+  { ic: 'file-text', t: 'Blog', d: 'Tendências e insights', href: '/#blog' },
+];
+const empresa = [
+  { ic: 'users', t: 'Quem Somos', d: 'Nossa cultura', href: '/quem-somos' },
+  { ic: 'target', t: 'Carreiras', d: 'Cresça com a gente', href: '/carreiras' },
+  { ic: 'share-2', t: 'Indicação', d: 'Indique e ganhe', href: '/indicacao' },
+  { ic: 'message-circle', t: 'Suporte', d: 'Atendimento 24h', href: '/suporte' },
+];
+const menus = [
+  { label: 'Para quem é', items: solucoes },
+  { label: 'Aprenda', items: aprenda },
+  { label: 'A Evolutto', items: empresa },
+];
+---
+
+<style>
+  .nav-item > .nav-panel {
+    opacity: 0; visibility: hidden; transform: translateY(8px); transition: opacity .2s ease, transform .2s ease, visibility .2s;
+  }
+  .nav-item:hover > .nav-panel, .nav-item:focus-within > .nav-panel {
+    opacity: 1; visibility: visible; transform: translateY(0);
+  }
+  body.menu-open { overflow: hidden; }
+</style>
+
+<!-- Top banner -->
+<a href="/#cta" class="flex items-center justify-center gap-2.5 bg-evolutto-black text-gray-200 text-[12px] sm:text-[13px] font-semibold px-4 sm:px-6 py-2.5 hover:text-white transition-colors text-center">
+  <i class="w-4 h-4 text-evolutto-blue shrink-0" data-lucide="zap"></i>
+  <span class="hidden sm:inline">Diagnóstico gratuito: descubra o potencial de escala da sua consultoria.</span>
+  <span class="sm:hidden">Diagnóstico gratuito da consultoria</span>
+  <span class="hidden sm:inline-flex items-center gap-1 text-evolutto-blue shrink-0">Começar <i class="w-3.5 h-3.5" data-lucide="arrow-right"></i></span>
+</a>
+
+<!-- Header -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200/70">
+  <div class="max-w-[1400px] mx-auto px-5 sm:px-6 h-[64px] sm:h-[68px] flex items-center justify-between gap-4">
+    <Logo variant="dark" height={24} />
+
+    <!-- Nav desktop -->
+    <nav class="hidden lg:flex items-center gap-1">
+      {menus.map((m) => (
+        <div class="nav-item relative">
+          <button class="text-[13.5px] font-semibold text-gray-700 hover:text-evolutto-blue transition-colors px-3 py-2 rounded-lg flex items-center gap-1">
+            {m.label} <i class="w-3.5 h-3.5" data-lucide="chevron-down"></i>
+          </button>
+          <div class="nav-panel absolute top-full left-0 pt-3 w-[320px]">
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-xl p-2">
+              {m.items.map((it) => (
+                <a href={it.href} class="flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors group/link">
+                  <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-evolutto-blue/10 text-evolutto-blue group-hover/link:bg-evolutto-blue group-hover/link:text-white transition-colors"><i class="w-5 h-5" data-lucide={it.ic}></i></span>
+                  <span>
+                    <span class="block text-sm font-semibold text-gray-900">{it.t}</span>
+                    <span class="block text-xs text-gray-500">{it.d}</span>
+                  </span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a class="hidden sm:inline-flex text-[13px] font-semibold text-gray-700 hover:text-evolutto-blue transition-colors px-3 lg:px-4 py-2" href="#">Acessar</a>
+      <a class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-[12px] sm:text-[13px] font-bold px-4 sm:px-5 py-2.5 sm:py-3 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/30" href="/#cta">Diagnóstico <i class="w-3.5 h-3.5" data-lucide="arrow-up-right"></i></a>
+      <!-- Hambúrguer (mobile) -->
+      <button id="menu-btn" aria-label="Abrir menu" class="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-gray-200 text-gray-800 hover:bg-gray-50 transition-colors">
+        <i id="menu-icon-open" class="w-5 h-5" data-lucide="menu"></i>
+        <i id="menu-icon-close" class="w-5 h-5 hidden" data-lucide="x"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Menu mobile -->
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200 bg-white max-h-[calc(100vh-64px)] overflow-y-auto">
+    <div class="px-5 py-6 space-y-7">
+      {menus.map((m) => (
+        <div>
+          <p class="text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-gray-400 mb-3">{m.label}</p>
+          <div class="space-y-1">
+            {m.items.map((it) => (
+              <a href={it.href} class="flex items-center gap-3 p-2.5 rounded-xl hover:bg-gray-50 transition-colors">
+                <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-evolutto-blue/10 text-evolutto-blue"><i class="w-4 h-4" data-lucide={it.ic}></i></span>
+                <span class="text-sm font-semibold text-gray-900">{it.t}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+      <div class="pt-2 flex flex-col gap-3">
+        <a class="text-center text-sm font-semibold text-gray-700 px-4 py-3 rounded-full border border-gray-200" href="#">Acessar plataforma</a>
+        <a class="inline-flex items-center justify-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-5 py-3.5 rounded-full" href="/#cta">Faça seu Diagnóstico <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iOpen = document.getElementById('menu-icon-open');
+  const iClose = document.getElementById('menu-icon-close');
+  btn?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    iOpen?.classList.toggle('hidden', open);
+    iClose?.classList.toggle('hidden', !open);
+    document.body.classList.toggle('menu-open', open);
+    btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+  });
+  // Fecha ao clicar num link
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+    menu.classList.add('hidden');
+    iOpen?.classList.remove('hidden');
+    iClose?.classList.add('hidden');
+    document.body.classList.remove('menu-open');
+  }));
+</script>

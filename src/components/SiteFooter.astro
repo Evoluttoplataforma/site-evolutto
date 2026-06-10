@@ -1,0 +1,45 @@
+---
+import Logo from './Logo.astro';
+---
+
+<footer class="bg-evolutto-black px-6 pt-16 pb-10">
+  <div class="max-w-[1400px] mx-auto">
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+      <div>
+        <Logo variant="white" height={26} href={null} />
+        <p class="text-sm text-gray-500 mt-5 max-w-xs leading-relaxed">O ecossistema completo para digitalizar, produtizar e escalar consultorias.</p>
+      </div>
+      <div>
+        <h4 class="text-[0.7rem] font-semibold uppercase tracking-widest text-gray-500 mb-5">Produtos</h4>
+        <ul class="space-y-3 text-sm text-gray-400">
+          <li><a class="hover:text-white transition-colors" href="/do-zero-a-escala">Do Zero a Escala</a></li>
+          <li><a class="hover:text-white transition-colors" href="/bootcamp">Bootcamp</a></li>
+          <li><a class="hover:text-white transition-colors" href="/plataforma">Plataforma (ERP)</a></li>
+          <li><a class="hover:text-white transition-colors" href="/consultoria">Consultoria</a></li>
+          <li><a class="hover:text-white transition-colors" href="/mentorias">Mentorias</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-[0.7rem] font-semibold uppercase tracking-widest text-gray-500 mb-5">Empresa</h4>
+        <ul class="space-y-3 text-sm text-gray-400">
+          <li><a class="hover:text-white transition-colors" href="/quem-somos">Quem Somos</a></li>
+          <li><a class="hover:text-white transition-colors" href="/carreiras">Carreiras</a></li>
+          <li><a class="hover:text-white transition-colors" href="/indicacao">Indicação</a></li>
+          <li><a class="hover:text-white transition-colors" href="#">Acessar Sistema</a></li>
+          <li><a class="hover:text-white transition-colors" href="/suporte">Suporte</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-[0.7rem] font-semibold uppercase tracking-widest text-gray-500 mb-5">Contato</h4>
+        <ul class="space-y-3 text-sm text-gray-400">
+          <li class="flex items-center gap-2"><i class="w-4 h-4" data-lucide="phone"></i> (48) 98870-1816</li>
+          <li class="flex items-center gap-2"><i class="w-4 h-4" data-lucide="mail"></i> contato@evolutto.com</li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <p class="text-xs text-gray-500">Evolutto® Ltda · CNPJ 26.315.018/0001-76</p>
+      <p class="text-xs text-gray-600">Evolutto © 2025. Todos os direitos reservados.</p>
+    </div>
+  </div>
+</footer>

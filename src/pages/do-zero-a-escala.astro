@@ -1,0 +1,232 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+
+const niveis = [
+  { n: '01', ic: 'package', t: 'Digitalização / Produtização', o: 'Fazer a primeira venda da v1 do seu produto digital.', d: 'Transforme seu conhecimento numa trilha implementável — fase, etapa, tarefa, validação e transformação — e leve ao mercado rápido.' },
+  { n: '02', ic: 'settings', t: 'Ajustes e atendimento', o: 'Ajustar o produto e o formato do atendimento.', d: 'Preparação para a escala: depois das primeiras vendas, veja onde o cliente desengaja e como readerir ao método.' },
+  { n: '03', ic: 'layers', t: 'Gestão', o: 'Criar o alicerce do seu negócio.', d: 'Estruture os processos internos, mesmo sozinho — desenhar agora facilita contratar e crescer depois.' },
+  { n: '04', ic: 'trending-up', t: 'Marketing e vendas', o: 'Vender com força.', d: 'Posicionamento, site, blog, redes e processo de vendas. Com produto e processos prontos, agora é trazer os clientes.' },
+];
+
+const pronto = [
+  'Consultores no modelo tradicional, com visitas presenciais e hands on',
+  'Profissionais com conhecimento robusto numa determinada área',
+  'Mentores e infoprodutores que querem focar na transformação',
+  'Consultores que querem sentar na cadeira de empresário',
+];
+const naoEh = [
+  'Quem não acredita que seu conhecimento pode virar um produto estruturado',
+  'Quem quer transformar a consultoria em infoproduto — consultoria é transformação, não curso',
+];
+
+const bonus = [
+  { ic: 'users', t: 'Mentoria em grupo com Igor Furniel', d: 'Aprenda com o fundador da Templum e criador da Evolutto, que já escalou centenas de consultorias.' },
+  { ic: 'users', t: 'Mentoria em grupo com Rogério Menossi', d: 'Insights práticos de quem já ajudou dezenas de consultores a sair do zero a negócios previsíveis.' },
+  { ic: 'graduation-cap', t: 'Curso Rogério Menossi', d: 'Acesso completo ao curso do Rogério como bônus dentro da trilha.' },
+];
+
+const depoimentos = [
+  { q: 'De 2023 para 2024 nossa empresa triplicou de tamanho. Antes tudo dependia de mim.', n: 'Afonso Flatin', e: 'Bastidores da Advocacia' },
+  { q: 'Em 90 dias conquistei 45 clientes. Meu faturamento cresceu 152% e hoje somos 6 pessoas.', n: 'André de Souza Machado', e: 'SGE Soluções Empresariais' },
+  { q: 'Formei um time que atende até 50 projetos cada e quadruplicamos o faturamento.', n: 'Rogério Menossi', e: 'Time Produtivo' },
+];
+
+const faqs = [
+  { q: 'Funciona para quem trabalha só com consultoria presencial?', a: 'Sim. O curso mostra como transformar o modelo presencial em um modelo digital escalável, sem perder a qualidade.' },
+  { q: 'Como produtizar meu serviço, se ele é totalmente personalizado?', a: 'Você aprende a estruturar seu método em fases, etapas e tarefas — mantendo a personalização, mas com padrão e escala.' },
+  { q: 'O curso vai me transformar em vendedor de curso online?', a: 'Não. Consultoria não é curso — é transformação. Você produtiza a sua consultoria, não vira infoprodutor.' },
+  { q: 'Sou especialista técnico e não entendo de marketing e vendas. Serve para mim?', a: 'Sim. O Nível 4 é dedicado a posicionamento, marketing e processo de vendas, do zero.' },
+  { q: 'É para quem está começando ou já tem consultoria estruturada?', a: 'Para os dois. A trilha vai do primeiro produto digital (Nível 1) à escala de marketing e vendas (Nível 4).' },
+  { q: 'Qual a garantia de que terei resultados?', a: 'Você tem garantia de 15 dias. Além disso, conta com comunidade e mentorias para aplicar com segurança.' },
+];
+const AVATARES: Record<string, string> = {
+  'Afonso Flatin': '/img/avatars/afonso.jpg',
+  'André de Souza Machado': '/img/avatars/andre.jpg',
+  'Gui David': '/img/avatars/gui.jpg',
+  'Heidy Milan': '/img/avatars/heidy.jpg',
+  'Kelly Nunes': '/img/avatars/kelly.jpg',
+  'Luciano Zorzal': '/img/avatars/luciano.jpg',
+  'Rogério Menossi': '/img/avatars/rogerio.jpg',
+};
+
+---
+
+<Site title="Evolutto — Curso do Zero a Escala">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Curso do Zero a Escala"
+    titleStart="Crie uma consultoria "
+    accent="lucrativa e escalável"
+    titleEnd="."
+    image="/img/man-holo.jpg"
+    text="Transforme sua consultoria artesanal em método. Aprenda o modelo de negócio com receita previsível e as características de uma consultoria que escala."
+    checklist={['Comunidade de consultores', 'Garantia de 15 dias', 'Trilha de implementação completa']}
+    primaryLabel="Quero minha consultoria previsível"
+    primaryHref="https://www.evolutto.com/do-zero-a-escala"
+    secondaryLabel="Assistir a aula"
+    secondaryHref="#aula"
+  />
+
+  <!-- Aula gratuita (vídeo do Igor) -->
+  <section id="aula" class="py-20 lg:py-28">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Aula gratuita</span>
+      <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-3 leading-tight">Assista à aula e comece agora.</h2>
+      <p class="text-lg text-gray-500 mb-10">Veja na prática como transformar sua consultoria artesanal em um método escalável.</p>
+      <div class="relative rounded-[2rem] overflow-hidden border border-gray-200 shadow-2xl aspect-video bg-evolutto-black">
+        <iframe
+          class="absolute inset-0 w-full h-full"
+          src="https://www.youtube.com/embed/Qa1VmN37pq4"
+          title="Aula gratuita — Do Zero a Escala com Igor Furniel"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Para quem -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Para quem é</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Feito para quem está pronto para o próximo passo.</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="bg-white rounded-[2rem] p-8 border border-gray-200">
+          <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-evolutto-blue text-white mb-5"><i class="w-5 h-5" data-lucide="circle-check"></i></div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Está pronto se você é…</h3>
+          <ul class="space-y-3">
+            {pronto.map((p) => (
+              <li class="flex items-start gap-3 text-[15px] text-gray-600"><i class="w-5 h-5 text-evolutto-blue shrink-0 mt-0.5" data-lucide="check"></i>{p}</li>
+            ))}
+          </ul>
+        </div>
+        <div class="bg-[#F3F3F1] rounded-[2rem] p-8 border border-gray-200">
+          <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gray-300 text-gray-700 mb-5"><i class="w-5 h-5" data-lucide="plus"></i></div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Não é para você se…</h3>
+          <ul class="space-y-3">
+            {naoEh.map((p) => (
+              <li class="flex items-start gap-3 text-[15px] text-gray-500"><i class="w-5 h-5 text-gray-400 shrink-0 mt-0.5" data-lucide="arrow-right"></i>{p}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statement -->
+  <section class="py-16 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="text-2xl md:text-3xl font-medium tracking-tight text-gray-900 leading-snug">Acha que "consultoria boa tem que ser artesanal"? Ela pode ser artesanal — <span class="text-evolutto-blue">mas precisa ter método.</span></p>
+    </div>
+  </section>
+
+  <!-- Trilha / níveis -->
+  <section id="trilha" class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">A trilha</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">O que você vê no curso, nível a nível.</h2>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-5">
+        {niveis.map((nv) => (
+          <div class="bg-white rounded-[2rem] p-8 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg transition-all">
+            <div class="flex items-center gap-4 mb-4">
+              <span class="text-3xl font-extrabold text-evolutto-blue/30">{nv.n}</span>
+              <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-evolutto-blue/10 text-evolutto-blue"><i class="w-5 h-5" data-lucide={nv.ic}></i></div>
+            </div>
+            <h3 class="text-xl font-semibold text-gray-900 mb-1">{nv.t}</h3>
+            <p class="text-sm font-medium text-evolutto-blue mb-3">{nv.o}</p>
+            <p class="text-sm text-gray-500 leading-relaxed">{nv.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Bônus -->
+  <section class="py-20 lg:py-28 bg-evolutto-black text-white">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[12px] font-bold uppercase tracking-[0.16em] text-evolutto-blue">Bônus exclusivos</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight mt-4 mb-5 leading-tight">Benefícios que podem mudar o jogo.</h2>
+        <p class="text-lg text-gray-400">Além da trilha completa, você ainda leva:</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {bonus.map((b) => (
+          <div class="flashlight-card rounded-[2rem] bg-white/5 p-8">
+            <span class="flashlight-border"></span>
+            <div class="relative z-10">
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/20 text-evolutto-blue mb-5"><i class="w-6 h-6" data-lucide={b.ic}></i></div>
+              <h3 class="text-lg font-semibold text-white mb-2">{b.t}</h3>
+              <p class="text-sm text-gray-400 leading-relaxed">{b.d}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Instrutor -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="relative">
+        <div class="absolute -inset-4 bg-evolutto-blue/10 rounded-[2.5rem] blur-2xl"></div>
+        <img src="/img/igor-furniel.jpg" alt="Igor Furniel" class="relative rounded-[2rem] w-full object-cover shadow-2xl border border-gray-200" />
+      </div>
+      <div>
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Seu mentor</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-2 leading-tight">Igor Furniel</h2>
+        <p class="text-evolutto-blue font-semibold mb-6">Fundador da Templum e criador da Evolutto</p>
+        <p class="text-lg text-gray-500 leading-relaxed">Transformou a Templum em referência global em sistemas de gestão e criou a Evolutto para digitalizar e escalar consultorias. Já atende +300 clientes — como SEBRAE, Banco do Brasil, PariPassu e Grupo Martins — num movimento que impactou +150.000 empresas no Brasil e em outros seis países.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cases -->
+  <section class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Resultados</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Duvido você ver essas histórias e não querer o mesmo.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {depoimentos.map((d) => (
+          <figure class="bg-white rounded-[2rem] p-7 border border-gray-200 shadow-sm flex flex-col">
+            <i class="w-7 h-7 text-evolutto-blue/30 mb-4" data-lucide="quote"></i>
+            <blockquote class="text-[15px] text-gray-700 leading-relaxed flex-1">{d.q}</blockquote>
+            <figcaption class="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">{AVATARES[d.n] && <img src={AVATARES[d.n]} alt={d.n} class="w-11 h-11 rounded-full object-cover border border-gray-200" loading="lazy" />}<span><span class="block text-sm font-semibold text-gray-900">{d.n}</span><span class="block text-xs text-gray-400">{d.e}</span></span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} title="Perguntas frequentes" subtitle="Sobre o curso do Zero a Escala." />
+
+  <!-- CTA -->
+  <section id="inscricao" class="py-6 pb-20 lg:pb-28">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-gradient overflow-hidden px-6 py-20 md:px-16 text-center">
+        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+        <div class="relative z-10 max-w-2xl mx-auto">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Comece a construir uma consultoria previsível.</h2>
+          <p class="text-white/80 text-lg mb-10">Trilha completa, comunidade e mentorias — com garantia de 15 dias.</p>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="https://www.evolutto.com/do-zero-a-escala">Quero minha consultoria previsível <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

@@ -1,0 +1,63 @@
+# ===== Redirects Evolutto (Netlify / Cloudflare Pages) =====
+# Blog migrado para subdomínio (wildcard + splat)
+/blog/*                                       https://blog.evolutto.com/:splat   301
+
+# ERP / implantação de software -> página da plataforma (ERP)
+/erp-software                                 /plataforma   301
+/erp-software/                                /plataforma   301
+/implantacao-de-software/                     /plataforma   301
+/software-2/                                  /plataforma   301
+/software-consultoria-online/                 /plataforma   301
+
+# Mentoria / indicação
+/mentoria-v2/                                 /mentorias    301
+/indicacaofinalareaindicacao/                 /indicacao    301
+
+# Curso
+/curso-para-consultores-o-metodo-comprovado/  /do-zero-a-escala   301
+
+# Páginas de obrigado (todas variações) -> /obrigado
+/muito_obrigado/                              /obrigado     301
+/muito_obrigado_whatsapp/                     /obrigado     301
+/muito_obrigado_imersao/                      /obrigado     301
+/muito-obrigado-live/                         /obrigado     301
+/obrigado-erp/                                /obrigado     301
+/obrigado-light/                              /obrigado     301
+/obrigado-mentoria/                           /obrigado     301
+/obrigado-mentoria-evolutto/                  /obrigado     301
+/obrigado-consultoria-evento2/                /obrigado     301
+/obrigado-erp-evento/                         /obrigado     301
+/obrigado-erp-evento-2/                       /obrigado     301
+/sucesso-download/                            /obrigado     301
+/sucesso-download-erp/                        /obrigado     301
+
+# Páginas antigas / LPs descontinuadas -> home
+/a-melhor-experiencia-que-o-seu-cliente-pode-ter/   /   301
+/acelere-sua-consultoria/                     /   301
+/assessoria-de-implantacao/                   /   301
+/empresa-de-consultoria/                      /   301
+/demonstracao-da-plataforma-global-de-consultoria/  /   301
+/evolutto-mobile/                             /   301
+/evolutto-mobile-b/                           /   301
+/evolutto-tv/                                 /   301
+/falar-com-a-gente/                           /   301
+/falar-com-a-gente-antiga/                    /   301
+/lp-produto/                                  /   301
+/homepage/                                    /   301
+/features/                                    /   301
+/ferramentasebrae/                            /   301
+/grandes-contas/                              /   301
+/materialdeepdive/                            /   301
+/meetup/                                      /   301
+/melhor-plataforma-para-consultoria-digital/  /   301
+/melhor-solucao-para-consultorias/            /   301
+/newsletter/                                  /   301
+/obrigado-live/                               /   301
+/passo-a-passo-para-escalar-consultoria/      /   301
+/plataforma-para-consultores/                 /   301
+/plataforma-para-consultoria-online/          /   301
+/provaworkbook/                               /   301
+/reviews/                                     /   301
+/toolkit-da-consultoria-digital/              /   301
+/transformamos-metodologia-de-consultoria/    /   301
+/transformamos-metodologia-de-consultoria-1/  /   301

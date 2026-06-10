@@ -1,0 +1,79 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+
+const canais = [
+  { ic: 'mail', t: 'E-mail', d: 'Fale com a gente a qualquer momento pelo e-mail contato@evolutto.com.', cta: 'Enviar e-mail', href: 'mailto:contato@evolutto.com' },
+  { ic: 'message-circle', t: 'Chat ao vivo', d: 'Todos os usuários têm acesso ao suporte por chat em tempo real. Faça login na sua conta.', cta: 'Acessar plataforma', href: '#' },
+  { ic: 'cpu', t: 'Chatbot 24h', d: 'O suporte via Chatbot está disponível para todos os usuários, direto na sua conta.', cta: 'Acessar plataforma', href: '#' },
+];
+const faqs = [
+  { q: 'O suporte funciona 24 horas?', a: 'Sim. A equipe de suporte da Evolutto trabalha 24 horas por dia. Você pode falar conosco a qualquer momento.' },
+  { q: 'Como acesso o chat ao vivo?', a: 'Faça login na sua conta do Evolutto e clique em "Contate-nos por chat". O suporte em tempo real está disponível para todos os usuários.' },
+  { q: 'Estou com problemas para fazer login. O que faço?', a: 'Clique em "Entrar em contato" nesta página para falar diretamente com o nosso suporte.' },
+  { q: 'Os dados da minha conta estão seguros?', a: 'Sim. A plataforma garante rastreabilidade, controle de acesso e segurança dos registros de ponta a ponta.' },
+];
+---
+
+<Site title="Evolutto — Suporte 24h">
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Suporte"
+    titleStart="Fale com o suporte. Estamos aqui "
+    accent="24 horas por dia"
+    titleEnd="."
+    text="Entre em contato a qualquer momento pelo e-mail contato@evolutto.com ou pelo chat dentro da plataforma."
+    primaryLabel="Entrar em contato"
+    primaryHref="mailto:contato@evolutto.com"
+    secondaryLabel="Ver canais"
+    secondaryHref="#canais"
+  />
+
+  <!-- Canais -->
+  <section id="canais" class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Canais de atendimento</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">Escolha o melhor canal para falar com a gente.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {canais.map((c) => (
+          <div class="bg-white rounded-[2rem] p-8 border border-gray-200 flex flex-col">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5"><i class="w-6 h-6" data-lucide={c.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{c.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed flex-1">{c.d}</p>
+            <a class="inline-flex items-center gap-2 text-sm font-medium text-evolutto-blue mt-6 hover:gap-3 transition-all" href={c.href}>{c.cta} <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Banner 24h -->
+  <section class="py-6">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-black overflow-hidden px-6 py-16 md:px-16 flex flex-col md:flex-row items-center justify-between gap-8">
+        <div class="absolute top-0 left-1/3 w-[50%] h-60 bg-evolutto-blue/20 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="relative z-10 flex items-center gap-5">
+          <div class="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-evolutto-blue"><i class="w-7 h-7" data-lucide="clock"></i></div>
+          <div>
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-white">Suporte 24 horas por dia.</h2>
+            <p class="text-gray-400 mt-1">Entre em contato a qualquer momento — estamos prontos para ajudar.</p>
+          </div>
+        </div>
+        <a class="relative z-10 inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform shrink-0" href="mailto:contato@evolutto.com">Entrar em contato <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <Faq items={faqs} subtitle="Tudo sobre o suporte da Evolutto." />
+
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

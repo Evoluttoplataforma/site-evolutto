@@ -1,0 +1,32 @@
+---
+// Logo oficial Evolutto — lockup horizontal (marca + wordmark "evolutto").
+// Asset original: branco com fundo transparente (512x84).
+//  - variant 'white' (sobre fundo escuro): usa o asset como está.
+//  - variant 'dark'  (sobre fundo claro): aplica filter brightness(0) -> preto, preservando o alpha.
+interface Props {
+  variant?: 'white' | 'dark';
+  height?: number; // altura em px (largura proporcional)
+  href?: string | null;
+  class?: string;
+}
+
+const { variant = 'dark', height = 28, href = '/', class: className = '' } = Astro.props;
+
+const filterStyle = variant === 'dark' ? 'filter: brightness(0);' : '';
+const Tag = href ? 'a' : 'div';
+---
+
+<Tag
+  {...(href ? { href } : {})}
+  class:list={['inline-flex items-center group cursor-pointer', className]}
+  aria-label="Evolutto"
+>
+  <img
+    src="/evolutto-logo-white.png"
+    alt="Evolutto"
+    height={height}
+    style={`height:${height}px;width:auto;${filterStyle}`}
+    class="object-contain transition-opacity group-hover:opacity-80"
+    loading="eager"
+  />
+</Tag>

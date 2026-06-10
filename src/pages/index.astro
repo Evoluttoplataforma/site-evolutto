@@ -1,0 +1,380 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import Faq from '../components/Faq.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+
+const slides = [
+  {
+    pill: 'Plataforma 100% web e mobile',
+    title: ['Transforme sua consultoria em um ', 'negócio escalável'],
+    checklist: [
+      'Saia do presencial e atenda de 1 a 60 clientes por consultor',
+      'Plataforma que organiza toda a operação, do diagnóstico à entrega',
+      'Método, tecnologia e comunidade para escalar com controle',
+    ],
+    primary: 'Solicite uma Demonstração',
+  },
+  {
+    pill: 'Plataforma + comunidade',
+    title: ['Toda a gestão da sua consultoria ', 'num só lugar'],
+    text: 'Cronogramas, tarefas, conteúdos, chat, WhatsApp integrado, dashboards e BI (EVA). Sem planilhas soltas, sem retrabalho.',
+    primary: 'Conhecer a plataforma',
+  },
+  {
+    pill: '+8 mil consultores',
+    title: ['A consultoria digital que ', 'escala de verdade'],
+    text: '+60.000 projetos simultâneos na plataforma. Digitalize, produtize e multiplique sua capacidade de entrega.',
+    primary: 'Solicite uma Demonstração',
+  },
+];
+
+const publicos = [
+  { ic: 'briefcase', t: 'Empresas de Consultoria', d: 'Tudo o que você precisa para produtizar, eliminar barreiras geográficas e ter o controle que sempre sonhou.' },
+  { ic: 'graduation-cap', t: 'Empresas de Mentoria', d: 'A solução ideal para escalar seu impacto pessoal e criar experiências que ressoam com cada mentorado.' },
+  { ic: 'package', t: 'Implantação de Software', d: 'Escale o seu onboarding e implantação de software com controle e rastreabilidade ponta a ponta.' },
+];
+const pilares = [
+  { ic: 'cpu', t: 'Tecnologia', d: 'Plataforma completa com cronogramas, tarefas, chat, chamados, WhatsApp, dashboards e BI (EVA) para escalar com controle.' },
+  { ic: 'book-open', t: 'Educação', d: 'Conteúdo estratégico sobre marketing, vendas, produtização, precificação e gestão do novo modelo digital.' },
+  { ic: 'users', t: 'Comunidade', d: 'Rede colaborativa de consultores, mentores e especialistas que crescem juntos com networking de verdade.' },
+  { ic: 'target', t: 'Consultoria', d: 'Acompanhamento direto da equipe Evolutto para estruturação, validação e crescimento do seu modelo digital.' },
+];
+const depoimentos = [
+  { q: 'De 2023 para 2024 nossa empresa triplicou de tamanho. Antes do Evolutto tudo dependia de mim.', n: 'Afonso Flatin', e: 'Bastidores da Advocacia' },
+  { q: 'Em 90 dias conquistei 45 clientes. Meu faturamento cresceu 152% e hoje somos 6 pessoas conectadas por um propósito.', n: 'André de Souza Machado', e: 'SGE Soluções Empresariais' },
+  { q: 'No último ano o faturamento dobrou e gerenciamos centenas de projetos com tranquilidade. Atuo como empresário, não só consultor.', n: 'Gui David', e: 'Donos de Construtoras' },
+  { q: 'Antes atendíamos até 20 projetos por ano. Hoje são cerca de 100, com muito mais escala e produtividade.', n: 'Heidy Milan', e: 'PariPassu' },
+  { q: 'Foram 20 anos de consultoria presencial. Com o Evolutto escalei, vendo mais, entrego melhor e ganhei qualidade de vida.', n: 'Kelly Nunes', e: 'Fluxo3' },
+  { q: 'Triplicamos a produtividade e deixei de ser refém da agenda. Foi a virada de chave que precisávamos.', n: 'Luciano Zorzal', e: 'Zorzal Gestão' },
+];
+const empresas = ['Bastidores da Advocacia', 'SGE', 'Donos de Construtoras', 'PariPassu', 'Fluxo3', 'Zorzal Gestão', 'Time Produtivo'];
+const integracoes = [
+  { ic: 'message-circle', t: 'WhatsApp' }, { ic: 'calendar', t: 'Cronogramas' }, { ic: 'bar-chart-3', t: 'Dashboards' },
+  { ic: 'file-text', t: 'Conteúdos' }, { ic: 'workflow', t: 'Automações' }, { ic: 'circle-check', t: 'Chamados' },
+  { ic: 'command', t: 'BI (EVA)' }, { ic: 'globe', t: 'Web & Mobile' },
+];
+const posts = [
+  { cat: 'Gestão', t: 'Escalar Consultoria: o mapa para faturar múltiplos milhões', img: '/img/man-checks.jpg' },
+  { cat: 'Marketing', t: 'Landing Page para Consultores: como criar uma que converte', img: '/img/man-holo.jpg' },
+  { cat: 'Qualidade', t: 'Qualidade e Controle em Consultorias: desafios em excelência', img: '/img/platform-screens.png' },
+];
+const faqs = [
+  { q: 'O que é a Evolutto?', a: 'O ecossistema completo para consultores que querem digitalizar, produtizar e escalar seus serviços com método, tecnologia e comunidade.' },
+  { q: 'O que ela oferece?', a: 'Plataforma 100% web e mobile com cronogramas, tarefas, chat, WhatsApp, dashboards e BI — além de educação, comunidade e consultoria.' },
+  { q: 'A plataforma é só para consultoria grande?', a: 'Não. Atende desde consultorias boutique até operações com dezenas de consultores, ajustando-se ao seu tamanho e segmento.' },
+  { q: 'Em quanto tempo posso implementar a Evolutto?', a: 'A implantação é guiada pela nossa equipe com planos de ação personalizados, para você começar a escalar rapidamente.' },
+  { q: 'Os dados estão seguros?', a: 'Sim. Rastreabilidade, controle de acesso e segurança dos registros de ponta a ponta.' },
+];
+const AVATARES: Record<string, string> = {
+  'Afonso Flatin': '/img/avatars/afonso.jpg',
+  'André de Souza Machado': '/img/avatars/andre.jpg',
+  'Gui David': '/img/avatars/gui.jpg',
+  'Heidy Milan': '/img/avatars/heidy.jpg',
+  'Kelly Nunes': '/img/avatars/kelly.jpg',
+  'Luciano Zorzal': '/img/avatars/luciano.jpg',
+  'Rogério Menossi': '/img/avatars/rogerio.jpg',
+};
+
+---
+
+<Site title="Evolutto — Transforme sua consultoria em um negócio escalável">
+  <style>
+    .tag-pill-evo {
+      display: inline-block; background: rgba(51,99,255,0.14); border: 1px solid #3363ff; color: #9db8ff;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.16em; padding: 6px 14px; border-radius: 8px;
+      text-transform: uppercase; box-shadow: 0 0 26px rgba(51,99,255,0.4);
+    }
+    .hero-overlay-evo {
+      background:
+        linear-gradient(100deg, #1b1b1b 0%, #1b1b1b 28%, rgba(27,27,27,0.82) 45%, rgba(27,27,27,0.4) 63%, rgba(27,27,27,0.08) 82%, transparent 100%),
+        radial-gradient(720px 440px at 14% 30%, rgba(51,99,255,0.28), transparent 60%);
+    }
+    .hero-slide-evo { opacity: 0; visibility: hidden; transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1); transform: translateY(12px); }
+    .hero-slide-evo.is-active { opacity: 1; visibility: visible; transform: translateY(0); position: relative; }
+    .hero-dot { width: 9px; height: 9px; border-radius: 999px; background: rgba(255,255,255,0.25); transition: all .3s; }
+    .hero-dot.is-active { width: 28px; background: #3363ff; }
+  </style>
+
+  <SiteHeader />
+
+  <!-- ===== HERO ===== -->
+  <section id="hero" class="relative bg-evolutto-black text-white overflow-hidden min-h-[600px] flex items-center">
+    <!-- Banner / background visual -->
+    <div class="absolute inset-0">
+      <div class="absolute right-0 top-0 bottom-0 w-[60%] bg-evolutto-gradient"></div>
+      <div class="absolute top-[20%] right-[18%] w-[460px] h-[460px] bg-evolutto-blue/35 blur-[120px] rounded-full"></div>
+      <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+      <!-- Foto real do produto -->
+      <img src="/img/hero-dashboard.png" alt="Plataforma Evolutto: dashboards web e mobile" class="hidden lg:block absolute right-[2%] top-1/2 -translate-y-1/2 w-[46%] max-w-[640px] drop-shadow-2xl pointer-events-none" />
+      <img src="/img/hero-dashboard.png" alt="" aria-hidden="true" class="lg:hidden absolute right-[-10%] bottom-[-6%] w-[70%] opacity-30 pointer-events-none" />
+    </div>
+    <!-- Overlay (escurece a esquerda) -->
+    <div class="absolute inset-0 hero-overlay-evo pointer-events-none"></div>
+
+    <!-- Conteúdo -->
+    <div class="relative z-10 w-full max-w-[1400px] mx-auto px-6 py-14">
+      <div class="max-w-[620px] min-h-[360px] flex flex-col justify-center" id="hero-slides">
+        {slides.map((s, i) => (
+          <div class={`hero-slide-evo absolute ${i === 0 ? 'is-active' : ''}`} data-slide={i}>
+            <span class="tag-pill-evo mb-6">{s.pill}</span>
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter leading-[1.05] mb-6" style="text-shadow: 0 2px 24px rgba(0,0,0,0.4)">
+              {s.title[0]}<em class="not-italic text-evolutto-blue">{s.title[1]}</em>
+            </h1>
+            {s.checklist && (
+              <ul class="flex flex-col gap-3 mb-8">
+                {s.checklist.map((c) => (
+                  <li class="flex items-start gap-3 text-[15px] text-gray-200 leading-snug">
+                    <span class="w-6 h-6 min-w-6 rounded-full bg-evolutto-blue grid place-items-center mt-0.5"><i class="w-3.5 h-3.5 text-white" data-lucide="check"></i></span>
+                    {c}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {s.text && <p class="text-lg text-gray-300 leading-relaxed mb-8 max-w-lg">{s.text}</p>}
+            <div class="flex flex-wrap gap-3">
+              <a class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-8 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/40" href="#cta">{s.primary} <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+              <a class="inline-flex items-center gap-2 bg-white/5 border border-white/20 text-white text-sm font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition-colors" href="#cases"><i class="w-4 h-4" data-lucide="circle-play"></i> Ver cases</a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Dots -->
+      <div class="flex items-center gap-2 mt-10" id="hero-dots">
+        {slides.map((_, i) => (<button class={`hero-dot ${i === 0 ? 'is-active' : ''}`} data-dot={i} aria-label={`Slide ${i + 1}`}></button>))}
+      </div>
+    </div>
+
+    <!-- Setas laterais -->
+    <button id="hero-prev" class="hidden md:grid absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 border border-white/20 place-items-center text-white hover:bg-white/20 transition-colors backdrop-blur" aria-label="Anterior"><i class="w-5 h-5" data-lucide="chevron-left"></i></button>
+    <button id="hero-next" class="hidden md:grid absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 w-12 h-12 rounded-full bg-white/10 border border-white/20 place-items-center text-white hover:bg-white/20 transition-colors backdrop-blur" aria-label="Próximo"><i class="w-5 h-5" data-lucide="chevron-right"></i></button>
+  </section>
+
+  <script>
+    const slidesEl = Array.from(document.querySelectorAll('.hero-slide-evo'));
+    const dotsEl = Array.from(document.querySelectorAll('[data-dot]'));
+    let cur = 0;
+    let timer: ReturnType<typeof setInterval>;
+    function go(i: number) {
+      cur = (i + slidesEl.length) % slidesEl.length;
+      slidesEl.forEach((s, n) => s.classList.toggle('is-active', n === cur));
+      dotsEl.forEach((d, n) => d.classList.toggle('is-active', n === cur));
+    }
+    function start() { timer = setInterval(() => go(cur + 1), 6000); }
+    function reset() { clearInterval(timer); start(); }
+    document.getElementById('hero-next')?.addEventListener('click', () => { go(cur + 1); reset(); });
+    document.getElementById('hero-prev')?.addEventListener('click', () => { go(cur - 1); reset(); });
+    dotsEl.forEach((d, n) => d.addEventListener('click', () => { go(n); reset(); }));
+    if (slidesEl.length) start();
+  </script>
+
+  <!-- ===== PROBLEMA ===== -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div>
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">O problema</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-6 leading-tight">O modelo tradicional de consultoria está <span class="text-evolutto-blue">limitado</span>.</h2>
+        <p class="text-lg text-gray-500 leading-relaxed mb-8">Você vive preso em agendas, deslocamentos e trocas de horas por dinheiro? Seu conhecimento vale muito mais. A consultoria digital rompe o ciclo da dependência presencial e oferece escala, margem e liberdade.</p>
+        <div class="grid grid-cols-2 gap-4">
+          {[
+            { ic: 'clock', t: 'Preso na agenda', d: 'Horas trocadas por dinheiro.' },
+            { ic: 'map-pin', t: 'Dependência presencial', d: 'Barreiras geográficas.' },
+            { ic: 'trending-up', t: 'Escala e margem', d: 'Cresça sem sua presença.' },
+            { ic: 'badge-check', t: 'Padrão e controle', d: 'Qualidade em cada entrega.' },
+          ].map((c) => (
+            <div class="flex items-start gap-3">
+              <div class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-evolutto-blue/10 text-evolutto-blue"><i class="w-5 h-5" data-lucide={c.ic}></i></div>
+              <div><h3 class="text-sm font-semibold text-gray-900">{c.t}</h3><p class="text-xs text-gray-500">{c.d}</p></div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div class="relative">
+        <div class="absolute -inset-4 bg-evolutto-blue/10 rounded-[2.5rem] blur-2xl"></div>
+        <img src="/img/woman-workflow.jpg" alt="Consultora usando a plataforma Evolutto" class="relative rounded-[2rem] w-full object-cover shadow-2xl border border-gray-200" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROVA SOCIAL ===== -->
+  <section class="bg-evolutto-black py-14 overflow-hidden">
+    <p class="text-center text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-500 mb-8">Quem está transformando suas consultorias com a Evolutto</p>
+    <div class="marquee-mask overflow-hidden">
+      <div class="marquee-content flex items-center gap-14 w-max">
+        {[...empresas, ...empresas].map((e) => (<span class="text-xl lg:text-2xl font-bold text-white/40 whitespace-nowrap">{e}</span>))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PARA QUEM ===== -->
+  <section id="publicos" class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Para quem é</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Ideal para quem quer aumentar escala e margem de lucro.</h2>
+        <p class="text-lg text-gray-500">Modernize sua prestação de serviço. Saia do presencial para o digital e agregue maior valor e padrão de qualidade.</p>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {publicos.map((p) => (
+          <div class="flashlight-card rounded-[2rem] bg-evolutto-black p-8 min-h-[260px] flex flex-col">
+            <span class="flashlight-border"></span>
+            <div class="relative z-10 flex flex-col h-full">
+              <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white/5 text-evolutto-blue mb-6"><i class="w-6 h-6" data-lucide={p.ic}></i></div>
+              <h3 class="text-xl font-semibold text-white mb-3">{p.t}</h3>
+              <p class="text-sm text-gray-400 leading-relaxed flex-1">{p.d}</p>
+              <a class="inline-flex items-center gap-2 text-sm font-medium text-evolutto-blue mt-6 hover:gap-3 transition-all" href="#cta">Saiba mais <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VEJA NA PRÁTICA ===== -->
+  <section class="py-20 lg:py-28 bg-evolutto-black text-white overflow-hidden">
+    <div class="max-w-[1400px] mx-auto px-6 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <div class="relative order-2 lg:order-1">
+        <div class="absolute -inset-6 bg-evolutto-blue/20 rounded-[3rem] blur-[80px]"></div>
+        <img src="/img/founder-platform.png" alt="Plataforma Evolutto na prática" class="relative w-full drop-shadow-2xl" />
+      </div>
+      <div class="order-1 lg:order-2">
+        <span class="text-[12px] font-bold uppercase tracking-[0.16em] text-evolutto-blue">Conheça na prática</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight mt-4 mb-6 leading-tight">Toda a operação da sua consultoria num só lugar.</h2>
+        <p class="text-lg text-gray-400 leading-relaxed mb-8">Onboarding, plataforma e consultoria conectados. Centralize processos, responsáveis e prazos com dashboards e BI (EVA) embutidos.</p>
+        <ul class="grid sm:grid-cols-2 gap-4 mb-10">
+          {[
+            { ic: 'calendar', t: 'Cronogramas e tarefas' },
+            { ic: 'message-circle', t: 'Chat e WhatsApp integrado' },
+            { ic: 'bar-chart-3', t: 'Dashboards e BI (EVA)' },
+            { ic: 'book-open', t: 'Conteúdos e trilhas' },
+          ].map((f) => (
+            <li class="flex items-center gap-3">
+              <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 text-evolutto-blue"><i class="w-5 h-5" data-lucide={f.ic}></i></span>
+              <span class="text-[15px] text-gray-200 font-medium">{f.t}</span>
+            </li>
+          ))}
+        </ul>
+        <a class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-8 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/40" href="/plataforma">Conhecer a plataforma <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CASES ===== -->
+  <section id="cases" class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Cases</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Consultores que já atendem dezenas de clientes simultaneamente.</h2>
+        <p class="text-lg text-gray-500">De consultorias estagnadas a negócios digitais escaláveis. De 1 para 60 clientes por consultor.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {depoimentos.map((d) => (
+          <figure class="bg-white rounded-[2rem] p-7 border border-gray-200 shadow-sm flex flex-col">
+            <i class="w-7 h-7 text-evolutto-blue/30 mb-4" data-lucide="quote"></i>
+            <blockquote class="text-[15px] text-gray-700 leading-relaxed flex-1">{d.q}</blockquote>
+            <figcaption class="mt-6 pt-5 border-t border-gray-100 flex items-center gap-3">{AVATARES[d.n] && <img src={AVATARES[d.n]} alt={d.n} class="w-11 h-11 rounded-full object-cover border border-gray-200" loading="lazy" />}<span><span class="block text-sm font-semibold text-gray-900">{d.n}</span><span class="block text-xs text-gray-400">{d.e}</span></span></figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PILARES ===== -->
+  <section id="pilares" class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Como entregamos</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Nossa entrega passa por quatro pilares que se reforçam.</h2>
+        <p class="text-lg text-gray-500">Para você conduzir cada cliente com liberdade, lucro e controle.</p>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {pilares.map((p) => (
+          <div class="bg-white rounded-[2rem] p-7 border border-gray-200 group hover:border-evolutto-blue/40 hover:shadow-lg hover:shadow-evolutto-blue/5 transition-all">
+            <div class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-evolutto-blue/10 text-evolutto-blue mb-5 group-hover:bg-evolutto-blue group-hover:text-white transition-colors"><i class="w-6 h-6" data-lucide={p.ic}></i></div>
+            <h3 class="text-lg font-semibold text-gray-900 mb-2">{p.t}</h3>
+            <p class="text-sm text-gray-500 leading-relaxed">{p.d}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BAND ===== -->
+  <section class="py-6">
+    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
+      <div class="relative rounded-[2.5rem] bg-evolutto-black overflow-hidden px-6 py-16 md:px-16 md:py-20 text-center">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[70%] h-72 bg-evolutto-blue/20 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="relative z-10">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight max-w-3xl mx-auto mb-4">Ainda não acredita que pode escalar sua consultoria? Nós mostramos como.</h2>
+          <p class="text-gray-400 mb-10">+ de 60.000 projetos simultâneos na plataforma.</p>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto mb-12">
+            {[
+              { ic: 'layers', v: '+60k', l: 'Projetos' }, { ic: 'users', v: '+8 mil', l: 'Usuários' },
+              { ic: 'trending-up', v: '5x', l: 'Faturamento' }, { ic: 'briefcase', v: '15x', l: 'Clientes/consultor' },
+            ].map((s) => (
+              <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+                <div class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-white/10 text-evolutto-blue mb-3"><i class="w-4 h-4" data-lucide={s.ic}></i></div>
+                <p class="text-2xl font-bold text-white">{s.v}</p>
+                <p class="text-[0.6rem] uppercase tracking-widest text-gray-500 mt-1">{s.l}</p>
+              </div>
+            ))}
+          </div>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="#cta">Agendar Demonstração <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INTEGRAÇÕES ===== -->
+  <section class="py-20 lg:py-28">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="max-w-3xl mb-14">
+        <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Integrações</span>
+        <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-5 leading-tight">Integrações que potencializam a operação da sua consultoria.</h2>
+        <p class="text-lg text-gray-500">O Evolutto se conecta com as principais ferramentas que você já usa, ampliando a produtividade com segurança.</p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {integracoes.map((i) => (
+          <div class="bg-white rounded-2xl p-6 border border-gray-200 flex items-center gap-4 hover:shadow-md transition-shadow">
+            <div class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-evolutto-blue/10 text-evolutto-blue shrink-0"><i class="w-5 h-5" data-lucide={i.ic}></i></div>
+            <span class="text-sm font-medium text-gray-800">{i.t}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOG ===== -->
+  <section id="blog" class="py-20 lg:py-28 bg-[#F3F3F1] border-y border-gray-200">
+    <div class="max-w-[1400px] mx-auto px-6">
+      <div class="flex flex-wrap items-end justify-between gap-6 mb-14">
+        <div class="max-w-2xl">
+          <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Blog</span>
+          <h2 class="text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">As últimas tendências sobre o universo da consultoria.</h2>
+        </div>
+        <a class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:gap-3 transition-all" href="#">Todos os posts <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+      </div>
+      <div class="grid md:grid-cols-3 gap-5">
+        {posts.map((p) => (
+          <a class="group bg-white rounded-[2rem] p-6 border border-gray-200 hover:shadow-lg transition-all flex flex-col" href="#">
+            <div class="aspect-[16/10] rounded-2xl mb-5 overflow-hidden relative bg-evolutto-black/5">
+              <img src={p.img} alt={p.t} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            </div>
+            <span class="text-[0.6rem] font-semibold uppercase tracking-widest text-evolutto-blue mb-2">{p.cat}</span>
+            <h3 class="text-lg font-semibold text-gray-900 leading-snug">{p.t}</h3>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <Faq items={faqs} />
+
+  <!-- ===== DIAGNÓSTICO (form inline) ===== -->
+  <DiagnosticoForm />
+
+  <SiteFooter />
+</Site>

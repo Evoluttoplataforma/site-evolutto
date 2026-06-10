@@ -1,0 +1,30 @@
+---
+interface Item { q: string; a: string; }
+interface Props {
+  items: Item[];
+  title?: string;
+  subtitle?: string;
+}
+const { items, title = 'Ficou com alguma dúvida?', subtitle = 'Saiba mais sobre a plataforma e como ela pode ser útil para o seu negócio.' } = Astro.props;
+---
+
+<section class="py-20 lg:py-28">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">FAQ</span>
+      <h2 class="text-3xl lg:text-5xl font-bold tracking-tight text-gray-900 mt-4 mb-4">{title}</h2>
+      <p class="text-lg text-gray-500">{subtitle}</p>
+    </div>
+    <div class="space-y-3">
+      {items.map((f) => (
+        <details class="group bg-white rounded-2xl border border-gray-200 overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 cursor-pointer px-6 py-5 list-none">
+            <span class="text-base font-medium text-gray-900">{f.q}</span>
+            <i class="w-5 h-5 text-gray-400 transition-transform group-open:rotate-180 shrink-0" data-lucide="chevron-down"></i>
+          </summary>
+          <div class="px-6 pb-5 text-sm text-gray-500 leading-relaxed">{f.a}</div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,44 @@
+/* Inter — tipografia oficial Evolutto (Manual de Marca 2023) */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/inter/800.css';
+@import '@fontsource/inter/900.css';
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== Animações/efeitos compartilhados (home + design system) ===== */
+@keyframes ds-spin { to { transform: rotate(360deg); } }
+@keyframes ds-scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes ds-rotate-beam { to { transform: rotate(360deg); } }
+@keyframes ds-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+.marquee-content { animation: ds-scroll-left 32s linear infinite; }
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.btn-beam-container { position: relative; }
+.btn-beam-container .beam-border {
+  position: absolute; inset: -2px; border-radius: 9999px; pointer-events: none; opacity: 0;
+  background: conic-gradient(from 0deg at 50% 50%, transparent 0deg, #3363ff 60deg, transparent 120deg);
+  animation: ds-rotate-beam 2.5s linear infinite; transition: opacity .3s;
+}
+.btn-beam-container:hover .beam-border { opacity: 1; }
+
+.flashlight-card { position: relative; overflow: hidden; }
+.flashlight-card::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; opacity: 0; pointer-events: none; transition: opacity .4s; z-index: 1;
+  background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(51,99,255,0.16), transparent 40%);
+}
+.flashlight-card .flashlight-border {
+  position: absolute; inset: 0; border-radius: inherit; padding: 1px; opacity: 0; pointer-events: none; transition: opacity .4s;
+  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(51,99,255,0.85), transparent 40%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.flashlight-card:hover::before, .flashlight-card:hover .flashlight-border { opacity: 1; }
