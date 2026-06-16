@@ -2,7 +2,6 @@
 import Site from '../layouts/Site.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import DiagnosticoForm from '../components/DiagnosticoForm.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
 
@@ -56,7 +55,19 @@ const AVATARES: Record<string, string> = {
 
 ---
 
-<Site title="Evolutto — Curso do Zero a Escala">
+<Site
+  title="Do Zero a Escala — curso para criar uma consultoria escalável | Evolutto"
+  description="Transforme sua consultoria artesanal em método com receita previsível. Aprenda o modelo de negócio que escala, com trilha de implementação, comunidade e garantia de 15 dias."
+  keywords={['curso para consultores', 'consultoria escalável', 'como escalar consultoria', 'produtizar consultoria', 'do zero a escala']}
+  jsonLd={[{
+    '@context': 'https://schema.org', '@type': 'Course',
+    name: 'Do Zero a Escala', inLanguage: 'pt-BR',
+    description: 'Curso para transformar uma consultoria artesanal em um negócio com método e receita previsível, que escala sem depender da presença do dono.',
+    provider: { '@type': 'Organization', name: 'Evolutto', sameAs: 'https://www.evolutto.com' },
+    offers: { '@type': 'Offer', category: 'Curso', priceCurrency: 'BRL', availability: 'https://schema.org/InStock' },
+    hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online', courseWorkload: 'PT10H' },
+  }]}
+>
   <SiteHeader />
 
   <PageHero
@@ -68,7 +79,7 @@ const AVATARES: Record<string, string> = {
     text="Transforme sua consultoria artesanal em método. Aprenda o modelo de negócio com receita previsível e as características de uma consultoria que escala."
     checklist={['Comunidade de consultores', 'Garantia de 15 dias', 'Trilha de implementação completa']}
     primaryLabel="Quero minha consultoria previsível"
-    primaryHref="https://www.evolutto.com/do-zero-a-escala"
+    primaryTally="m6Xbo5"
     secondaryLabel="Assistir a aula"
     secondaryHref="#aula"
   />
@@ -220,13 +231,14 @@ const AVATARES: Record<string, string> = {
         <div class="relative z-10 max-w-2xl mx-auto">
           <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Comece a construir uma consultoria previsível.</h2>
           <p class="text-white/80 text-lg mb-10">Trilha completa, comunidade e mentorias — com garantia de 15 dias.</p>
-          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="https://www.evolutto.com/do-zero-a-escala">Quero minha consultoria previsível <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
+          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="#" data-tally-open="m6Xbo5" data-tally-layout="modal" data-tally-hide-title="1">Quero minha consultoria previsível <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
         </div>
       </div>
     </div>
   </section>
 
-  <DiagnosticoForm />
-
   <SiteFooter />
+
+  <!-- Formulário Tally (abre modal e leva ao checkout Hotmart) -->
+  <script is:inline src="https://tally.so/widgets/embed.js"></script>
 </Site>

@@ -1,0 +1,28 @@
+# Evolutto
+
+> A Evolutto é o ecossistema completo para consultores e mentores **digitalizarem, produtizarem e escalarem** seus serviços — unindo plataforma (software), método e comunidade. Permite atender de 1 a 60+ clientes por consultor sem depender da presença física.
+
+## Sobre
+
+A Evolutto resolve o principal gargalo da consultoria tradicional: a entrega presa às horas e à presença do dono. A plataforma 100% web e mobile organiza cronogramas, tarefas, conteúdos, chat, WhatsApp, dashboards e BI (assistente EVA), permitindo digitalizar o método e escalar a operação. Mais de 8.000 usuários e 60.000 projetos simultâneos. Sedes no Brasil (Florianópolis/SC) e em Portugal.
+
+Diferenciais: método validado de digitalização e produtização; rastreabilidade e padrão de qualidade em escala; comunidade ativa de consultores; trilha do "Zero a Escala".
+
+## Páginas principais
+
+- [Plataforma (ERP para consultorias)](https://www.evolutto.com/plataforma): Software que digitaliza a entrega e a gestão de projetos de consultoria.
+- [Consultoria](https://www.evolutto.com/consultoria): Como escalar a operação de consultoria com método e tecnologia.
+- [Mentorias](https://www.evolutto.com/mentorias): Escale programas de mentoria.
+- [Do Zero a Escala](https://www.evolutto.com/do-zero-a-escala): Curso para criar uma consultoria lucrativa e escalável.
+- [Bootcamp da Virada](https://www.evolutto.com/bootcamp): Imersão para consultores.
+- [Quem somos](https://www.evolutto.com/quem-somos): A empresa, missão e equipe.
+- [Indicação](https://www.evolutto.com/indicacao): Programa de indicação com cashback.
+- [Suporte](https://www.evolutto.com/suporte): Atendimento e ajuda.
+
+## Conteúdo
+
+- [Blog](https://blog.evolutto.com): Artigos sobre escala, produtização, digitalização, marketing e gestão de consultorias.
+
+## Contato
+
+contato@evolutto.com

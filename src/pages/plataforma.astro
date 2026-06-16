@@ -34,7 +34,19 @@ const faqs = [
 ];
 ---
 
-<Site title="Evolutto — Implementação de ERP em escala">
+<Site
+  title="Plataforma para consultorias — digitalize e escale a entrega | Evolutto"
+  description="A plataforma da Evolutto digitaliza a entrega e a gestão de projetos de consultoria: cronogramas, tarefas, chat, WhatsApp, dashboards e BI. Atenda mais clientes sem depender da sua presença."
+  keywords={['plataforma para consultoria', 'software para consultoria', 'ERP para consultoria', 'gestão de projetos de consultoria', 'digitalizar consultoria']}
+  jsonLd={[{
+    '@context': 'https://schema.org', '@type': 'SoftwareApplication',
+    name: 'Evolutto', applicationCategory: 'BusinessApplication', operatingSystem: 'Web, iOS, Android',
+    url: 'https://www.evolutto.com/plataforma',
+    description: 'Plataforma que digitaliza a entrega e a gestão de projetos de consultoria — cronogramas, tarefas, conteúdos, chat, WhatsApp, dashboards e BI (EVA).',
+    provider: { '@type': 'Organization', name: 'Evolutto', url: 'https://www.evolutto.com' },
+    offers: { '@type': 'Offer', priceCurrency: 'BRL', availability: 'https://schema.org/InStock', url: 'https://www.evolutto.com/plataforma' },
+  }]}
+>
   <SiteHeader />
 
   <PageHero

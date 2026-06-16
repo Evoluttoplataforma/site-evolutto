@@ -31,7 +31,18 @@ const entregaveis = [
 ];
 ---
 
-<Site title="Evolutto — Bootcamp da Virada">
+<Site
+  title="Bootcamp da Virada — imersão para consultores | Evolutto"
+  description="Imersão 100% online para consultores: bootcamp + masterclasses para digitalizar, produtizar e escalar a sua consultoria. Garanta sua vaga na próxima turma."
+  keywords={['bootcamp para consultores', 'imersão consultoria', 'escalar consultoria', 'evolutto bootcamp']}
+  jsonLd={[{
+    '@context': 'https://schema.org', '@type': 'Course',
+    name: 'Bootcamp da Virada', inLanguage: 'pt-BR',
+    description: 'Imersão para consultores com bootcamp de +3h e 5 masterclasses sobre digitalização, produtização e escala de consultorias.',
+    provider: { '@type': 'Organization', name: 'Evolutto', sameAs: 'https://www.evolutto.com' },
+    hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'online' },
+  }]}
+>
   <SiteHeader />
 
   <PageHero

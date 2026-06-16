@@ -6,7 +6,21 @@ interface Props {
   subtitle?: string;
 }
 const { items, title = 'Ficou com alguma dúvida?', subtitle = 'Saiba mais sobre a plataforma e como ela pode ser útil para o seu negócio.' } = Astro.props;
+
+// FAQPage schema (AEO/GEO) — gerado automático a partir das perguntas
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 ---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
+
 
 <section class="py-20 lg:py-28">
   <div class="max-w-3xl mx-auto px-6">

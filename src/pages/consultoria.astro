@@ -54,7 +54,18 @@ const AVATARES: Record<string, string> = {
 
 ---
 
-<Site title="Evolutto — Escale sua consultoria e atenda 10x mais clientes">
+<Site
+  title="Escale sua consultoria e atenda 10x mais clientes | Evolutto"
+  description="Saia do modelo preso às horas. Com método e tecnologia da Evolutto, sua consultoria atende mais clientes por consultor, com qualidade e previsibilidade — sem depender da sua presença."
+  keywords={['escalar consultoria', 'consultoria escalável', 'atender mais clientes consultoria', 'método para consultoria', 'gestão de consultoria']}
+  jsonLd={[{
+    '@context': 'https://schema.org', '@type': 'Service',
+    serviceType: 'Escala de consultoria', name: 'Evolutto para Consultorias',
+    description: 'Método e tecnologia para escalar a operação de consultoria — digitalizar a entrega, padronizar a qualidade e atender mais clientes por consultor.',
+    provider: { '@type': 'Organization', name: 'Evolutto', url: 'https://www.evolutto.com' },
+    areaServed: ['BR', 'PT'],
+  }]}
+>
   <SiteHeader />
 
   <PageHero

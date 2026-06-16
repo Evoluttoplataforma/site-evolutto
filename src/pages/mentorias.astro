@@ -43,7 +43,18 @@ const AVATARES: Record<string, string> = {
 
 ---
 
-<Site title="Evolutto — Escale sua mentoria">
+<Site
+  title="Escale sua mentoria com método e tecnologia | Evolutto"
+  description="Estruture e escale seus programas de mentoria com a Evolutto: trilhas, acompanhamento, comunidade e dados — atenda mais mentorados sem perder qualidade."
+  keywords={['plataforma para mentoria', 'escalar mentoria', 'programa de mentoria', 'mentoria em grupo']}
+  jsonLd={[{
+    '@context': 'https://schema.org', '@type': 'Service',
+    serviceType: 'Plataforma para mentorias', name: 'Evolutto para Mentorias',
+    description: 'Estruture, acompanhe e escale programas de mentoria com trilhas, comunidade e dados.',
+    provider: { '@type': 'Organization', name: 'Evolutto', url: 'https://www.evolutto.com' },
+    areaServed: ['BR', 'PT'],
+  }]}
+>
   <SiteHeader />
 
   <PageHero

@@ -9,6 +9,7 @@ interface Props {
   checklist?: string[];
   primaryLabel?: string;
   primaryHref?: string;
+  primaryTally?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
   image?: string;
@@ -16,9 +17,12 @@ interface Props {
 }
 const {
   eyebrow, titleStart, accent, titleEnd = '', text, checklist,
-  primaryLabel = 'Solicite uma Demonstração', primaryHref = '/#cta',
+  primaryLabel = 'Solicite uma Demonstração', primaryHref = '/#cta', primaryTally,
   secondaryLabel = 'Ver cases', secondaryHref = '/#cases', image, imageFramed = true,
 } = Astro.props;
+const tallyAttrs = primaryTally
+  ? { 'data-tally-open': primaryTally, 'data-tally-layout': 'modal', 'data-tally-hide-title': '1' }
+  : {};
 ---
 
 <section class="relative bg-evolutto-black text-white overflow-hidden min-h-[520px] flex items-center">
@@ -56,7 +60,7 @@ const {
         </ul>
       )}
       <div class="flex flex-wrap gap-3">
-        <a class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-8 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/40" href={primaryHref}>{primaryLabel} <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+        <a class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-8 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/40" href={primaryTally ? '#' : primaryHref} {...tallyAttrs}>{primaryLabel} <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
         {secondaryLabel && <a class="inline-flex items-center gap-2 bg-white/5 border border-white/20 text-white text-sm font-semibold px-8 py-4 rounded-full hover:bg-white/10 transition-colors" href={secondaryHref}><i class="w-4 h-4" data-lucide="circle-play"></i> {secondaryLabel}</a>}
       </div>
     </div>

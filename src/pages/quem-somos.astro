@@ -30,7 +30,15 @@ const sede = [
 ];
 ---
 
-<Site title="Evolutto — Quem somos">
+<Site
+  title="Quem somos — a Evolutto | Evolutto"
+  description="Conheça a Evolutto: missão, história e a equipe que ajuda consultores a digitalizar, produtizar e escalar seus serviços. +8.000 usuários e 60.000 projetos."
+  jsonLd={[{
+    '@context': 'https://schema.org', '@type': 'AboutPage',
+    name: 'Quem somos — Evolutto', url: 'https://www.evolutto.com/quem-somos',
+    about: { '@type': 'Organization', name: 'Evolutto', url: 'https://www.evolutto.com' },
+  }]}
+>
   <SiteHeader />
 
   <PageHero
