@@ -168,7 +168,11 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
     </div>
   </div>
 
-  <script define:vars={{ webhook: import.meta.env.PUBLIC_LEAD_WEBHOOK || '' }}>
+  <script define:vars={{
+    webhook: import.meta.env.PUBLIC_LEAD_WEBHOOK || '',
+    supaUrl: import.meta.env.PUBLIC_SUPABASE_URL || 'https://yfpdrckyuxltvznqfqgh.supabase.co',
+    anonKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '',
+  }}>
     const form = document.getElementById('form-diagnostico');
     form?.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -183,12 +187,18 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
       if (Object.keys(utm).length) dados.utm = utm;
       try { sessionStorage.setItem('evolutto_lead', JSON.stringify(dados)); } catch (_) {}
       if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
-      // Envia pro webhook (Supabase Edge Function -> Supabase + Mailchimp). Não bloqueia a UX.
-      if (webhook) {
-        try {
+      // 1) Se houver função (webhook) -> insert + Mailchimp. Senão 2) grava direto no Supabase. Não bloqueia a UX.
+      try {
+        if (webhook) {
           await fetch(webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) });
-        } catch (_) { /* segue mesmo se falhar */ }
-      }
+        } else if (anonKey) {
+          await fetch(`${supaUrl}/rest/v1/evolutto_leads`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', apikey: anonKey, Authorization: `Bearer ${anonKey}`, Prefer: 'return=minimal' },
+            body: JSON.stringify(dados),
+          });
+        }
+      } catch (_) { /* segue mesmo se falhar */ }
       window.location.href = '/obrigado';
     });
   </script>
