@@ -75,6 +75,12 @@ if (seg && NAMES[seg]) crumbs.push({ '@type': 'ListItem', position: 2, name: NAM
 const breadcrumbLd = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: crumbs };
 
 const allLd = [orgLd, websiteLd, ...(crumbs.length > 1 ? [breadcrumbLd] : []), ...jsonLd];
+
+// Google Tag Manager (centraliza GA4/Meta Pixel/RD). Só ativa se PUBLIC_GTM_ID estiver definido.
+const gtmId = import.meta.env.PUBLIC_GTM_ID || '';
+const gtmHead = gtmId
+  ? `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmId}');`
+  : '';
 ---
 
 <!doctype html>
@@ -82,6 +88,7 @@ const allLd = [orgLd, websiteLd, ...(crumbs.length > 1 ? [breadcrumbLd] : []), .
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {gtmHead && <script is:inline set:html={gtmHead} />}
     <title>{title}</title>
     <meta name="description" content={description} />
     {keywords && keywords.length > 0 && <meta name="keywords" content={keywords.join(', ')} />}
@@ -113,6 +120,7 @@ const allLd = [orgLd, websiteLd, ...(crumbs.length > 1 ? [breadcrumbLd] : []), .
     {allLd.map((ld) => <script type="application/ld+json" set:html={JSON.stringify(ld)} />)}
   </head>
   <body class="bg-white text-gray-900 antialiased overflow-x-hidden">
+    {gtmId && <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${gtmId}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />}
     <slot />
 
     <script>

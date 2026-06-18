@@ -1,0 +1,22 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+---
+
+<Site title="Página não encontrada — Evolutto" description="A página que você procura não existe ou foi movida." noindex={true}>
+  <SiteHeader />
+  <section class="relative bg-evolutto-black text-white overflow-hidden">
+    <div class="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[60%] h-80 bg-evolutto-blue/25 blur-[130px] rounded-full"></div>
+    <div class="relative z-10 max-w-2xl mx-auto px-6 py-28 lg:py-36 text-center">
+      <span class="text-[12px] font-bold uppercase tracking-[0.2em] text-evolutto-blue">Erro 404</span>
+      <h1 class="text-5xl lg:text-7xl font-extrabold tracking-tighter mt-4 mb-5">Página não encontrada.</h1>
+      <p class="text-lg text-gray-400 mb-10">O link pode estar quebrado ou a página foi movida. Que tal voltar ao início ou ler o blog?</p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a href="/" class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-7 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/30">Ir para o início <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+        <a href="/blog" class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm font-semibold px-7 py-4 rounded-full hover:bg-white/15 transition-colors">Ver o blog</a>
+      </div>
+    </div>
+  </section>
+  <SiteFooter />
+</Site>
