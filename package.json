@@ -12,12 +12,13 @@
   "dependencies": {
     "astro": "^4.16.18",
     "iconify-icon": "^2.3.0",
-    "lucide": "^0.469.0"
+    "lucide": "^0.469.0",
+    "marked": "^14.1.4"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^5.1.5",
-    "@fontsource/inter": "^5.2.5",
     "@fontsource/instrument-sans": "^5.2.5",
+    "@fontsource/inter": "^5.2.5",
     "@fontsource/newsreader": "^5.2.5",
     "@fontsource/playfair-display": "^5.2.5",
     "tailwindcss": "^3.4.17"

@@ -4,7 +4,7 @@ import Site from '../../layouts/Site.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import PostCard from '../../components/PostCard.astro';
-import { allPosts, catSlug, fmtDate, type Post } from '../../lib/blog';
+import { allPosts, catSlug, fmtDate, renderBody, type Post } from '../../lib/blog';
 
 export const getStaticPaths = (async () => {
   const posts = await allPosts();
@@ -12,7 +12,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { post } = Astro.props as { post: Post };
-const { Content } = await post.render();
+const contentHtml = renderBody(post.body);
 const d = post.data;
 
 const posts = await allPosts();
@@ -74,7 +74,7 @@ const jsonLd = [articleLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])];
           <p class="text-[15px] text-gray-700 leading-relaxed">{d.tldr}</p>
         </div>
       )}
-      <div class="prose-evolutto"><Content /></div>
+      <div class="prose-evolutto" set:html={contentHtml}></div>
       {d.faq && d.faq.length > 0 && (
         <section class="mt-14 pt-10 border-t border-gray-200">
           <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6">Perguntas frequentes</h2>
