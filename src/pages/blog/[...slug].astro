@@ -91,6 +91,24 @@ const jsonLd = [articleLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])];
           </div>
         </section>
       )}
+
+      <!-- Comentários -->
+      <section class="mt-14 pt-10 border-t border-gray-200">
+        <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6">Comentários</h2>
+        <div id="lista-comentarios" class="space-y-4 mb-8"><p class="text-sm text-gray-400">Carregando comentários…</p></div>
+        <form id="form-comentario" class="bg-[#F3F3F1] rounded-2xl border border-gray-200 p-6">
+          <h3 class="text-base font-bold text-gray-900 mb-4">Deixe seu comentário</h3>
+          <div class="grid sm:grid-cols-2 gap-3 mb-3">
+            <input id="c-nome" required placeholder="Seu nome *" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue" />
+            <input id="c-email" type="email" placeholder="Seu e-mail (não publicado)" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue" />
+          </div>
+          <textarea id="c-texto" required rows="3" placeholder="Escreva seu comentário…" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue"></textarea>
+          <div class="flex items-center gap-3 mt-3">
+            <button type="submit" class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-5 py-2.5 rounded-full hover:brightness-110 transition-all">Enviar comentário</button>
+            <span id="c-msg" class="text-sm"></span>
+          </div>
+        </form>
+      </section>
     </article>
 
     <aside class="lg:sticky lg:top-24 space-y-6">
@@ -128,4 +146,48 @@ const jsonLd = [articleLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])];
   </section>
 
   <SiteFooter />
+
+  <script define:vars={{
+    supaUrl: 'https://yfpdrckyuxltvznqfqgh.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmcGRyY2t5dXhsdHZ6bnFmcWdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTYwMDYsImV4cCI6MjA5MDAzMjAwNn0.PVMRz04lvMLepjv0ZCsr5mJ8K_Ux1fQlQgX1vOd4O2g',
+    articleId: post.id,
+    articleTitulo: d.title,
+  }}>
+    const H = { apikey: anonKey, Authorization: 'Bearer ' + anonKey };
+    const esc = (s) => (s || '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const ini = (n) => (n || '?').split(' ').map((x) => x[0]).slice(0, 2).join('').toUpperCase();
+    const fmt = (d) => new Date(d).toLocaleDateString('pt-BR');
+    const lista = document.getElementById('lista-comentarios');
+    const form = document.getElementById('form-comentario');
+
+    async function carregar() {
+      try {
+        const r = await fetch(`${supaUrl}/rest/v1/evolutto_comentarios?select=autor,texto,created_at&article_id=eq.${articleId}&status=eq.aprovado&order=created_at.desc`, { headers: H });
+        const list = await r.json();
+        if (!Array.isArray(list) || !list.length) { lista.innerHTML = '<p class="text-sm text-gray-400">Seja o primeiro a comentar.</p>'; return; }
+        lista.innerHTML = list.map((c) => `<div class="bg-white rounded-2xl border border-gray-200 p-5"><div class="flex items-center gap-3 mb-2"><span class="w-9 h-9 rounded-full bg-evolutto-gradient grid place-items-center text-white text-xs font-bold shrink-0">${esc(ini(c.autor))}</span><div><p class="text-sm font-semibold text-gray-900">${esc(c.autor || 'Anônimo')}</p><p class="text-xs text-gray-400">${fmt(c.created_at)}</p></div></div><p class="text-[15px] text-gray-700 leading-relaxed">${esc(c.texto)}</p></div>`).join('');
+      } catch (_) { lista.innerHTML = '<p class="text-sm text-gray-400">Não foi possível carregar os comentários.</p>'; }
+    }
+    carregar();
+
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById('c-nome').value.trim();
+      const email = document.getElementById('c-email').value.trim();
+      const texto = document.getElementById('c-texto').value.trim();
+      const msg = document.getElementById('c-msg');
+      if (!nome || !texto) { msg.textContent = 'Preencha seu nome e o comentário.'; msg.className = 'text-sm text-red-600'; return; }
+      const btn = form.querySelector('button[type=submit]'); btn.disabled = true; btn.style.opacity = '0.7';
+      try {
+        const r = await fetch(`${supaUrl}/rest/v1/evolutto_comentarios`, {
+          method: 'POST',
+          headers: { ...H, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+          body: JSON.stringify({ article_id: articleId, artigo_titulo: articleTitulo, autor: nome, email: email || null, texto, status: 'pendente' }),
+        });
+        if (r.ok) { form.reset(); msg.textContent = 'Comentário enviado! Ele aparece aqui após aprovação. ✓'; msg.className = 'text-sm text-green-600'; }
+        else { msg.textContent = 'Erro ao enviar. Tente novamente.'; msg.className = 'text-sm text-red-600'; }
+      } catch (_) { msg.textContent = 'Erro de conexão. Tente novamente.'; msg.className = 'text-sm text-red-600'; }
+      btn.disabled = false; btn.style.opacity = '1';
+    });
+  </script>
 </Site>

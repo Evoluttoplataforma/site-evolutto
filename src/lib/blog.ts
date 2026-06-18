@@ -25,6 +25,7 @@ export interface PostData {
 }
 
 export interface Post {
+  id: string;
   slug: string;
   body: string; // conteúdo cru (markdown OU html) — use renderBody() para exibir
   data: PostData;
@@ -51,6 +52,7 @@ export function renderBody(body: string): string {
 
 function rowToPost(r: any): Post {
   return {
+    id: r.id,
     slug: r.slug,
     body: r.body || '',
     data: {
