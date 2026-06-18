@@ -52,7 +52,7 @@ window.TRACKING_CONFIG = {
    * ---------------------------------------------------------------------- */
   meta: {
     pixelId: '434582544603444', // Evolutto
-    capi: false,               // server-side (n8n) ligar depois
+    capi: true,                // server-side via Edge Function (dedup browser<->servidor)
     advancedMatching: true,    // true = manda em/ph/fn/ln/etc. no fbq automaticamente
     ctwa: false,               // sem WhatsApp por enquanto
   },
@@ -98,7 +98,7 @@ window.TRACKING_CONFIG = {
    * SERVER (camada 3) — webhook do n8n DESTE cliente
    * ---------------------------------------------------------------------- */
   server: {
-    endpoint: '',              // ex: "https://webhook.dominio.com.br/webhook/CLIENTE"
+    endpoint: 'https://yfpdrckyuxltvznqfqgh.supabase.co/functions/v1/track',
     sendOnEvents: ['Lead', 'PageView', 'Contact', 'Schedule', 'Purchase',
                    'AddToCart', 'InitiateCheckout', 'ViewContent',
                    'CompleteRegistration', 'StartTrial', 'Subscribe',
