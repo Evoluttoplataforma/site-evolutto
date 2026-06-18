@@ -1,12 +1,12 @@
 # ===== Redirects Evolutto (Netlify / Cloudflare Pages) =====
 # Blog migrado para subdomínio (wildcard + splat)
 
-# ERP / implantação de software -> página da plataforma (ERP)
-/erp-software                                 /plataforma   301
-/erp-software/                                /plataforma   301
-/implantacao-de-software/                     /plataforma   301
-/software-2/                                  /plataforma   301
-/software-consultoria-online/                 /plataforma   301
+# ERP / implantação de software -> /erp-software
+/plataforma                                   /erp-software   301
+/plataforma/                                  /erp-software   301
+/implantacao-de-software/                     /erp-software   301
+/software-2/                                  /erp-software   301
+/software-consultoria-online/                 /erp-software   301
 
 # Mentoria / indicação
 /mentoria-v2/                                 /mentorias    301
@@ -60,3 +60,6 @@
 /toolkit-da-consultoria-digital/              /   301
 /transformamos-metodologia-de-consultoria/    /   301
 /transformamos-metodologia-de-consultoria-1/  /   301
+
+# Qualquer rota inexistente -> home
+/*                                            /             301

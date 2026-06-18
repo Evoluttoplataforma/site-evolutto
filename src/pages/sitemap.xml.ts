@@ -3,7 +3,7 @@ import { allPosts, categoriesOf } from '../lib/blog';
 
 const PAGES = [
   { p: '/', pr: '1.0' },
-  { p: '/plataforma', pr: '0.9' },
+  { p: '/erp-software', pr: '0.9' },
   { p: '/consultoria', pr: '0.9' },
   { p: '/mentorias', pr: '0.8' },
   { p: '/do-zero-a-escala', pr: '0.9' },

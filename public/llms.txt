@@ -10,7 +10,7 @@ Diferenciais: método validado de digitalização e produtização; rastreabilid
 
 ## Páginas principais
 
-- [Plataforma (ERP para consultorias)](https://www.evolutto.com/plataforma): Software que digitaliza a entrega e a gestão de projetos de consultoria.
+- [Plataforma (ERP para consultorias)](https://www.evolutto.com/erp-software): Software que digitaliza a entrega e a gestão de projetos de consultoria.
 - [Consultoria](https://www.evolutto.com/consultoria): Como escalar a operação de consultoria com método e tecnologia.
 - [Mentorias](https://www.evolutto.com/mentorias): Escale programas de mentoria.
 - [Do Zero a Escala](https://www.evolutto.com/do-zero-a-escala): Curso para criar uma consultoria lucrativa e escalável.
