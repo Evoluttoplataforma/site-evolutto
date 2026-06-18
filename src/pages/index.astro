@@ -4,6 +4,8 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import Faq from '../components/Faq.astro';
 import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+import PostCard from '../components/PostCard.astro';
+import { allPosts } from '../lib/blog';
 
 const slides = [
   {
@@ -55,11 +57,7 @@ const integracoes = [
   { ic: 'file-text', t: 'Conteúdos' }, { ic: 'workflow', t: 'Automações' }, { ic: 'circle-check', t: 'Chamados' },
   { ic: 'command', t: 'BI (EVA)' }, { ic: 'globe', t: 'Web & Mobile' },
 ];
-const posts = [
-  { cat: 'Gestão', t: 'Escalar Consultoria: o mapa para faturar múltiplos milhões', img: '/img/man-checks.jpg' },
-  { cat: 'Marketing', t: 'Landing Page para Consultores: como criar uma que converte', img: '/img/man-holo.jpg' },
-  { cat: 'Qualidade', t: 'Qualidade e Controle em Consultorias: desafios em excelência', img: '/img/platform-screens.png' },
-];
+const recentes = (await allPosts()).slice(0, 3);
 const faqs = [
   { q: 'O que é a Evolutto?', a: 'O ecossistema completo para consultores que querem digitalizar, produtizar e escalar seus serviços com método, tecnologia e comunidade.' },
   { q: 'O que ela oferece?', a: 'Plataforma 100% web e mobile com cronogramas, tarefas, chat, WhatsApp, dashboards e BI — além de educação, comunidade e consultoria.' },
@@ -358,18 +356,10 @@ const AVATARES: Record<string, string> = {
           <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Blog</span>
           <h2 class="text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">As últimas tendências sobre o universo da consultoria.</h2>
         </div>
-        <a class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:gap-3 transition-all" href="#">Todos os posts <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+        <a class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:gap-3 transition-all" href="/blog">Todos os posts <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
       </div>
       <div class="grid md:grid-cols-3 gap-5">
-        {posts.map((p) => (
-          <a class="group bg-white rounded-[2rem] p-6 border border-gray-200 hover:shadow-lg transition-all flex flex-col" href="#">
-            <div class="aspect-[16/10] rounded-2xl mb-5 overflow-hidden relative bg-evolutto-black/5">
-              <img src={p.img} alt={p.t} class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-            </div>
-            <span class="text-[0.6rem] font-semibold uppercase tracking-widest text-evolutto-blue mb-2">{p.cat}</span>
-            <h3 class="text-lg font-semibold text-gray-900 leading-snug">{p.t}</h3>
-          </a>
-        ))}
+        {recentes.map((p) => <PostCard post={p} />)}
       </div>
     </div>
   </section>

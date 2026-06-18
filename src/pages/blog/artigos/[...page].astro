@@ -1,0 +1,40 @@
+---
+import type { GetStaticPaths, Page } from 'astro';
+import Site from '../../../layouts/Site.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { allPosts, categoriesOf, type Post } from '../../../lib/blog';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await allPosts();
+  return paginate(posts, { pageSize: 12 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props as { page: Page<Post> };
+const cats = categoriesOf(await allPosts());
+---
+
+<Site title={`Artigos${page.currentPage > 1 ? ` — página ${page.currentPage}` : ''} — Blog Evolutto`} description="Biblioteca completa de artigos do blog da Evolutto.">
+  <SiteHeader />
+  <section class="bg-evolutto-black text-white">
+    <div class="max-w-6xl mx-auto px-6 py-12 lg:py-14">
+      <span class="text-[12px] font-bold uppercase tracking-[0.18em] text-evolutto-blue">Todos os artigos</span>
+      <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight mt-3 mb-6">Biblioteca completa</h1>
+      <div class="flex flex-wrap gap-2">
+        {cats.map((c) => (
+          <a href={`/blog/categoria/${c.slug}`} class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-gray-300 hover:bg-evolutto-blue hover:border-evolutto-blue hover:text-white transition-colors">{c.name} <span class="text-gray-500">{c.count}</span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+    <p class="text-sm text-gray-400 mb-8">Página {page.currentPage} de {page.lastPage} · {page.total} artigos</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{page.data.map((p) => <PostCard post={p} />)}</div>
+    <nav class="flex items-center justify-between mt-14">
+      {page.url.prev ? (<a href={page.url.prev} class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gray-300 text-sm font-semibold text-gray-700 hover:border-evolutto-blue hover:text-evolutto-blue transition-colors"><i class="w-4 h-4" data-lucide="arrow-left"></i> Anteriores</a>) : <span></span>}
+      {page.url.next ? (<a href={page.url.next} class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gray-300 text-sm font-semibold text-gray-700 hover:border-evolutto-blue hover:text-evolutto-blue transition-colors">Próximos <i class="w-4 h-4" data-lucide="arrow-right"></i></a>) : <span></span>}
+    </nav>
+  </div>
+  <SiteFooter />
+</Site>

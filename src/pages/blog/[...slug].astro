@@ -1,0 +1,131 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Site from '../../layouts/Site.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import PostCard from '../../components/PostCard.astro';
+import { allPosts, catSlug, fmtDate, type Post } from '../../lib/blog';
+
+export const getStaticPaths = (async () => {
+  const posts = await allPosts();
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props as { post: Post };
+const { Content } = await post.render();
+const d = post.data;
+
+const posts = await allPosts();
+const recentes = posts.filter((p) => p.slug !== post.slug).slice(0, 4);
+let relacionados = posts.filter((p) => p.slug !== post.slug && p.data.category === d.category).slice(0, 3);
+if (relacionados.length < 3) relacionados = posts.filter((p) => p.slug !== post.slug).slice(0, 3);
+
+const base = (Astro.site ?? new URL('https://www.evolutto.com')).toString().replace(/\/$/, '');
+const url = `${base}/blog/${post.slug}/`;
+const seoDesc = d.seoDescription ?? d.description;
+const ogImage = d.ogImage ?? d.cover;
+const published = d.pubDate.toISOString();
+const modified = (d.updatedDate ?? d.pubDate).toISOString();
+
+const articleLd = {
+  '@context': 'https://schema.org', '@type': 'BlogPosting',
+  headline: d.title, description: seoDesc, datePublished: published, dateModified: modified,
+  author: { '@type': 'Organization', name: d.author, url: base },
+  publisher: { '@type': 'Organization', name: 'Evolutto', logo: { '@type': 'ImageObject', url: `${base}/evolutto-logo-white.png` } },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  inLanguage: 'pt-BR', articleSection: d.category,
+  wordCount: (post.body.replace(/<[^>]+>/g, ' ').match(/\S+/g) || []).length,
+  speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', '.prose-evolutto'] },
+  ...(d.tldr ? { abstract: d.tldr } : {}),
+  ...(ogImage ? { image: ogImage.startsWith('http') ? ogImage : base + ogImage } : {}),
+  ...(d.keywords && d.keywords.length ? { keywords: d.keywords.join(', ') } : {}),
+};
+const breadcrumbLd = {
+  '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Início', item: base + '/' },
+    { '@type': 'ListItem', position: 2, name: 'Blog', item: base + '/blog/' },
+    { '@type': 'ListItem', position: 3, name: d.category, item: `${base}/blog/categoria/${catSlug(d.category)}/` },
+    { '@type': 'ListItem', position: 4, name: d.title, item: url },
+  ],
+};
+const faqLd = d.faq && d.faq.length ? { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.faq.map((f) => ({ '@type': 'Question', name: f.pergunta, acceptedAnswer: { '@type': 'Answer', text: f.resposta } })) } : null;
+const jsonLd = [articleLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])];
+---
+
+<Site title={`${d.seoTitle ?? d.title} — Blog Evolutto`} description={seoDesc} ogImage={ogImage} type="article" published={published} modified={modified} keywords={d.keywords} jsonLd={jsonLd}>
+  <SiteHeader />
+
+  <header class="relative bg-evolutto-black text-white overflow-hidden">
+    <div class="absolute top-[-30%] right-[-10%] w-[60%] h-96 bg-evolutto-blue/20 blur-[130px] rounded-full"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 pt-12 pb-12 text-center">
+      <a href="/blog/artigos" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-7"><i class="w-4 h-4" data-lucide="arrow-left"></i> Todos os artigos</a>
+      <a href={`/blog/categoria/${catSlug(d.category)}`} class="text-[12px] font-bold uppercase tracking-[0.16em] text-evolutto-blue hover:underline">{d.category}</a>
+      <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight mt-4 mb-6 leading-[1.1]">{d.title}</h1>
+      <div class="flex items-center justify-center gap-3 text-sm text-gray-400"><span>{d.author}</span><span>·</span><span>{fmtDate(d.pubDate)}</span></div>
+    </div>
+  </header>
+
+  <div class="max-w-6xl mx-auto px-6 py-14 grid lg:grid-cols-[1fr_300px] gap-12 lg:gap-16 items-start">
+    <article class="min-w-0">
+      {d.tldr && (
+        <div class="bg-evolutto-blue/5 border border-evolutto-blue/20 rounded-2xl p-6 mb-10">
+          <p class="text-[0.65rem] font-bold uppercase tracking-widest text-evolutto-blue mb-2 flex items-center gap-2"><i class="w-4 h-4" data-lucide="zap"></i> Resposta rápida</p>
+          <p class="text-[15px] text-gray-700 leading-relaxed">{d.tldr}</p>
+        </div>
+      )}
+      <div class="prose-evolutto"><Content /></div>
+      {d.faq && d.faq.length > 0 && (
+        <section class="mt-14 pt-10 border-t border-gray-200">
+          <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-6">Perguntas frequentes</h2>
+          <div class="space-y-3">
+            {d.faq.map((f) => (
+              <details class="group bg-[#F3F3F1] rounded-2xl border border-gray-200 overflow-hidden">
+                <summary class="flex items-center justify-between gap-4 cursor-pointer px-5 py-4 list-none">
+                  <span class="text-base font-semibold text-gray-900">{f.pergunta}</span>
+                  <i class="w-5 h-5 text-gray-400 transition-transform group-open:rotate-180 shrink-0" data-lucide="chevron-down"></i>
+                </summary>
+                <div class="px-5 pb-5 text-sm text-gray-600 leading-relaxed">{f.resposta}</div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+    </article>
+
+    <aside class="lg:sticky lg:top-24 space-y-6">
+      <div class="bg-[#F3F3F1] rounded-2xl p-6 border border-gray-200 text-center">
+        <div class="w-16 h-16 mx-auto rounded-full bg-evolutto-gradient flex items-center justify-center mb-4"><img src="/evolutto-logo-white.png" alt="Evolutto" class="w-9 h-auto" /></div>
+        <p class="font-bold text-gray-900">{d.author}</p>
+        <p class="text-sm text-gray-500 mt-1 leading-relaxed">Especialistas em digitalizar, produtizar e escalar consultorias.</p>
+        <a href="/quem-somos" class="inline-flex items-center gap-2 text-sm font-semibold text-evolutto-blue mt-4 hover:gap-3 transition-all">Conhecer a Evolutto <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+      </div>
+      <div class="rounded-2xl bg-evolutto-black text-white p-6 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-40 h-40 bg-evolutto-blue/20 blur-3xl rounded-full"></div>
+        <p class="relative z-10 font-bold text-lg leading-snug mb-2">Escale sua consultoria</p>
+        <p class="relative z-10 text-sm text-gray-400 mb-5">Descubra seu potencial de escala com um diagnóstico gratuito.</p>
+        <a href="/#cta" class="relative z-10 inline-flex items-center gap-2 bg-evolutto-blue text-white text-[13px] font-bold px-5 py-3 rounded-full hover:brightness-110 transition-all">Faça seu Diagnóstico <i class="w-3.5 h-3.5" data-lucide="arrow-up-right"></i></a>
+      </div>
+      <div class="rounded-2xl border border-gray-200 p-6">
+        <p class="text-[0.65rem] font-bold uppercase tracking-widest text-gray-400 mb-4">Artigos recentes</p>
+        <ul class="space-y-4">
+          {recentes.map((p) => (
+            <li><a href={`/blog/${p.slug}`} class="group block">
+              <span class="text-[0.6rem] font-bold uppercase tracking-widest text-evolutto-blue">{p.data.category}</span>
+              <span class="block text-sm font-semibold text-gray-800 leading-snug line-clamp-2 group-hover:text-evolutto-blue transition-colors">{p.data.title}</span>
+            </a></li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  </div>
+
+  <section class="bg-[#F3F3F1] border-t border-gray-200 py-16">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-2xl font-bold tracking-tight text-gray-900 mb-8">Continue lendo</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{relacionados.map((p) => <PostCard post={p} />)}</div>
+    </div>
+  </section>
+
+  <SiteFooter />
+</Site>

@@ -1,6 +1,5 @@
 # ===== Redirects Evolutto (Netlify / Cloudflare Pages) =====
 # Blog migrado para subdomínio (wildcard + splat)
-/blog/*                                       https://blog.evolutto.com/:splat   301
 
 # ERP / implantação de software -> página da plataforma (ERP)
 /erp-software                                 /plataforma   301

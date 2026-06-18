@@ -1,0 +1,22 @@
+---
+import type { Post } from '../lib/blog';
+import { catSlug, fmtDate } from '../lib/blog';
+interface Props { post: Post; }
+const { post } = Astro.props;
+const { title, description, category, pubDate } = post.data;
+---
+
+<article class="group bg-white rounded-[1.5rem] border border-gray-200 overflow-hidden hover:shadow-lg hover:border-evolutto-blue/40 transition-all flex flex-col">
+  <div class="h-1.5 bg-evolutto-gradient"></div>
+  <div class="p-6 flex flex-col flex-1">
+    <a href={`/blog/categoria/${catSlug(category)}`} class="text-[0.6rem] font-bold uppercase tracking-widest text-evolutto-blue mb-3 hover:underline w-fit">{category}</a>
+    <a href={`/blog/${post.slug}`} class="flex flex-col flex-1">
+      <h3 class="text-lg font-bold tracking-tight text-gray-900 leading-snug mb-2 line-clamp-3 group-hover:text-evolutto-blue transition-colors">{title}</h3>
+      <p class="text-sm text-gray-500 leading-relaxed flex-1 line-clamp-3">{description}</p>
+      <div class="mt-5 flex items-center justify-between text-xs text-gray-400">
+        <span>{fmtDate(pubDate)}</span>
+        <i class="w-4 h-4 text-gray-300 group-hover:text-evolutto-blue group-hover:translate-x-1 transition-all" data-lucide="arrow-right"></i>
+      </div>
+    </a>
+  </div>
+</article>

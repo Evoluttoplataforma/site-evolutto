@@ -46,7 +46,6 @@ const orgLd = {
     'https://www.linkedin.com/company/evolutto/',
     'https://www.youtube.com/@evolutto',
     'https://www.facebook.com/evoluttoplataforma',
-    'https://blog.evolutto.com',
   ],
 };
 const websiteLd = {
@@ -59,7 +58,7 @@ const websiteLd = {
   publisher: { '@id': new URL('/#organization', SITE).toString() },
   potentialAction: {
     '@type': 'SearchAction',
-    target: { '@type': 'EntryPoint', urlTemplate: 'https://blog.evolutto.com/buscar?q={search_term_string}' },
+    target: { '@type': 'EntryPoint', urlTemplate: 'https://www.evolutto.com/blog/buscar?q={search_term_string}' },
     'query-input': 'required name=search_term_string',
   },
 };
@@ -108,7 +107,7 @@ const allLd = [orgLd, websiteLd, ...(crumbs.length > 1 ? [breadcrumbLd] : []), .
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={img} />
 
-    <link rel="alternate" type="application/rss+xml" title="Blog Evolutto" href="https://blog.evolutto.com/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Blog Evolutto" href="/blog/rss.xml" />
 
     <!-- Dados estruturados (IA / buscadores) -->
     {allLd.map((ld) => <script type="application/ld+json" set:html={JSON.stringify(ld)} />)}
@@ -125,7 +124,7 @@ const allLd = [orgLd, websiteLd, ...(crumbs.length > 1 ? [breadcrumbLd] : []), .
         Github, BarChart3, Pencil, CirclePlay, Sparkles, Rocket, Gauge, Workflow,
         BadgeCheck, TrendingUp, Menu, Briefcase, GraduationCap, Package, Target,
         BookOpen, MessageCircle, Calendar, CircleCheck, Quote, PlugZap, Phone,
-        MapPin, Clock, Building2, Heart, Share2, X,
+        MapPin, Clock, Building2, Heart, Share2, X, Search,
       } from 'lucide';
       createIcons({
         icons: {
@@ -135,7 +134,7 @@ const allLd = [orgLd, websiteLd, ...(crumbs.length > 1 ? [breadcrumbLd] : []), .
           Github, BarChart3, Pencil, CirclePlay, Sparkles, Rocket, Gauge, Workflow,
           BadgeCheck, TrendingUp, Menu, Briefcase, GraduationCap, Package, Target,
           BookOpen, MessageCircle, Calendar, CircleCheck, Quote, PlugZap, Phone,
-          MapPin, Clock, Building2, Heart, Share2, X,
+          MapPin, Clock, Building2, Heart, Share2, X, Search,
         },
       });
     </script>

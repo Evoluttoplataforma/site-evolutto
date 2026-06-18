@@ -1,0 +1,56 @@
+---
+import Site from '../../layouts/Site.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import { categoriesOf, allPosts } from '../../lib/blog';
+const cats = categoriesOf(await allPosts());
+---
+
+<Site title="Buscar artigos — Blog Evolutto" description="Busque artigos do blog da Evolutto." noindex={true}>
+  <SiteHeader />
+  <section class="bg-evolutto-black text-white">
+    <div class="max-w-4xl mx-auto px-6 py-14 lg:py-16">
+      <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight mb-6">Buscar artigos</h1>
+      <div class="relative">
+        <i class="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" data-lucide="search"></i>
+        <input id="q" type="search" placeholder="Busque por tema, palavra-chave…" autocomplete="off" class="w-full pr-5 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-evolutto-blue focus:bg-white/15 transition" style="padding-left:3.25rem" />
+      </div>
+      <div class="flex flex-wrap gap-2 mt-5">
+        {cats.map((c) => (<a href={`/blog/categoria/${c.slug}`} class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-gray-300 hover:bg-evolutto-blue hover:border-evolutto-blue hover:text-white transition-colors">{c.name}</a>))}
+      </div>
+    </div>
+  </section>
+  <div class="max-w-6xl mx-auto px-6 py-12">
+    <p id="count" class="text-sm text-gray-400 mb-6"></p>
+    <div id="results" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <p id="empty" class="hidden text-center text-gray-500 py-16">Nenhum artigo encontrado. Tente outra palavra.</p>
+  </div>
+  <SiteFooter />
+
+  <script>
+    const fmt = (s) => new Date(s + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+    const norm = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const input = document.getElementById('q');
+    const results = document.getElementById('results');
+    const count = document.getElementById('count');
+    const empty = document.getElementById('empty');
+    let posts = [];
+    function card(p) {
+      return `<article class="group bg-white rounded-[1.5rem] border border-gray-200 overflow-hidden hover:shadow-lg hover:border-evolutto-blue/40 transition-all flex flex-col"><div class="h-1.5 bg-evolutto-gradient"></div><a href="${p.url}" class="p-6 flex flex-col flex-1"><span class="text-[0.6rem] font-bold uppercase tracking-widest text-evolutto-blue mb-3">${p.category}</span><h3 class="text-lg font-bold tracking-tight text-gray-900 leading-snug mb-2 line-clamp-3 group-hover:text-evolutto-blue transition-colors">${p.title}</h3><p class="text-sm text-gray-500 leading-relaxed flex-1 line-clamp-3">${p.description}</p><span class="mt-5 text-xs text-gray-400">${fmt(p.date)}</span></a></article>`;
+    }
+    function render(q) {
+      const nq = norm(q.trim());
+      const list = !nq ? posts : posts.filter((p) => norm(p.title + ' ' + p.description + ' ' + p.category).includes(nq));
+      results.innerHTML = list.map(card).join('');
+      empty.classList.toggle('hidden', list.length > 0);
+      count.textContent = nq ? `${list.length} resultado(s) para "${q.trim()}"` : `${posts.length} artigos`;
+      if (window.lucide) window.lucide.createIcons();
+    }
+    fetch('/blog/search.json').then((r) => r.json()).then((data) => {
+      posts = data;
+      const q = new URLSearchParams(location.search).get('q') || '';
+      input.value = q; render(q);
+    });
+    let t; input.addEventListener('input', () => { clearTimeout(t); t = setTimeout(() => render(input.value), 120); });
+  </script>
+</Site>

@@ -42,3 +42,25 @@ body {
   -webkit-mask-composite: xor; mask-composite: exclude;
 }
 .flashlight-card:hover::before, .flashlight-card:hover .flashlight-border { opacity: 1; }
+
+/* Tipografia do conteúdo do post */
+.prose-evolutto { color: #3f424b; line-height: 1.8; }
+.prose-evolutto h2 { font-size: 1.6rem; font-weight: 700; color: #18191b; margin: 2.4rem 0 1rem; letter-spacing: -0.02em; }
+.prose-evolutto h3 { font-size: 1.25rem; font-weight: 700; color: #18191b; margin: 2rem 0 .75rem; }
+.prose-evolutto p { margin: 1rem 0; }
+.prose-evolutto ul { margin: 1rem 0; padding-left: 1.25rem; list-style: disc; }
+.prose-evolutto li { margin: .4rem 0; }
+.prose-evolutto a { color: #3363ff; font-weight: 600; text-decoration: underline; }
+.prose-evolutto blockquote { border-left: 3px solid #3363ff; padding-left: 1rem; color: #57534e; font-style: italic; margin: 1.5rem 0; }
+.prose-evolutto strong { color: #18191b; }
+.prose-evolutto img { border-radius: 1rem; margin: 1.5rem 0; }
+
+/* Tabelas */
+.prose-evolutto table { width: 100%; border-collapse: collapse; margin: 1.75rem 0; font-size: .95rem; border: 1px solid #e7e5e4; border-radius: .9rem; overflow: hidden; display: table; }
+.prose-evolutto th { background: #3363ff; color: #fff; font-weight: 700; text-align: left; padding: .85rem 1rem; font-size: .8rem; text-transform: uppercase; letter-spacing: .03em; }
+.prose-evolutto td { padding: .8rem 1rem; border-top: 1px solid #eceae8; vertical-align: top; color: #3f424b; }
+.prose-evolutto tbody tr:nth-child(even) td { background: #f7f7f5; }
+.prose-evolutto table a { word-break: break-word; }
+/* rolagem horizontal no mobile */
+.prose-evolutto { overflow-x: auto; }
+@media (max-width: 640px) { .prose-evolutto table { font-size: .85rem; } .prose-evolutto th, .prose-evolutto td { padding: .6rem .7rem; } }

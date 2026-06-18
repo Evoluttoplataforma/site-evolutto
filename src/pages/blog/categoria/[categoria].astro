@@ -1,0 +1,37 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Site from '../../../layouts/Site.astro';
+import SiteHeader from '../../../components/SiteHeader.astro';
+import SiteFooter from '../../../components/SiteFooter.astro';
+import PostCard from '../../../components/PostCard.astro';
+import { allPosts, categoriesOf, catSlug, type Post } from '../../../lib/blog';
+
+export const getStaticPaths = (async () => {
+  const posts = await allPosts();
+  return categoriesOf(posts).map((c) => ({ params: { categoria: c.slug }, props: { nome: c.name, posts: posts.filter((p) => catSlug(p.data.category) === c.slug) } }));
+}) satisfies GetStaticPaths;
+
+const { nome, posts } = Astro.props as { nome: string; posts: Post[] };
+const cats = categoriesOf(await allPosts());
+---
+
+<Site title={`${nome} — Blog Evolutto`} description={`Artigos sobre ${nome} no blog da Evolutto.`}>
+  <SiteHeader />
+  <section class="bg-evolutto-black text-white">
+    <div class="max-w-6xl mx-auto px-6 py-12 lg:py-14">
+      <a href="/blog/artigos" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6"><i class="w-4 h-4" data-lucide="arrow-left"></i> Todos os artigos</a>
+      <span class="text-[12px] font-bold uppercase tracking-[0.18em] text-evolutto-blue">Categoria</span>
+      <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight mt-3 mb-6">{nome}</h1>
+      <div class="flex flex-wrap gap-2">
+        {cats.map((c) => (
+          <a href={`/blog/categoria/${c.slug}`} class={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${c.name === nome ? 'bg-evolutto-blue border-evolutto-blue text-white' : 'bg-white/10 border-white/15 text-gray-300 hover:bg-white/20'}`}>{c.name}</a>
+        ))}
+      </div>
+    </div>
+  </section>
+  <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+    <p class="text-sm text-gray-400 mb-8">{posts.length} artigo(s) em {nome}</p>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{posts.map((p) => <PostCard post={p} />)}</div>
+  </div>
+  <SiteFooter />
+</Site>

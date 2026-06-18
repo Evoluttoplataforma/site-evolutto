@@ -1,0 +1,79 @@
+---
+import Site from '../../layouts/Site.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import PostCard from '../../components/PostCard.astro';
+import { allPosts, categoriesOf, fmtDate } from '../../lib/blog';
+
+const posts = await allPosts();
+const cats = categoriesOf(posts);
+const [featured, ...rest] = posts;
+const recentes = rest.slice(0, 6);
+const secoes = cats.slice(0, 4).map((c) => ({ ...c, posts: posts.filter((p) => p.data.category === c.name).slice(0, 3) }));
+---
+
+<Site title="Blog Evolutto — consultoria digital, escala e produtização" description="Estratégia, escala, produtização e os insights da equipe Evolutto para você crescer sua consultoria.">
+  <SiteHeader />
+
+  <!-- Hero + busca -->
+  <section class="relative bg-evolutto-black text-white overflow-hidden">
+    <div class="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[70%] h-80 bg-evolutto-blue/25 blur-[130px] rounded-full"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-6 py-16 lg:py-20 text-center">
+      <span class="text-[12px] font-bold uppercase tracking-[0.18em] text-evolutto-blue">Blog Evolutto</span>
+      <h1 class="text-4xl lg:text-6xl font-extrabold tracking-tighter mt-4 mb-5 leading-[1.05]">Tendências sobre o universo da <span class="text-evolutto-blue">consultoria</span>.</h1>
+      <p class="text-lg text-gray-400 mb-8">Estratégia, escala, produtização e os insights da equipe Evolutto.</p>
+      <form action="/blog/buscar" method="get" class="relative max-w-xl mx-auto">
+        <i class="w-5 h-5 absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" data-lucide="search"></i>
+        <input name="q" type="search" placeholder="Buscar artigos…" autocomplete="off" class="w-full py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-evolutto-blue focus:bg-white/15 transition" style="padding-left:3.25rem;padding-right:1.25rem" />
+      </form>
+      <div class="flex flex-wrap justify-center gap-2 mt-6">
+        {cats.map((c) => (
+          <a href={`/blog/categoria/${c.slug}`} class="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 border border-white/15 text-gray-300 hover:bg-evolutto-blue hover:border-evolutto-blue hover:text-white transition-colors">{c.name}</a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <div class="max-w-6xl mx-auto px-6 py-14 lg:py-16">
+    {featured && (
+      <a href={`/blog/${featured.slug}`} class="group relative block rounded-[2rem] overflow-hidden bg-evolutto-black text-white p-8 sm:p-12 lg:p-14 mb-16">
+        <div class="absolute -top-1/3 right-[-10%] w-[60%] h-[140%] bg-evolutto-blue/25 blur-[120px] rounded-full pointer-events-none"></div>
+        <div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
+        <div class="relative z-10 max-w-2xl">
+          <div class="flex items-center gap-3 mb-5">
+            <span class="text-[0.65rem] font-bold uppercase tracking-widest text-evolutto-blue bg-evolutto-blue/15 px-3 py-1 rounded-full">{featured.data.category}</span>
+            <span class="text-[0.65rem] font-semibold uppercase tracking-widest text-gray-500">Em destaque</span>
+          </div>
+          <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight leading-[1.1] mb-4 line-clamp-3">{featured.data.title}</h2>
+          <p class="text-gray-400 leading-relaxed mb-6 line-clamp-2 max-w-xl">{featured.data.description}</p>
+          <div class="flex items-center gap-3 text-sm text-gray-400">
+            <span>{featured.data.author}</span><span class="text-gray-600">·</span><span>{fmtDate(featured.data.pubDate)}</span>
+            <span class="ml-auto inline-flex items-center gap-2 text-white font-semibold group-hover:gap-3 transition-all">Ler artigo <i class="w-4 h-4" data-lucide="arrow-right"></i></span>
+          </div>
+        </div>
+      </a>
+    )}
+
+    <div class="flex items-end justify-between mb-8">
+      <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">Mais recentes</h2>
+      <a href="/blog/artigos" class="inline-flex items-center gap-2 text-sm font-semibold text-evolutto-blue hover:gap-3 transition-all">Ver todos <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-20">
+      {recentes.map((p) => <PostCard post={p} />)}
+    </div>
+
+    {secoes.map((s) => (
+      <section class="mb-16">
+        <div class="flex items-end justify-between mb-8 border-t border-gray-200 pt-10">
+          <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900">{s.name}</h2>
+          <a href={`/blog/categoria/${s.slug}`} class="inline-flex items-center gap-2 text-sm font-semibold text-evolutto-blue hover:gap-3 transition-all">Ver categoria <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {s.posts.map((p) => <PostCard post={p} />)}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <SiteFooter />
+</Site>
