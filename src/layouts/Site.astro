@@ -97,6 +97,13 @@ const gtmHead = gtmId
     <meta name="theme-color" content="#3363ff" />
     <link rel="icon" type="image/png" href="/evolutto-logo-white.png" />
 
+    <!-- Tracking-kit (sem GTM): Meta Pixel + GA4 + Google Ads. IDs em /tracking/tracking.config.js -->
+    <script is:inline src="/tracking/tracking.config.js"></script>
+    <script is:inline src="/tracking/01-capture.js"></script>
+    <script is:inline src="/tracking/02-dispatch.js"></script>
+    <script is:inline src="/tracking/03-engagement.js"></script>
+    <script is:inline src="/tracking/trk-helpers.js"></script>
+
     <!-- Open Graph -->
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content="Evolutto" />

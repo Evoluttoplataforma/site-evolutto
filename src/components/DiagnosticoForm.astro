@@ -187,6 +187,8 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
       if (Object.keys(utm).length) dados.utm = utm;
       try { sessionStorage.setItem('evolutto_lead', JSON.stringify(dados)); } catch (_) {}
       if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
+      // Tracking: dispara evento Lead (Meta Pixel + GA4 + Google Ads) com advanced matching
+      try { window.trk && window.trk.lead({ email: dados.email, phone: dados.telefone, name: dados.nome }); } catch (_) {}
       // 1) Se houver função (webhook) -> insert + Mailchimp. Senão 2) grava direto no Supabase. Não bloqueia a UX.
       try {
         if (webhook) {
