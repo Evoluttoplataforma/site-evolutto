@@ -189,18 +189,20 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
       if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
       // Tracking: dispara evento Lead (Meta Pixel + GA4 + Google Ads) com advanced matching
       try { window.trk && window.trk.lead({ email: dados.email, phone: dados.telefone, name: dados.nome }); } catch (_) {}
-      // 1) Se houver função (webhook) -> insert + Mailchimp. Senão 2) grava direto no Supabase. Não bloqueia a UX.
-      try {
-        if (webhook) {
-          await fetch(webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) });
-        } else if (anonKey) {
+      // 1) tenta a função (insert + Mailchimp). 2) se falhar/não existir, grava direto no Supabase.
+      let salvo = false;
+      if (webhook) {
+        try { const r = await fetch(webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) }); salvo = r.ok; } catch (_) {}
+      }
+      if (!salvo && anonKey) {
+        try {
           await fetch(`${supaUrl}/rest/v1/evolutto_leads`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', apikey: anonKey, Authorization: `Bearer ${anonKey}`, Prefer: 'return=minimal' },
             body: JSON.stringify(dados),
           });
-        }
-      } catch (_) { /* segue mesmo se falhar */ }
+        } catch (_) {}
+      }
       window.location.href = '/obrigado';
     });
   </script>
