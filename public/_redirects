@@ -60,6 +60,3 @@
 /toolkit-da-consultoria-digital/              /   301
 /transformamos-metodologia-de-consultoria/    /   301
 /transformamos-metodologia-de-consultoria-1/  /   301
-
-# Qualquer rota inexistente -> home
-/*                                            /             301
