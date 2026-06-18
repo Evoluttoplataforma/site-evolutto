@@ -113,7 +113,7 @@ window.TRACKING_CONFIG = {
   capture: {
     firstTouch: true,           // mantém ft_* travado (não sobrescreve)
     referrerMapping: true,      // infere utm_source do referrer (orgânico)
-    geo: true,                  // enriquece cidade/estado/país via ipapi.co
+    geo: false,                 // desligado: ipapi.co dá 429/CORS; o server (track) já pega o IP real
     journeyMaxTouches: 20,      // últimos N toques mantidos no trk_journey
     deviceFingerprint: true,    // screen/viewport/lang/tz/platform/device_type
     ctwaCapture: true,          // captura ctwa_clid da URL
