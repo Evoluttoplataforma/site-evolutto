@@ -171,7 +171,7 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
   <script define:vars={{
     webhook: import.meta.env.PUBLIC_LEAD_WEBHOOK || '',
     supaUrl: import.meta.env.PUBLIC_SUPABASE_URL || 'https://yfpdrckyuxltvznqfqgh.supabase.co',
-    anonKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY || '',
+    anonKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmcGRyY2t5dXhsdHZ6bnFmcWdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTYwMDYsImV4cCI6MjA5MDAzMjAwNn0.PVMRz04lvMLepjv0ZCsr5mJ8K_Ux1fQlQgX1vOd4O2g',
   }}>
     const form = document.getElementById('form-diagnostico');
     form?.addEventListener('submit', async (e) => {
