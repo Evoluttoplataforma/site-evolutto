@@ -203,6 +203,8 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
           });
         } catch (_) {}
       }
+      // dá tempo do evento Lead disparar (pixel + envio server com keepalive) antes de navegar
+      await new Promise((r) => setTimeout(r, 900));
       window.location.href = '/obrigado';
     });
   </script>
