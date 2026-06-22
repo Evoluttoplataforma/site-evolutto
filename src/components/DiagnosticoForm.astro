@@ -78,12 +78,10 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
           </div>
         </div>
 
-        {simple && (
-          <div>
-            <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="email">E-mail *</label>
-            <input id="email" name="email" type="email" required placeholder="voce@email.com" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition" />
-          </div>
-        )}
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="email">E-mail *</label>
+          <input id="email" name="email" type="email" required placeholder="voce@email.com" class="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-evolutto-blue/30 focus:border-evolutto-blue transition" />
+        </div>
 
         {!simple && (
         <div>
@@ -200,41 +198,26 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
       if (makeWebhook) {
         try {
           const td = (window.__trk && typeof window.__trk.get === 'function') ? (window.__trk.get() || {}) : {};
-          const gc = (window.__trk && window.__trk.getCookie) ? window.__trk.getCookie : function () { return ''; };
           const u = dados.utm || {};
-          // PAYLOAD PADRÃO: sempre os MESMOS campos (vazios quando não houver) -> automação não quebra
-          const campos = {
-            nome: dados.nome || '',
-            email: dados.email || '',
-            telefone: dados.telefone || '',
-            empresa: dados.empresa || '',
-            oque_faz: dados.oque_faz || '',
-            eu_sou: dados.eu_sou || '',
-            minha_empresa: dados.minha_empresa || '',
-            consultores: dados.consultores || '',
-            projetos_entregues: dados.projetos_entregues || '',
-            projetos_ativos: dados.projetos_ativos || '',
-            faturamento: dados.faturamento || '',
-            tipo: dados.tipo || '',
-            origem: dados.origem || '',
-            utm_source: u.utm_source || gc('ft_utm_source') || '',
-            utm_medium: u.utm_medium || gc('ft_utm_medium') || '',
-            utm_campaign: u.utm_campaign || gc('ft_utm_campaign') || '',
-            utm_content: u.utm_content || gc('ft_utm_content') || '',
-            utm_term: u.utm_term || gc('ft_utm_term') || '',
-            gclid: p.get('gclid') || gc('gclid') || '',
-            fbclid: p.get('fbclid') || gc('fbclid') || '',
-            fbp: td.fbp || '',
-            fbc: td.fbc || '',
-            ga_client_id: td.ga_client_id || '',
-            visitor_id: td.visitor_id || '',
-            session_id: td.session_id || '',
-            landing_page: td.landing_page || '',
-            page_url: td.page_url || location.href,
-            referrer: td.referrer || document.referrer || '',
-          };
+          // 1) começa com TODOS os campos do tracking-kit (device, página, ids, journey) — sempre presentes
+          const campos = Object.assign({}, td);
+          // 2) garante os campos de lead/atribuição SEMPRE (vazios quando não houver) -> automação nunca quebra
+          ['nome','email','telefone','empresa','oque_faz','eu_sou','minha_empresa','consultores','projetos_entregues','projetos_ativos','faturamento','tipo','origem','utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'].forEach(function (k) { if (campos[k] == null) campos[k] = ''; });
+          // 3) sobrescreve com os valores reais do formulário (menos o objeto utm aninhado)
+          Object.keys(dados).forEach(function (k) { if (k !== 'utm') campos[k] = dados[k]; });
+          // 4) utm + click ids
+          campos.utm_source = u.utm_source || campos.utm_source || '';
+          campos.utm_medium = u.utm_medium || campos.utm_medium || '';
+          campos.utm_campaign = u.utm_campaign || campos.utm_campaign || '';
+          campos.utm_content = u.utm_content || campos.utm_content || '';
+          campos.utm_term = u.utm_term || campos.utm_term || '';
+          campos.gclid = p.get('gclid') || campos.gclid || '';
+          campos.fbclid = p.get('fbclid') || campos.fbclid || '';
           const usp = new URLSearchParams();
-          Object.keys(campos).forEach((k) => usp.append(k, campos[k] == null ? '' : String(campos[k])));
+          Object.keys(campos).forEach(function (k) {
+            const v = campos[k];
+            usp.append(k, v == null ? '' : (typeof v === 'object' ? JSON.stringify(v) : String(v)));
+          });
           fetch(makeWebhook, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: usp.toString(), keepalive: true });
         } catch (_) {}
       }
