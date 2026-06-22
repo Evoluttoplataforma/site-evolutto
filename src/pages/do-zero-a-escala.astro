@@ -4,6 +4,10 @@ import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import PageHero from '../components/PageHero.astro';
 import Faq from '../components/Faq.astro';
+import DiagnosticoForm from '../components/DiagnosticoForm.astro';
+
+// ⚠️ TODO: trocar pela URL de checkout da Hotmart (Rodrigo vai enviar). Por ora vai pro /obrigado.
+const HOTMART = '/obrigado';
 
 const niveis = [
   { n: '01', ic: 'package', t: 'Digitalização / Produtização', o: 'Fazer a primeira venda da v1 do seu produto digital.', d: 'Transforme seu conhecimento numa trilha implementável — fase, etapa, tarefa, validação e transformação — e leve ao mercado rápido.' },
@@ -223,22 +227,22 @@ const AVATARES: Record<string, string> = {
 
   <Faq items={faqs} title="Perguntas frequentes" subtitle="Sobre o curso do Zero a Escala." />
 
-  <!-- CTA -->
-  <section id="inscricao" class="py-6 pb-20 lg:pb-28">
-    <div class="max-w-[1400px] mx-auto px-4 lg:px-6">
-      <div class="relative rounded-[2.5rem] bg-evolutto-gradient overflow-hidden px-6 py-20 md:px-16 text-center">
-        <div class="absolute inset-0 opacity-[0.06]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 22px 22px;"></div>
-        <div class="relative z-10 max-w-2xl mx-auto">
-          <h2 class="text-3xl md:text-5xl font-bold tracking-tight text-white leading-tight mb-5">Comece a construir uma consultoria previsível.</h2>
-          <p class="text-white/80 text-lg mb-10">Trilha completa, comunidade e mentorias — com garantia de 15 dias.</p>
-          <a class="inline-flex items-center gap-2 bg-white text-evolutto-black text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:scale-105 transition-transform" href="#" data-tally-open="m6Xbo5" data-tally-layout="modal" data-tally-hide-title="1">Quero minha consultoria previsível <i class="w-4 h-4" data-lucide="arrow-up-right"></i></a>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- CTA / Inscrição -->
+  <DiagnosticoForm
+    id="inscricao"
+    simple={true}
+    tipo="do-zero-a-escala"
+    eyebrow="Do Zero a Escala"
+    title='Comece a construir uma consultoria <span class="text-evolutto-blue">previsível</span>.'
+    subtitle="Preencha seus dados e vá direto para a inscrição. Trilha completa, comunidade e mentorias — com garantia de 15 dias."
+    buttonLabel="Quero minha consultoria previsível"
+    redirectTo={HOTMART}
+    benefits={[
+      'Trilha completa: digitalização, produto, gestão, marketing e vendas',
+      'Comunidade + mentorias ao vivo',
+      'Garantia incondicional de 15 dias',
+    ]}
+  />
 
   <SiteFooter />
-
-  <!-- Formulário Tally (abre modal e leva ao checkout Hotmart) -->
-  <script is:inline src="https://tally.so/widgets/embed.js"></script>
 </Site>
