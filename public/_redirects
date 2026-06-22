@@ -2,8 +2,8 @@
 # Blog migrado para subdomínio (wildcard + splat)
 
 # CMS (painel interno) — atalho: evolutto.com/acesso -> app do CMS no subdomínio
-/acesso       https://cms.evolutto.com/acesso          302
-/acesso/*     https://cms.evolutto.com/acesso/:splat   302
+/acesso       https://acesso.evolutto.com/acesso          302
+/acesso/*     https://acesso.evolutto.com/acesso/:splat   302
 
 # ERP / implantação de software -> /erp-software
 /plataforma                                   /erp-software   301
