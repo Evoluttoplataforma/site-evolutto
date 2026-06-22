@@ -190,8 +190,24 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
       if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
       // Tracking: dispara evento Lead (Meta Pixel + GA4 + Google Ads) com advanced matching
       try { window.trk && window.trk.lead({ email: dados.email, phone: dados.telefone, name: dados.nome }); } catch (_) {}
-      // Envia também pro Make (automação) — fire-and-forget; no-cors evita bloqueio CORS, keepalive sobrevive ao redirect
-      if (makeWebhook) { try { fetch(makeWebhook, { method: 'POST', body: JSON.stringify(dados), mode: 'no-cors', keepalive: true }); } catch (_) {} }
+      // Envia também pro Make (automação) com TODOS os campos + dados de tracking, SEPARADOS (form-urlencoded).
+      // form-urlencoded é "simple request" → sem preflight CORS; no-cors evita erro de leitura; keepalive sobrevive ao redirect.
+      if (makeWebhook) {
+        try {
+          const td = (window.trk && window.__trk && typeof window.__trk.get === 'function') ? (window.__trk.get() || {}) : {};
+          const flat = { ...td, ...dados };
+          if (flat.utm && typeof flat.utm === 'object') { Object.assign(flat, flat.utm); delete flat.utm; }
+          if (!flat.page_url) flat.page_url = location.href;
+          if (!flat.referrer) flat.referrer = document.referrer || '';
+          const usp = new URLSearchParams();
+          Object.keys(flat).forEach((k) => {
+            const v = flat[k];
+            if (v === null || v === undefined || v === '') return;
+            usp.append(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
+          });
+          fetch(makeWebhook, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: usp.toString(), keepalive: true });
+        } catch (_) {}
+      }
       // 1) tenta a função (insert + Mailchimp). 2) se falhar/não existir, grava direto no Supabase.
       let salvo = false;
       if (webhook) {
