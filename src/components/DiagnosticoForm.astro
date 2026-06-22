@@ -199,17 +199,42 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
       // form-urlencoded é "simple request" → sem preflight CORS; no-cors evita erro de leitura; keepalive sobrevive ao redirect.
       if (makeWebhook) {
         try {
-          const td = (window.trk && window.__trk && typeof window.__trk.get === 'function') ? (window.__trk.get() || {}) : {};
-          const flat = { ...td, ...dados };
-          if (flat.utm && typeof flat.utm === 'object') { Object.assign(flat, flat.utm); delete flat.utm; }
-          if (!flat.page_url) flat.page_url = location.href;
-          if (!flat.referrer) flat.referrer = document.referrer || '';
+          const td = (window.__trk && typeof window.__trk.get === 'function') ? (window.__trk.get() || {}) : {};
+          const gc = (window.__trk && window.__trk.getCookie) ? window.__trk.getCookie : function () { return ''; };
+          const u = dados.utm || {};
+          // PAYLOAD PADRÃO: sempre os MESMOS campos (vazios quando não houver) -> automação não quebra
+          const campos = {
+            nome: dados.nome || '',
+            email: dados.email || '',
+            telefone: dados.telefone || '',
+            empresa: dados.empresa || '',
+            oque_faz: dados.oque_faz || '',
+            eu_sou: dados.eu_sou || '',
+            minha_empresa: dados.minha_empresa || '',
+            consultores: dados.consultores || '',
+            projetos_entregues: dados.projetos_entregues || '',
+            projetos_ativos: dados.projetos_ativos || '',
+            faturamento: dados.faturamento || '',
+            tipo: dados.tipo || '',
+            origem: dados.origem || '',
+            utm_source: u.utm_source || gc('ft_utm_source') || '',
+            utm_medium: u.utm_medium || gc('ft_utm_medium') || '',
+            utm_campaign: u.utm_campaign || gc('ft_utm_campaign') || '',
+            utm_content: u.utm_content || gc('ft_utm_content') || '',
+            utm_term: u.utm_term || gc('ft_utm_term') || '',
+            gclid: p.get('gclid') || gc('gclid') || '',
+            fbclid: p.get('fbclid') || gc('fbclid') || '',
+            fbp: td.fbp || '',
+            fbc: td.fbc || '',
+            ga_client_id: td.ga_client_id || '',
+            visitor_id: td.visitor_id || '',
+            session_id: td.session_id || '',
+            landing_page: td.landing_page || '',
+            page_url: td.page_url || location.href,
+            referrer: td.referrer || document.referrer || '',
+          };
           const usp = new URLSearchParams();
-          Object.keys(flat).forEach((k) => {
-            const v = flat[k];
-            if (v === null || v === undefined || v === '') return;
-            usp.append(k, typeof v === 'object' ? JSON.stringify(v) : String(v));
-          });
+          Object.keys(campos).forEach((k) => usp.append(k, campos[k] == null ? '' : String(campos[k])));
           fetch(makeWebhook, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: usp.toString(), keepalive: true });
         } catch (_) {}
       }
