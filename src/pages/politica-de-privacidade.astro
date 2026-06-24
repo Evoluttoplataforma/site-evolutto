@@ -1,0 +1,135 @@
+---
+import Site from '../layouts/Site.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import PageHero from '../components/PageHero.astro';
+
+const atualizacao = '24 de junho de 2026';
+
+const secoes = [
+  {
+    t: '1. Quem somos',
+    p: [
+      'Esta Política de Privacidade descreve como a <strong>Evolutto® Ltda</strong>, inscrita no CNPJ sob o nº 26.315.018/0001-76, coleta, utiliza, armazena e protege os dados pessoais de visitantes, leads e usuários dos seus sites, plataformas e serviços ("Evolutto", "nós").',
+      'Estamos comprometidos com a proteção dos seus dados e atuamos em conformidade com a Lei nº 13.709/2018 — Lei Geral de Proteção de Dados Pessoais (LGPD).',
+    ],
+  },
+  {
+    t: '2. Dados que coletamos',
+    p: ['Coletamos dados pessoais nas seguintes situações:'],
+    ul: [
+      '<strong>Dados fornecidos por você:</strong> nome, e-mail, telefone, empresa, cargo e demais informações enviadas em formulários de contato, diagnóstico, cadastro ou inscrição em nossos produtos.',
+      '<strong>Dados de navegação:</strong> endereço IP, tipo de navegador, páginas acessadas, tempo de permanência, origem do acesso (UTMs) e identificadores de campanha, coletados automaticamente por cookies e tecnologias semelhantes.',
+      '<strong>Dados de conta:</strong> informações de autenticação e uso, quando você utiliza a plataforma Evolutto.',
+    ],
+  },
+  {
+    t: '3. Como utilizamos os dados',
+    p: ['Utilizamos seus dados pessoais para as seguintes finalidades:'],
+    ul: [
+      'Responder solicitações de contato, suporte e diagnóstico;',
+      'Fornecer, operar e melhorar nossos produtos e serviços;',
+      'Enviar comunicações sobre conteúdos, novidades e ofertas, quando autorizado;',
+      'Personalizar sua experiência e mensurar o desempenho de campanhas de marketing;',
+      'Cumprir obrigações legais, regulatórias e contratuais.',
+    ],
+  },
+  {
+    t: '4. Base legal',
+    p: [
+      'O tratamento dos seus dados se fundamenta nas hipóteses legais previstas na LGPD, especialmente: o seu <strong>consentimento</strong>, a <strong>execução de contrato</strong>, o <strong>cumprimento de obrigação legal</strong> e o <strong>legítimo interesse</strong> da Evolutto, sempre respeitando seus direitos e liberdades fundamentais.',
+    ],
+  },
+  {
+    t: '5. Compartilhamento de dados',
+    p: [
+      'Não vendemos seus dados pessoais. Podemos compartilhá-los com prestadores de serviço e parceiros que nos apoiam na operação — como plataformas de hospedagem, automação de marketing, análise de dados e pagamentos — sempre sob obrigações de confidencialidade e segurança, e estritamente para as finalidades descritas nesta Política.',
+      'Também poderemos compartilhar dados quando exigido por autoridade competente ou para cumprimento de obrigação legal.',
+    ],
+  },
+  {
+    t: '6. Cookies',
+    p: [
+      'Utilizamos cookies e tecnologias semelhantes para garantir o funcionamento do site, lembrar suas preferências, medir audiência e personalizar conteúdos e anúncios. Você pode gerenciar ou desativar os cookies nas configurações do seu navegador, ciente de que isso pode afetar a experiência de navegação.',
+    ],
+  },
+  {
+    t: '7. Armazenamento e segurança',
+    p: [
+      'Adotamos medidas técnicas e organizacionais para proteger seus dados contra acesso não autorizado, perda, alteração ou divulgação indevida. Os dados são mantidos apenas pelo tempo necessário ao cumprimento das finalidades para as quais foram coletados ou conforme exigido por lei.',
+    ],
+  },
+  {
+    t: '8. Seus direitos',
+    p: ['Nos termos da LGPD, você pode, a qualquer momento:'],
+    ul: [
+      'Confirmar a existência de tratamento e acessar seus dados;',
+      'Corrigir dados incompletos, inexatos ou desatualizados;',
+      'Solicitar a anonimização, bloqueio ou eliminação de dados desnecessários;',
+      'Revogar o consentimento e solicitar a portabilidade dos dados;',
+      'Obter informações sobre o compartilhamento dos seus dados.',
+    ],
+  },
+  {
+    t: '9. Contato e Encarregado (DPO)',
+    p: [
+      'Para exercer seus direitos ou esclarecer dúvidas sobre esta Política, entre em contato pelo e-mail <a class="text-evolutto-blue font-medium hover:underline" href="mailto:contato@evolutto.com">contato@evolutto.com</a>. Trataremos sua solicitação com a maior brevidade possível.',
+    ],
+  },
+  {
+    t: '10. Alterações desta Política',
+    p: [
+      'Esta Política poderá ser atualizada periodicamente para refletir mudanças em nossas práticas ou na legislação. Recomendamos a revisão regular desta página. A data da última atualização está indicada no início do documento.',
+    ],
+  },
+];
+---
+
+<Site
+  title="Política de Privacidade | Evolutto"
+  description="Saiba como a Evolutto coleta, utiliza e protege seus dados pessoais, em conformidade com a LGPD (Lei nº 13.709/2018)."
+  keywords={['política de privacidade evolutto', 'lgpd evolutto', 'proteção de dados evolutto']}
+>
+  <SiteHeader />
+
+  <PageHero
+    eyebrow="Privacidade"
+    titleStart="Política de "
+    accent="Privacidade"
+    titleEnd="."
+    text="Transparência sobre como coletamos, utilizamos e protegemos os seus dados pessoais, em conformidade com a LGPD."
+    primaryLabel="Falar com a gente"
+    primaryHref="mailto:contato@evolutto.com"
+    secondaryLabel="Ler a política"
+    secondaryHref="#conteudo"
+  />
+
+  <section id="conteudo" class="py-20 lg:py-28">
+    <div class="max-w-3xl mx-auto px-6">
+      <p class="text-sm text-gray-400 mb-12">Última atualização: {atualizacao}</p>
+
+      <div class="space-y-12">
+        {secoes.map((s) => (
+          <div>
+            <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-gray-900 mb-4 leading-tight">{s.t}</h2>
+            {s.p.map((par) => (
+              <p class="text-base text-gray-600 leading-relaxed mb-4" set:html={par}></p>
+            ))}
+            {s.ul && (
+              <ul class="space-y-3 mt-4">
+                {s.ul.map((li) => (
+                  <li class="flex items-start gap-3 text-base text-gray-600 leading-relaxed">
+                    <span class="w-5 h-5 min-w-5 rounded-full bg-evolutto-blue/10 text-evolutto-blue grid place-items-center mt-1"><i class="w-3 h-3" data-lucide="check"></i></span>
+                    <span set:html={li}></span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <SiteFooter />
+</Site>
