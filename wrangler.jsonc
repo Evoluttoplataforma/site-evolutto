@@ -1,0 +1,9 @@
+{
+  // Configuração do Cloudflare (Workers + Static Assets).
+  // O site é Astro estático: o build gera ./dist e o Cloudflare serve esses arquivos.
+  "name": "site-evolutto",
+  "compatibility_date": "2026-06-24",
+  "assets": {
+    "directory": "./dist"
+  }
+}
