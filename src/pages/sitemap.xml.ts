@@ -12,6 +12,7 @@ const PAGES = [
   { p: '/carreiras', pr: '0.5' },
   { p: '/indicacao', pr: '0.6' },
   { p: '/suporte', pr: '0.5' },
+  { p: '/politica-de-privacidade', pr: '0.3' },
   { p: '/blog', pr: '0.9' },
   { p: '/blog/artigos', pr: '0.6' },
 ];
