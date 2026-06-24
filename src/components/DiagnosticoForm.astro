@@ -155,6 +155,11 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
         </div>
         )}
 
+        <label class="flex items-start gap-3 cursor-pointer select-none pt-1">
+          <input id="consentimento" name="consentimento" type="checkbox" value="aceito" required class="mt-0.5 h-4 w-4 min-w-4 rounded border-gray-300 text-evolutto-blue focus:ring-2 focus:ring-evolutto-blue/30 cursor-pointer" />
+          <span class="text-[11px] text-gray-500 leading-relaxed">Autorizo o tratamento dos meus dados de acordo com a <a href="/politica-de-privacidade" target="_blank" rel="noopener" class="text-evolutto-blue font-medium hover:underline">Política de Privacidade</a> e concordo em ser contatado(a) pela Evolutto. *</span>
+        </label>
+
         <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-evolutto-blue text-white text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all shadow-lg shadow-evolutto-blue/30">
           {buttonLabel} <i class="w-4 h-4" data-lucide="arrow-up-right"></i>
         </button>
@@ -202,7 +207,7 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
           // 1) começa com TODOS os campos do tracking-kit (device, página, ids, journey) — sempre presentes
           const campos = Object.assign({}, td);
           // 2) garante os campos de lead/atribuição SEMPRE (vazios quando não houver) -> automação nunca quebra
-          ['nome','email','telefone','empresa','oque_faz','eu_sou','minha_empresa','consultores','projetos_entregues','projetos_ativos','faturamento','tipo','origem','utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'].forEach(function (k) { if (campos[k] == null) campos[k] = ''; });
+          ['nome','email','telefone','empresa','oque_faz','eu_sou','minha_empresa','consultores','projetos_entregues','projetos_ativos','faturamento','consentimento','tipo','origem','utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'].forEach(function (k) { if (campos[k] == null) campos[k] = ''; });
           // 3) sobrescreve com os valores reais do formulário (menos o objeto utm aninhado)
           Object.keys(dados).forEach(function (k) { if (k !== 'utm') campos[k] = dados[k]; });
           // 4) utm + click ids
