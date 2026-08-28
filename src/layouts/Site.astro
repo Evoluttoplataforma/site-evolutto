@@ -94,6 +94,12 @@ const gtmHead = gtmId
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- evolutto.com (sem www) tem regra legada no Cloudflare que manda /blog → blog.evolutto.com -->
+    <script is:inline>
+      if (location.hostname === 'evolutto.com') {
+        location.replace('https://www.evolutto.com' + location.pathname + location.search + location.hash);
+      }
+    </script>
     {gtmHead && <script is:inline set:html={gtmHead} />}
     <title>{title}</title>
     <meta name="description" content={description} />
