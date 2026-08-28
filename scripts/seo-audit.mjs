@@ -18,7 +18,7 @@ const rows = await res.json();
 const issues = [];
 for (const r of rows) {
   if (slugArg && r.slug !== slugArg) continue;
-  const meta = r.seo_description || r.description || '';
+  const meta = (r.seo_description?.trim() || r.description || '').trim();
   const faqLen = Array.isArray(r.faq) ? r.faq.length : 0;
   const kwLen = Array.isArray(r.keywords) ? r.keywords.length : 0;
   const problems = [];
