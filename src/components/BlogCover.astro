@@ -1,0 +1,55 @@
+---
+import { categoryClass, motifForCategory, titleParts } from '../lib/blog-cover';
+
+interface Props {
+  title: string;
+  category: string;
+  size?: 'hero' | 'card' | 'thumb';
+  headingTag?: 'h1' | 'h2' | 'h3' | 'h4';
+  author?: string;
+  minutes?: number;
+}
+
+const {
+  title,
+  category,
+  size = 'card',
+  headingTag = size === 'hero' ? 'h1' : 'h3',
+  author,
+  minutes,
+} = Astro.props;
+
+const Tag = headingTag;
+const parts = titleParts(title);
+const motif = motifForCategory(category);
+const catClass = categoryClass(category);
+---
+
+<div class={`blog-cover blog-cover--${size} blog-cover--${catClass}`}>
+  <div class="blog-cover__glow" aria-hidden="true"></div>
+  <div class="blog-cover__motif" aria-hidden="true" set:html={motif} />
+  <span class="blog-cover__tag">{category}</span>
+  <Tag class="blog-cover__title">
+    {parts.before}
+    {parts.em && <em>{parts.em}</em>}
+    {parts.after}
+  </Tag>
+  <div class="blog-cover__foot">
+    <span class="blog-cover__brand">
+      <span class="blog-cover__ring" aria-hidden="true"></span>
+      Evolutto
+    </span>
+    {(author || minutes) && (
+      <span class="blog-cover__meta">
+        {author && <span class="blog-cover__author">{author.replace(/^por\s+/i, '')}</span>}
+        {author && minutes && <span class="blog-cover__dot" aria-hidden="true">·</span>}
+        {minutes && (
+          <span class="blog-cover__time">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            {minutes} min
+          </span>
+        )}
+      </span>
+    )}
+  </div>
+</div>

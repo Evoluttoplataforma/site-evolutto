@@ -29,9 +29,11 @@ const cats = categoriesOf(await allPosts());
       </div>
     </div>
   </section>
-  <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+  <section class="bg-evolutto-black text-white py-12 lg:py-16">
+    <div class="max-w-6xl mx-auto px-6">
     <p class="text-sm text-gray-400 mb-8">{posts.length} artigo(s) em {nome}</p>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{posts.map((p) => <PostCard post={p} />)}</div>
-  </div>
+    </div>
+  </section>
   <SiteFooter />
 </Site>

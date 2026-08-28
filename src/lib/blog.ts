@@ -101,3 +101,9 @@ export function categoriesOf(posts: Post[]) {
 
 export const fmtDate = (d: Date) =>
   d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' });
+
+export function readTime(body: string): number {
+  const text = (body || '').replace(/<[^>]+>/g, ' ');
+  const words = text.match(/\S+/g)?.length ?? 0;
+  return Math.max(1, Math.ceil(words / 220));
+}

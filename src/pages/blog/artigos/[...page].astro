@@ -28,13 +28,15 @@ const cats = categoriesOf(await allPosts());
       </div>
     </div>
   </section>
-  <div class="max-w-6xl mx-auto px-6 py-12 lg:py-16">
+  <section class="bg-evolutto-black text-white py-12 lg:py-16">
+    <div class="max-w-6xl mx-auto px-6">
     <p class="text-sm text-gray-400 mb-8">Página {page.currentPage} de {page.lastPage} · {page.total} artigos</p>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{page.data.map((p) => <PostCard post={p} />)}</div>
     <nav class="flex items-center justify-between mt-14">
-      {page.url.prev ? (<a href={page.url.prev} class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gray-300 text-sm font-semibold text-gray-700 hover:border-evolutto-blue hover:text-evolutto-blue transition-colors"><i class="w-4 h-4" data-lucide="arrow-left"></i> Anteriores</a>) : <span></span>}
-      {page.url.next ? (<a href={page.url.next} class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-gray-300 text-sm font-semibold text-gray-700 hover:border-evolutto-blue hover:text-evolutto-blue transition-colors">Próximos <i class="w-4 h-4" data-lucide="arrow-right"></i></a>) : <span></span>}
+      {page.url.prev ? (<a href={page.url.prev} class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 text-sm font-semibold text-gray-300 hover:border-evolutto-blue hover:text-evolutto-blue transition-colors"><i class="w-4 h-4" data-lucide="arrow-left"></i> Anteriores</a>) : <span></span>}
+      {page.url.next ? (<a href={page.url.next} class="inline-flex items-center gap-2 px-5 py-3 rounded-full border border-white/20 text-sm font-semibold text-gray-300 hover:border-evolutto-blue hover:text-evolutto-blue transition-colors">Próximos <i class="w-4 h-4" data-lucide="arrow-right"></i></a>) : <span></span>}
     </nav>
-  </div>
+    </div>
+  </section>
   <SiteFooter />
 </Site>
