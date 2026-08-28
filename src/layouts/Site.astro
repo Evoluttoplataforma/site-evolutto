@@ -10,6 +10,9 @@ interface Props {
   keywords?: string[];
   noindex?: boolean;
   jsonLd?: object[];
+  published?: string;
+  modified?: string;
+  author?: string;
 }
 const {
   title = 'Evolutto — Escale sua consultoria e atenda 10x mais clientes',
@@ -19,6 +22,9 @@ const {
   keywords,
   noindex = false,
   jsonLd = [],
+  published,
+  modified,
+  author,
 } = Astro.props;
 
 const SITE = Astro.site ?? new URL('https://www.evolutto.com');
@@ -116,6 +122,9 @@ const gtmHead = gtmId
     <meta property="og:image" content={img} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    {type === 'article' && published && <meta property="article:published_time" content={published} />}
+    {type === 'article' && modified && <meta property="article:modified_time" content={modified} />}
+    {type === 'article' && author && <meta property="article:author" content={author} />}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />

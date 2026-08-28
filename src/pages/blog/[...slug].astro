@@ -53,7 +53,7 @@ const faqLd = d.faq && d.faq.length ? { '@context': 'https://schema.org', '@type
 const jsonLd = [articleLd, breadcrumbLd, ...(faqLd ? [faqLd] : [])];
 ---
 
-<Site title={`${d.seoTitle ?? d.title} — Blog Evolutto`} description={seoDesc} ogImage={ogImage} type="article" published={published} modified={modified} keywords={d.keywords} jsonLd={jsonLd}>
+<Site title={`${d.seoTitle ?? d.title} — Blog Evolutto`} description={seoDesc} ogImage={ogImage} type="article" published={published} modified={modified} author={d.author} keywords={d.keywords} jsonLd={jsonLd}>
   <SiteHeader />
 
   <header class="bg-white border-b border-gray-200">
