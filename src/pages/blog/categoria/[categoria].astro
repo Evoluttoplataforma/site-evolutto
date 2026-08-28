@@ -17,22 +17,22 @@ const cats = categoriesOf(await allPosts());
 
 <Site title={`${nome} — Blog Evolutto`} description={`Artigos sobre ${nome} no blog da Evolutto.`}>
   <SiteHeader />
-  <section class="bg-evolutto-black text-white">
+  <section class="bg-white border-b border-gray-200">
     <div class="max-w-6xl mx-auto px-6 py-12 lg:py-14">
-      <a href="/blog/artigos" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6"><i class="w-4 h-4" data-lucide="arrow-left"></i> Todos os artigos</a>
-      <span class="text-[12px] font-bold uppercase tracking-[0.18em] text-evolutto-blue">Categoria</span>
-      <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight mt-3 mb-6">{nome}</h1>
+      <a href="/blog/artigos" class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-evolutto-blue transition-colors mb-6"><i class="w-4 h-4" data-lucide="arrow-left"></i> Todos os artigos</a>
+      <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-evolutto-blue">Categoria</span>
+      <h1 class="text-3xl lg:text-5xl font-extrabold tracking-tight text-gray-900 mt-3 mb-6">{nome}</h1>
       <div class="flex flex-wrap gap-2">
         {cats.map((c) => (
-          <a href={`/blog/categoria/${c.slug}`} class={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${c.name === nome ? 'bg-evolutto-blue border-evolutto-blue text-white' : 'bg-white/10 border-white/15 text-gray-300 hover:bg-white/20'}`}>{c.name}</a>
+          <a href={`/blog/categoria/${c.slug}`} class={`text-xs font-semibold px-3 py-1.5 rounded-full border transition-colors ${c.name === nome ? 'bg-evolutto-blue border-evolutto-blue text-white' : 'bg-[#F3F3F1] border-gray-200 text-gray-600 hover:border-evolutto-blue hover:text-evolutto-blue'}`}>{c.name}</a>
         ))}
       </div>
     </div>
   </section>
-  <section class="bg-evolutto-black text-white py-12 lg:py-16">
+  <section class="bg-[#F3F3F1] py-12 lg:py-16">
     <div class="max-w-6xl mx-auto px-6">
-    <p class="text-sm text-gray-400 mb-8">{posts.length} artigo(s) em {nome}</p>
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{posts.map((p) => <PostCard post={p} />)}</div>
+      <p class="text-sm text-gray-500 mb-8">{posts.length} artigo(s) em {nome}</p>
+      <div class="blog-grid">{posts.map((p) => <PostCard post={p} />)}</div>
     </div>
   </section>
   <SiteFooter />

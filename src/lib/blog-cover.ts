@@ -1,6 +1,6 @@
 import { catSlug } from './blog';
 
-export type BlogCoverSize = 'hero' | 'card' | 'thumb';
+export type BlogCoverSize = 'featured' | 'card' | 'thumb';
 
 const ACCENT = '#3363ff';
 

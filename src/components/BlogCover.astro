@@ -4,7 +4,7 @@ import { categoryClass, motifForCategory, titleParts } from '../lib/blog-cover';
 interface Props {
   title: string;
   category: string;
-  size?: 'hero' | 'card' | 'thumb';
+  size?: 'featured' | 'card' | 'thumb';
   headingTag?: 'h1' | 'h2' | 'h3' | 'h4';
   author?: string;
   minutes?: number;
@@ -14,7 +14,7 @@ const {
   title,
   category,
   size = 'card',
-  headingTag = size === 'hero' ? 'h1' : 'h3',
+  headingTag = size === 'featured' ? 'h2' : 'h3',
   author,
   minutes,
 } = Astro.props;
