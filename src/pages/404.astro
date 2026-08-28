@@ -2,6 +2,7 @@
 import Site from '../layouts/Site.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import { BLOG_HOME } from '../lib/site';
 ---
 
 <Site title="Página não encontrada — Evolutto" description="A página que você procura não existe ou foi movida." noindex={true}>
@@ -14,7 +15,7 @@ import SiteFooter from '../components/SiteFooter.astro';
       <p class="text-lg text-gray-400 mb-10">O link pode estar quebrado ou a página foi movida. Que tal voltar ao início ou ler o blog?</p>
       <div class="flex flex-wrap justify-center gap-3">
         <a href="/" class="inline-flex items-center gap-2 bg-evolutto-blue text-white text-sm font-bold px-7 py-4 rounded-full hover:brightness-110 hover:scale-105 transition-all shadow-lg shadow-evolutto-blue/30">Ir para o início <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
-        <a href="/blog" class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm font-semibold px-7 py-4 rounded-full hover:bg-white/15 transition-colors">Ver o blog</a>
+        <a href={BLOG_HOME} class="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white text-sm font-semibold px-7 py-4 rounded-full hover:bg-white/15 transition-colors">Ver o blog</a>
       </div>
     </div>
   </section>

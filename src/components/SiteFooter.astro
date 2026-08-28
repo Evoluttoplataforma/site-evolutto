@@ -1,5 +1,6 @@
 ---
 import Logo from './Logo.astro';
+import { BLOG_HOME } from '../lib/site';
 ---
 
 <footer class="bg-evolutto-black px-6 pt-16 pb-10">
@@ -22,6 +23,7 @@ import Logo from './Logo.astro';
       <div>
         <h4 class="text-[0.7rem] font-semibold uppercase tracking-widest text-gray-500 mb-5">Empresa</h4>
         <ul class="space-y-3 text-sm text-gray-400">
+          <li><a class="hover:text-white transition-colors" href={BLOG_HOME}>Blog</a></li>
           <li><a class="hover:text-white transition-colors" href="/quem-somos">Quem Somos</a></li>
           <li><a class="hover:text-white transition-colors" href="/carreiras">Carreiras</a></li>
           <li><a class="hover:text-white transition-colors" href="/indicacao">Indicação</a></li>

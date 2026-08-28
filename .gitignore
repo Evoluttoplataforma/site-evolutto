@@ -10,6 +10,7 @@ dist/
 
 # supabase cli (link local)
 supabase/.temp/
+supabase/migrations/
 
 # gerado por split-seo-batches.mjs
 scripts/seo-batches/stmts/

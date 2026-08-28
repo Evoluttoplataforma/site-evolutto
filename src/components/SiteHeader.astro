@@ -1,6 +1,7 @@
 ---
 // Top banner + header sticky com dropdowns (desktop) e menu hambúrguer (mobile).
 import Logo from './Logo.astro';
+import { BLOG_HOME } from '../lib/site';
 
 const solucoes = [
   { ic: 'briefcase', t: 'Consultoria', d: 'Escale e atenda 10x mais', href: '/consultoria' },
@@ -10,7 +11,7 @@ const solucoes = [
 const aprenda = [
   { ic: 'rocket', t: 'Bootcamp', d: 'O ponto de virada', href: '/bootcamp' },
   { ic: 'book-open', t: 'Do Zero a Escala', d: 'Trilha completa', href: '/do-zero-a-escala' },
-  { ic: 'file-text', t: 'Blog', d: 'Tendências e insights', href: '/blog' },
+  { ic: 'file-text', t: 'Blog', d: 'Tendências e insights', href: BLOG_HOME },
 ];
 const empresa = [
   { ic: 'users', t: 'Quem Somos', d: 'Nossa cultura', href: '/quem-somos' },

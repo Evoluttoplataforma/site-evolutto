@@ -132,8 +132,14 @@ function expandFaq(article) {
   return faq.slice(0, 6);
 }
 
+function fixLegacyBlogLinks(body) {
+  return (body || '')
+    .replace(/origin=https:%2F%2Fblog\.evolutto\.com/g, 'origin=https:%2F%2Fwww.evolutto.com')
+    .replace(/https:\/\/blog\.evolutto\.com/g, 'https://www.evolutto.com/blog');
+}
+
 function addInternalLinks(article, all) {
-  let body = article.body || '';
+  let body = fixLegacyBlogLinks(article.body || '');
   const target = Math.min(6, Math.max(3, 4));
   if (countLinks(body) >= target) return body;
 

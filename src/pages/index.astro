@@ -6,6 +6,7 @@ import Faq from '../components/Faq.astro';
 import DiagnosticoForm from '../components/DiagnosticoForm.astro';
 import PostCard from '../components/PostCard.astro';
 import { allPosts } from '../lib/blog';
+import { BLOG_HOME } from '../lib/site';
 
 const slides = [
   {
@@ -356,7 +357,7 @@ const AVATARES: Record<string, string> = {
           <span class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-gray-400">Blog</span>
           <h2 class="text-3xl lg:text-4xl font-bold tracking-tight text-gray-900 mt-4 leading-tight">As últimas tendências sobre o universo da consultoria.</h2>
         </div>
-        <a class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:gap-3 transition-all" href="/blog">Todos os posts <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
+        <a class="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:gap-3 transition-all" href={BLOG_HOME}>Todos os posts <i class="w-4 h-4" data-lucide="arrow-right"></i></a>
       </div>
       <div class="blog-grid">
         {recentes.map((p) => <PostCard post={p} />)}

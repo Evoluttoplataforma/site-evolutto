@@ -1,5 +1,7 @@
-# ===== Redirects Evolutto (Netlify / Cloudflare Pages) =====
-# Blog migrado para subdomínio (wildcard + splat)
+# ===== Redirects Evolutto (Cloudflare Pages) =====
+
+# Canonical: apex → www (evita /blog cair no WordPress antigo via regra legada)
+https://evolutto.com/*  https://www.evolutto.com/:splat  301
 
 # CMS (painel interno) — atalho: evolutto.com/acesso -> app do CMS no subdomínio
 /acesso       https://acesso.evolutto.com/acesso          302
