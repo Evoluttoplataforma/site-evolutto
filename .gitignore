@@ -8,6 +8,12 @@ dist/
 .env.production
 .env.development
 
+# supabase cli (link local)
+supabase/.temp/
+
+# gerado por split-seo-batches.mjs
+scripts/seo-batches/stmts/
+
 # sistema / editor
 .DS_Store
 *.log
