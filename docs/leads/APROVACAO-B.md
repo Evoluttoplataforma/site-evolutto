@@ -38,26 +38,42 @@ Depois do deploy, a **confirmação funcional em produção continua pendente** 
 Revert de B = reverter só o commit 2.
 
 ## Destino e procedimento de deploy
-- Destino: Cloudflare Worker `site-evolutto` com assets estáticos (`wrangler.jsonc`, `assets.directory: ./dist`), domínio `www.evolutto.com`.
-- Evidência de que produção = `main`: o build local de `5f2aa33` (HEAD) gera `hoisted.CrxbHxXf.js`, o mesmo bundle servido hoje em `www.evolutto.com`.
-- **Não verificado** (sem acesso ao painel Cloudflare nesta sessão): o gatilho exato (integração Git do Cloudflare em push para `main` é a hipótese), comando de build e versão do Node. Confirmar no painel antes do merge.
+- Destino: Cloudflare Worker `site-evolutto` (assets estáticos, `wrangler.jsonc`, `./dist`), domínio `www.evolutto.com`.
+- Integração: **Workers Builds** (Git do Cloudflare) ligada a `Evoluttoplataforma/site-evolutto`; sem GitHub Actions. Evidência: check "Workers Builds: site-evolutto" e comentários do bot `cloudflare-workers-and-pages` nos PRs #1 e #2.
+- Produção = `main` (bundle servido = build de `5f2aa33`).
+- **Branches que não são de produção geram prévias** (versões com "Commit Preview URL" e "Branch Preview URL" em `*.templum.workers.dev`), sem publicar em produção (PR #1: a config da branch nunca chegou à produção).
+- **Não verificado sem acesso ao Cloudflare**: branch de produção configurada, comandos de build/deploy, variáveis de build (nomes), ID da versão ativa, configuração atual de prévias.
+
+### Prévias gravam em produção (risco antes do push)
+- Prévias usam o mesmo código e os mesmos destinos: o formulário tem URL/chave do Supabase e webhook do Make como fallback no código, então **variáveis por ambiente sozinhas não isolam** os dados.
+- Verificado (GET, 19/10/2026): prévias antigas dos PRs #1 e #2 e `site-evolutto.templum.workers.dev` estão **públicas, sem proteção de acesso**, com versões antigas do formulário.
+- Proteção de acesso (ex.: Cloudflare Access) restringe quem abre a prévia, **mas quem tem acesso continua gravando em produção**.
+
+Opções (nenhuma aplicada):
+1. **Recomendada — trava no código por hostname**: persistência, Make e conversão só em `www.evolutto.com`/`evolutto.com`; em qualquer outro host o formulário mostra "ambiente de prévia — envio desativado" e não chama nada. Sem mudança de configuração, testável (e2e com host mapeado). Não protege contra POST direto à API (risco S4, existente).
+2. Desligar builds de branches não-produção no Cloudflare: elimina prévias novas; perde revisão visual; é mudança de configuração (exige autorização). Não remove prévias já existentes.
+3. Proteção de acesso nas prévias: complementar; não isola dados.
+4. Variáveis de build específicas para prévia: só funcionaria com mudança de código (remover fallbacks) e se o Workers Builds suportar variáveis por branch (não verificado).
 
 Passos:
 1. No painel Cloudflare → Workers → `site-evolutto`: confirmar branch/comando de build e **anotar o ID da versão ativa** (alvo de rollback).
-2. Criar a branch, os dois commits e abrir PR para `main` (revisão do diff).
-3. Merge → build e deploy automáticos (hipótese a confirmar no passo 1). Se o build falhar, nada é publicado; corrigir e repetir.
+2. Push da branch e PR para `main` (gera prévia — ver acima).
+3. Merge → build e deploy de produção (autorização separada).
 4. Executar a verificação abaixo.
 
 ## Verificação da versão publicada (somente GET, sem enviar formulário)
-| Verificação | Esperado |
+Os nomes de bundle abaixo são **evidência do build local de 19/10/2026, não critério permanente**: outro build (ambiente, dependências, conteúdo) pode gerar nomes diferentes. O aceite vale pelo comportamento e pela versão ativa no Cloudflare.
+
+| Verificação | Critério |
 |---|---|
-| Bundle da home | `/_astro/hoisted.4OLeTFHj.js` (build local de B) |
-| Chunk do formulário | `/_astro/hoisted.BzqMeiX9.js`, contém `evolutto_leads` e "Não conseguimos registrar" |
-| HTML | `id="form-erro"` presente; script inline antigo com `makeWebhook` ausente |
+| Versão ativa | No painel Cloudflare (Deployments), a versão ativa de produção corresponde ao build do commit de merge |
+| HTML | `id="form-erro"` presente; script inline antigo com `makeWebhook` ausente; formulário com atributos `data-*` |
+| Chunk do formulário | contém `evolutto_leads` e a mensagem "Não conseguimos registrar" |
 | Páginas | `/`, `/consultoria`, `/mentorias`, `/suporte`, `/carreiras`, `/indicacao`, `/erp-software`, `/quem-somos` com `data-tipo="diagnostico"`; `/bootcamp` `vaga_bootcamp`; `/do-zero-a-escala` `do-zero-a-escala`; todas `data-redirect="/obrigado"` |
 | Console do navegador | sem erros de JavaScript ao carregar e interagir (sem clicar em enviar) |
+| Evidência de referência | build local de B: home `hoisted.4OLeTFHj.js`, formulário `hoisted.BzqMeiX9.js`; produção antes de B: `hoisted.CrxbHxXf.js` (= build de `5f2aa33`) |
 
-Se os hashes diferirem (ambiente de build diferente), validar pelos marcadores de conteúdo. Divergência de marcador = parar e investigar.
+Divergência de comportamento ou marcador = parar e investigar.
 
 Pendente após o deploy: primeira inscrição válida → `POST evolutto_leads` `201`, linha nova com `consentimento='aceito'`, visitante redirecionado. Até lá, monitorar `edge_logs` diariamente.
 
@@ -71,7 +87,7 @@ Reverter B se, após o deploy:
 Não são critério de rollback: rejeição de payload inválido/forjado; queda de conversões reportadas; diferença de contagem com analytics.
 
 Procedimento:
-1. Painel Cloudflare → `site-evolutto` → voltar para a versão anotada no passo 1 (imediato).
+1. Painel Cloudflare → `site-evolutto` → Deployments → promover a versão anotada no passo 1 (imediato).
 2. `git revert <commit 2>` em `main` para alinhar o repositório (senão o próximo push republica B).
 3. A permanece: o código antigo **continua gravando**.
 
