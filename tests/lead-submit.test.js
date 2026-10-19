@@ -34,7 +34,7 @@ function harness(script, config = {}) {
     fetchImpl, ui, track, redirect, storage,
     getTrackingData: () => ({ page: '/bootcamp/' }),
     wait: () => Promise.resolve(),
-    config: { redirectTo: '/obrigado', webhook: '', makeWebhook: MAKE, supaUrl: SUPA, anonKey: 'anon-sintetica', timeoutMs: 30, ...config },
+    config: { hostname: 'www.evolutto.com', redirectTo: '/obrigado', webhook: '', makeWebhook: MAKE, supaUrl: SUPA, anonKey: 'anon-sintetica', timeoutMs: 30, ...config },
   });
   const calls = (url) => fetchImpl.mock.calls.filter(([u]) => u === url);
   return { submit, fetchImpl, ui, track, redirect, storage, calls };
@@ -139,6 +139,32 @@ describe('reenvio e concorrência', () => {
     await h.submit(DADOS, '');
     expect(await h.submit(DADOS, '')).toEqual({ skipped: true });
     expect(h.calls(REST)).toHaveLength(1);
+  });
+});
+
+describe('trava por hostname (evita envio acidental em prévias)', () => {
+  it.each(['www.evolutto.com', 'evolutto.com', 'WWW.EVOLUTTO.COM'])('%s → envia normalmente', async (hostname) => {
+    const h = harness([201], { hostname });
+    expect((await h.submit(DADOS, '')).ok).toBe(true);
+  });
+
+  it.each([
+    'fix-captura-leads-site-evolutto.templum.workers.dev',
+    'site-evolutto.templum.workers.dev',
+    'localhost',
+    '127.0.0.1',
+    'evolutto.com.evil.example',
+    'blog.evolutto.com',
+    '',
+  ])('%s → aviso de prévia; nada enviado, sem conversão, sem redirect', async (hostname) => {
+    const h = harness([201], { hostname });
+    expect(await h.submit(DADOS, '')).toEqual({ ok: false, kind: 'preview' });
+    expect(h.fetchImpl).not.toHaveBeenCalled(); // nem Supabase nem Make
+    expect(h.track).not.toHaveBeenCalled();
+    expect(h.redirect).not.toHaveBeenCalled();
+    expect(h.storage.setItem).not.toHaveBeenCalled();
+    expect(h.ui.error).toHaveBeenCalledWith(MSG.preview);
+    expect(h.ui.busy).not.toHaveBeenCalled();
   });
 });
 

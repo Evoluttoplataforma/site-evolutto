@@ -10,7 +10,13 @@ export const MSG = {
   retry: 'Não conseguimos registrar seu envio agora. Seus dados continuam no formulário — tente novamente em instantes.',
   uncertain: 'A conexão demorou e não conseguimos confirmar o envio. Verifique sua internet e tente novamente; se preferir, fale com a gente em contato@evolutto.com.',
   permanent: 'Não foi possível registrar seu envio. Seus dados continuam no formulário. Tente novamente ou fale com a gente em contato@evolutto.com.',
+  preview: 'Ambiente de prévia: o envio está desativado e nenhum dado foi enviado. Use www.evolutto.com para se inscrever.',
 };
+
+// Hosts onde o formulário envia de verdade. Evita envios acidentais em prévias (*.workers.dev, localhost);
+// não é controle de segurança: a API continua aceitando chamadas diretas.
+export const CAPTURE_HOSTS = ['www.evolutto.com', 'evolutto.com'];
+export const isCaptureHost = (hostname) => CAPTURE_HOSTS.includes(String(hostname || '').toLowerCase());
 
 // Payload persistido: mesmo formato do formulário publicado.
 export function buildLeadPayload(entries, { pathname, search }, tipo) {
@@ -88,6 +94,11 @@ export function createLeadSubmitter(deps) {
 
   return async function submit(dados, search) {
     if (inFlight || done) return { skipped: true };
+    // Fora dos hosts de captura: nenhum envio (Supabase, Make), nenhuma conversão, nenhum redirect.
+    if (!isCaptureHost(config.hostname)) {
+      ui.error(MSG.preview);
+      return { ok: false, kind: 'preview' };
+    }
     inFlight = true;
     ui.busy(true);
     ui.error(null);

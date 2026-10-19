@@ -51,7 +51,7 @@ Revert de B = reverter só o commit 2.
 - Proteção de acesso (ex.: Cloudflare Access) restringe quem abre a prévia, **mas quem tem acesso continua gravando em produção**.
 
 Opções (nenhuma aplicada):
-1. **Recomendada — trava no código por hostname**: persistência, Make e conversão só em `www.evolutto.com`/`evolutto.com`; em qualquer outro host o formulário mostra "ambiente de prévia — envio desativado" e não chama nada. Sem mudança de configuração, testável (e2e com host mapeado). Não protege contra POST direto à API (risco S4, existente).
+1. **Implementada — trava no código por hostname** (`CAPTURE_HOSTS` em `src/lib/lead-submit.js`): persistência, Make e conversão só em `www.evolutto.com`/`evolutto.com`; em qualquer outro host o formulário mostra o aviso de prévia e não chama nada. **Evita envios acidentais em prévias; não é segurança nem isolamento do backend** — a API do Supabase e o webhook do Make continuam aceitando chamadas diretas (risco S4). Não afeta prévias antigas já publicadas.
 2. Desligar builds de branches não-produção no Cloudflare: elimina prévias novas; perde revisão visual; é mudança de configuração (exige autorização). Não remove prévias já existentes.
 3. Proteção de acesso nas prévias: complementar; não isola dados.
 4. Variáveis de build específicas para prévia: só funcionaria com mudança de código (remover fallbacks) e se o Workers Builds suportar variáveis por branch (não verificado).
@@ -95,6 +95,6 @@ Procedimento:
 > **Risco do rollback: volta o sucesso falso.** O formulário antigo não confere a resposta, converte antes de gravar e redireciona sempre. Enquanto B estiver revertido, acompanhar manualmente os `POST evolutto_leads` nos logs.
 
 ## Evidências locais (19/10/2026)
-- `npm test`: 33/33 (formulário + migração A).
+- `npm test`: 43/43 (formulário + trava por hostname + migração A).
 - `npm run build`: ok, 193 páginas.
-- `npm run test:e2e`: 8/8 (Edge real; toda rede externa interceptada — nenhum serviço real contatado).
+- `npm run test:e2e`: 10/10 (Edge real com hosts mapeados para o servidor local; toda rede externa interceptada — nenhum serviço real contatado), incluindo host de prévia e localhost bloqueados.

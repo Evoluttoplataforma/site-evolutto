@@ -19,16 +19,16 @@
 2. `fix`: correção do formulário (revertível isoladamente).
 
 ### Testes
-- `npm test`: 33/33 (formulário com mocks + migração A em PGlite).
+- `npm test`: 43/43 (formulário com mocks, trava por hostname, migração A em PGlite).
 - `npm run build`: ok.
-- `npm run test:e2e`: 8/8 em navegador real com toda rede externa interceptada (sucesso, 400, 503→reenvio, triplo clique, timeout, bootcamp, do-zero-a-escala com UTMs, sem consentimento).
+- `npm run test:e2e`: 10/10 em navegador real com hosts mapeados e toda rede externa interceptada (sucesso, 400, 503→reenvio, triplo clique, timeout, bootcamp, do-zero-a-escala com UTMs, sem consentimento, host de prévia e localhost bloqueados).
 
 ### Verificação pós-deploy (somente GET; ver `docs/leads/APROVACAO-B.md`)
 - Bundles do build local (`hoisted.4OLeTFHj.js` na home; formulário em `hoisted.BzqMeiX9.js`) são **evidência deste build, não critério permanente** — outro build pode gerar nomes diferentes. Validar pelo comportamento e pela versão ativa no Cloudflare: `#form-erro` presente, script inline antigo ausente, `data-tipo`/`data-redirect` corretos por página, chunk com a nova lógica, console sem erros.
 - Confirmação funcional pendente até uma inscrição válida real ou teste autorizado.
 
 ### Prévia deste PR
-O Workers Builds gera uma prévia pública em `*.templum.workers.dev` para a branch. Ela usa os mesmos destinos de produção (Supabase e Make): **envios feitos na prévia gravam como leads reais**. Não usar a prévia para enviar o formulário. Isolamento recomendado (trava por hostname) descrito em `docs/leads/APROVACAO-B.md`.
+O Workers Builds gera uma prévia pública em `*.templum.workers.dev` para a branch. Ela usa os mesmos destinos de produção (Supabase e Make): **envios feitos na prévia gravam como leads reais**. Este PR inclui uma trava por hostname: fora de `www.evolutto.com`/`evolutto.com` o formulário mostra aviso de prévia e não envia nada (sem Supabase, Make ou conversão). Ela evita envios acidentais em prévias; **não é controle de segurança** — a API continua aceitando chamadas diretas. Prévias antigas (PRs #1 e #2) não são afetadas.
 
 ### Rollback
 Voltar à versão anterior no Cloudflare e `git revert` do commit `fix`. A migração A permanece e a captura continua. **Risco: o rollback reintroduz o falso sucesso.**

@@ -49,7 +49,7 @@ async function newPage(browser, base, persistPlan) {
   await page.route('**/*', async (route) => {
     const req = route.request();
     const url = new URL(req.url());
-    if (url.origin === base) return route.continue();
+    if (url.port === new URL(base).port && LOCAL_HOSTS.includes(url.hostname)) return route.continue();
     log.external.add(url.host);
     if (url.pathname.endsWith('/rest/v1/evolutto_leads')) {
       if (req.method() === 'OPTIONS') return route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': 'POST' } });
@@ -90,14 +90,25 @@ async function scenario(name, fn) {
   catch (e) { results.push({ name, ok: false, ms: Date.now() - t0, error: e.message }); }
 }
 
+// Hosts mapeados para o servidor local (sem DNS real): o de produção e um de prévia.
+const PROD_HOST = 'www.evolutto.com';
+// .workers.dev é HSTS (força HTTPS); um host fictício equivalente exercita a mesma regra.
+const PREVIEW_HOST = 'fix-captura-leads-site-evolutto.preview.test';
+const LOCAL_HOSTS = [PROD_HOST, PREVIEW_HOST, '127.0.0.1'];
 const server = await serveDist();
-const base = `http://127.0.0.1:${server.address().port}`;
-const browser = await chromium.launch({ channel: process.env.E2E_CHANNEL || 'msedge', headless: true });
+const port = server.address().port;
+const base = `http://${PROD_HOST}:${port}`;
+const previewBase = `http://${PREVIEW_HOST}:${port}`;
+const browser = await chromium.launch({
+  channel: process.env.E2E_CHANNEL || 'msedge',
+  headless: true,
+  args: [`--host-resolver-rules=MAP ${PROD_HOST} 127.0.0.1, MAP ${PREVIEW_HOST} 127.0.0.1`],
+});
 const allExternal = new Set();
 
-async function run(plan, path, fn) {
+async function run(plan, path, fn, origin = base) {
   const s = await newPage(browser, base, plan);
-  try { await s.page.goto(base + path, { waitUntil: 'load' }); await fn(s); }
+  try { await s.page.goto(origin + path, { waitUntil: 'load' }); await fn(s); }
   finally { s.log.external.forEach((h) => allExternal.add(h)); await s.ctx.close(); }
 }
 
@@ -182,6 +193,26 @@ await scenario('validação HTML5: sem consentimento não envia nada', () => run
   assert.equal(log.rest.length, 0);
   assert.equal(log.make.length, 0);
 }));
+
+await scenario('prévia (host fora da lista): aviso de prévia, nada enviado, sem conversão/redirect', () => run([201], '/', async ({ page, log }) => {
+  await fillFull(page);
+  await submit(page);
+  await page.waitForFunction(() => !document.getElementById('form-erro').classList.contains('hidden'));
+  assert.match(await errorText(page), /Ambiente de prévia/);
+  await page.waitForTimeout(1200);
+  assert.equal(log.rest.length, 0);
+  assert.equal(log.make.length, 0);
+  assert.equal(log.leads, 0);
+  assert.ok(!page.url().includes('/obrigado'));
+  assert.equal(await page.inputValue('#nome'), SYNTH.nome);
+}, previewBase));
+
+await scenario('localhost (127.0.0.1): também bloqueado', () => run([201], '/bootcamp/', async ({ page, log }) => {
+  await fillSimple(page);
+  await submit(page);
+  await page.waitForTimeout(800);
+  assert.equal(log.rest.length + log.make.length + log.leads, 0);
+}, `http://127.0.0.1:${port}`));
 
 await browser.close();
 server.close();

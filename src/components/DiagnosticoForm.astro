@@ -201,7 +201,7 @@ const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
       const d = form.dataset;
       const submit = createLeadSubmitter({
         fetchImpl: (...args) => fetch(...args),
-        config: { redirectTo: d.redirect || '/obrigado', webhook: d.webhook || '', makeWebhook: d.make || '', supaUrl: d.supaUrl || '', anonKey: d.anonKey || '' },
+        config: { hostname: location.hostname, redirectTo: d.redirect || '/obrigado', webhook: d.webhook || '', makeWebhook: d.make || '', supaUrl: d.supaUrl || '', anonKey: d.anonKey || '' },
         ui: {
           busy(on) {
             if (!btn) return;
