@@ -28,7 +28,7 @@
 - Confirmação funcional pendente até uma inscrição válida real ou teste autorizado.
 
 ### Prévia deste PR
-O Workers Builds gera uma prévia pública em `*.templum.workers.dev` para a branch. Ela usa os mesmos destinos de produção (Supabase e Make): **envios feitos na prévia gravam como leads reais**. Este PR inclui uma trava por hostname: fora de `www.evolutto.com`/`evolutto.com` o formulário mostra aviso de prévia e não envia nada (sem Supabase, Make ou conversão). Ela evita envios acidentais em prévias; **não é controle de segurança** — a API continua aceitando chamadas diretas. Prévias antigas (PRs #1 e #2) não são afetadas.
+O Workers Builds cria, para a branch, uma versão com URL pública que usa os mesmos destinos de produção (Supabase e Make); sem trava, envios feitos nela gravariam como leads reais. Este PR inclui uma trava por hostname: fora de `www.evolutto.com`/`evolutto.com` o formulário mostra aviso de prévia e não envia nada (sem Supabase, Make ou conversão). Ela evita envios acidentais em prévias; **não é controle de segurança** — a API continua aceitando chamadas diretas. Prévias antigas (PRs #1 e #2) não são afetadas.
 
 ### Rollback
 Voltar à versão anterior no Cloudflare e `git revert` do commit `fix`. A migração A permanece e a captura continua. **Risco: o rollback reintroduz o falso sucesso.**

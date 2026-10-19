@@ -38,12 +38,23 @@ Depois do deploy, a **confirmação funcional em produção continua pendente** 
 Revert de B = reverter só o commit 2.
 
 ## Destino e procedimento de deploy
-- Destino: Cloudflare Worker `site-evolutto` (assets estáticos, `wrangler.jsonc`, `./dist`), domínio `www.evolutto.com`.
-- Integração: **Workers Builds** (Git do Cloudflare) ligada a `Evoluttoplataforma/site-evolutto`; sem GitHub Actions. Evidência: check "Workers Builds: site-evolutto" e comentários do bot `cloudflare-workers-and-pages` nos PRs #1 e #2.
-- **Produção = `70569f5`, não `main`** (corrigido em 19/10/2026). Último build com sucesso: `70569f5` (28/08/2026 11:54 UTC; Worker `site-evolutto` modificado no mesmo instante). **Os builds de `ea5a33d` (12:09 UTC) e `5f2aa33` (13:15 UTC) falharam** (check "Workers Builds: site-evolutto" = failure). O HTML publicado não tem as mudanças desses dois commits (links absolutos do blog, script de redirect do apex). Causa da falha não verificada: log só no painel; suspeita (não confirmada) na linha com URL absoluta adicionada ao `public/_redirects` em `ea5a33d`.
-- Consequência para B: a branch parte de `5f2aa33`. O build de prévia e o build de produção após o merge podem falhar pelo mesmo motivo; se não falharem, o merge publica **pela primeira vez** também as mudanças de `ea5a33d` e `5f2aa33`.
-- **Branches que não são de produção geram prévias** (versões com "Commit Preview URL" e "Branch Preview URL" em `*.templum.workers.dev`), sem publicar em produção (PR #1: a config da branch nunca chegou à produção).
-- **Não verificado sem acesso ao Cloudflare**: branch de produção configurada, comandos de build/deploy, variáveis de build (nomes), ID da versão ativa, configuração atual de prévias.
+
+### Confirmado pela API do Cloudflare (19/10/2026, somente leitura)
+- Worker `site-evolutto` (`5ce90e21dd964a2db0a8d8012fff45a3`), conta `9d5769…f603`, Workers Builds ligado a `github: Evoluttoplataforma/site-evolutto` (`auto_build_enabled: true`).
+- Trigger **"Implantar ramificação padrão"**: branch `main` → `npm run build` + `npx wrangler deploy`, raiz `/`, cache ligado. Push em `main` = deploy em produção.
+- Trigger **"Implantar ramificações que não são de produção"**: todas as branches exceto `main` → `npm run build` + `npx wrangler versions upload`. Cria uma versão do Worker com URL de versão/alias (não vira a implantação ativa). Segundo a documentação do Cloudflare, URLs de versão usam os mesmos recursos de produção.
+- `previews_enabled: false` (modelo novo "Worker Previews" não ativado); subdomínio `workers.dev` habilitado e URLs de prévia habilitadas.
+- Variáveis de build: **nenhuma** em produção nem em prévias (`environment_variables: {}`). Logo, `PUBLIC_*` ficam vazias no build e o site usa os valores fixos do código.
+- **Implantação ativa**: `4c686d13-4c18-4d38-831d-e173602bf173`, 28/08/2026 11:54:36 UTC, 100% na versão `bb773b3a-dcdf-4a68-a8f5-e8259fc11618` (nº 65). É a implantação mais recente das 10 listadas.
+- Builds de `main` em 28/08/2026: `70569f5` **sucesso** (build `c1a09bf2`, 11:53–11:54 UTC); `ea5a33d` **falha** (build `c12290b9`); `5f2aa33` **falha** (build `5c86537f`).
+- **Erro real dos dois builds com falha** (etapa de deploy, após build ok): `Invalid _redirects configuration: Line 4: Only relative URLs are allowed. [code: 100324]`. A linha 4 de `public/_redirects` (`https://evolutto.com/* https://www.evolutto.com/:splat 301`, adicionada em `ea5a33d`) é a única com origem absoluta.
+
+### Inferido (alta confiança, não registrado pela API)
+- A versão `bb773b3a` foi gerada pelo build de `70569f5`: criada às 11:54:36, dentro da janela desse build; a versão não guarda o hash do commit. Coerente com o HTML publicado (sem as mudanças de `ea5a33d`/`5f2aa33`).
+
+### Consequências para B
+- A branch parte de `5f2aa33`, que contém a linha 4: **o build de prévia da branch também falharia** (o `versions upload` valida o `_redirects`), e o build de produção após o merge falharia igual.
+- Se a linha for corrigida, o merge publica pela primeira vez as mudanças de `ea5a33d` e `5f2aa33` (links do blog absolutos em header, footer, home e 404; `BLOG_HOME`/`SITE_ORIGIN`; script que redireciona `evolutto.com` → `www`). Elas precisam entrar **explicitamente** no escopo do PR ou ser retiradas.
 
 ### Prévias gravam em produção (risco antes do push)
 - Prévias usam o mesmo código e os mesmos destinos: o formulário tem URL/chave do Supabase e webhook do Make como fallback no código, então **variáveis por ambiente sozinhas não isolam** os dados.
@@ -57,8 +68,8 @@ Opções (nenhuma aplicada):
 4. Variáveis de build específicas para prévia: só funcionaria com mudança de código (remover fallbacks) e se o Workers Builds suportar variáveis por branch (não verificado).
 
 Passos:
-1. No painel Cloudflare → Workers → `site-evolutto`: confirmar branch/comando de build e **anotar o ID da versão ativa** (alvo de rollback).
-2. Push da branch e PR para `main` (gera prévia — ver acima).
+1. Registrar a implantação ativa no momento do merge (hoje `4c686d13…`, versão `bb773b3a…`) como alvo de rollback.
+2. Push da branch e PR para `main` (gera versão de prévia pelo trigger de branches não-produção — ver acima).
 3. Merge → build e deploy de produção (autorização separada).
 4. Executar a verificação abaixo.
 
@@ -88,7 +99,7 @@ Reverter B se, após o deploy:
 Não são critério de rollback: rejeição de payload inválido/forjado; queda de conversões reportadas; diferença de contagem com analytics.
 
 Procedimento:
-1. Painel Cloudflare → `site-evolutto` → Deployments → promover a versão anotada no passo 1 (imediato).
+1. Painel Cloudflare → `site-evolutto` → Deployments → voltar para a versão registrada no passo 1 (ou `wrangler rollback <version_id>`), imediato.
 2. `git revert <commit 2>` em `main` para alinhar o repositório (senão o próximo push republica B).
 3. A permanece: o código antigo **continua gravando**.
 
