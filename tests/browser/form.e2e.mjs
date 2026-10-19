@@ -31,7 +31,7 @@ const SYNTH = { nome: 'Pessoa Sintética E2E', telefone: '11900000000', email: '
 async function newPage(browser, base, persistPlan) {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
-  const log = { rest: [], make: [], external: new Set(), leads: 0 };
+  const log = { rest: [], make: [], external: new Set(), leads: 0, wwwHttps: [], externalOrdered: [] };
   await page.exposeFunction('__e2eLead', () => { log.leads += 1; });
   // Conta chamadas a trk.lead (conversão) sem alterar o comportamento do kit.
   await page.addInitScript(() => {
@@ -50,7 +50,13 @@ async function newPage(browser, base, persistPlan) {
     const req = route.request();
     const url = new URL(req.url());
     if (url.port === new URL(base).port && LOCAL_HOSTS.includes(url.hostname)) return route.continue();
+    // Destino do redirect por JS (https://www.evolutto.com/...): registrado e respondido localmente, nunca sai da máquina.
+    if (url.protocol === 'https:' && url.hostname === PROD_HOST) {
+      log.wwwHttps.push(url.href);
+      return route.fulfill({ status: 200, contentType: 'text/html', body: '<!doctype html><title>www</title>' });
+    }
     log.external.add(url.host);
+    log.externalOrdered.push(url.host);
     if (url.pathname.endsWith('/rest/v1/evolutto_leads')) {
       if (req.method() === 'OPTIONS') return route.fulfill({ status: 200, headers: { 'access-control-allow-origin': '*', 'access-control-allow-headers': '*', 'access-control-allow-methods': 'POST' } });
       log.rest.push(JSON.parse(req.postData() || '{}'));
@@ -94,15 +100,17 @@ async function scenario(name, fn) {
 const PROD_HOST = 'www.evolutto.com';
 // .workers.dev é HSTS (força HTTPS); um host fictício equivalente exercita a mesma regra.
 const PREVIEW_HOST = 'fix-captura-leads-site-evolutto.preview.test';
-const LOCAL_HOSTS = [PROD_HOST, PREVIEW_HOST, '127.0.0.1'];
+const APEX_HOST = 'evolutto.com';
+const LOCAL_HOSTS = [PROD_HOST, APEX_HOST, PREVIEW_HOST, '127.0.0.1'];
 const server = await serveDist();
 const port = server.address().port;
 const base = `http://${PROD_HOST}:${port}`;
+const apexBase = `http://${APEX_HOST}:${port}`;
 const previewBase = `http://${PREVIEW_HOST}:${port}`;
 const browser = await chromium.launch({
   channel: process.env.E2E_CHANNEL || 'msedge',
   headless: true,
-  args: [`--host-resolver-rules=MAP ${PROD_HOST} 127.0.0.1, MAP ${PREVIEW_HOST} 127.0.0.1`],
+  args: [`--host-resolver-rules=MAP ${PROD_HOST} 127.0.0.1, MAP ${APEX_HOST} 127.0.0.1, MAP ${PREVIEW_HOST} 127.0.0.1`],
 });
 const allExternal = new Set();
 
@@ -213,6 +221,51 @@ await scenario('localhost (127.0.0.1): também bloqueado', () => run([201], '/bo
   await page.waitForTimeout(800);
   assert.equal(log.rest.length + log.make.length + log.leads, 0);
 }, `http://127.0.0.1:${port}`));
+
+// ===== Redirect do apex (JavaScript, não HTTP 301) e links do blog =====
+await scenario('apex → www por JS preserva caminho, query e hash', () => run([201], '/consultoria/?utm_source=teste&utm_medium=e2e&x=1#cta', async ({ page, log }) => {
+  await page.waitForURL('https://www.evolutto.com/consultoria/?utm_source=teste&utm_medium=e2e&x=1#cta', { timeout: 10000 });
+  assert.deepEqual(log.wwwHttps, ['https://www.evolutto.com/consultoria/?utm_source=teste&utm_medium=e2e&x=1']); // hash não vai na requisição, só na URL
+}, apexBase));
+
+await scenario('apex na raiz → https://www.evolutto.com/', () => run([201], '/', async ({ page }) => {
+  await page.waitForURL('https://www.evolutto.com/', { timeout: 10000 });
+}, apexBase));
+
+await scenario('apex: dist/_redirects sem regra de domínio (redirect só por JS, não HTTP 301)', () => run([201], '/', async ({ page, log }) => {
+  const redirects = await readFile(join(DIST, '_redirects'), 'utf8');
+  const absolutas = redirects.split(/\r?\n/).filter((l) => /^\s*https?:\/\//.test(l));
+  assert.deepEqual(absolutas, []); // Cloudflare rejeita origem absoluta (code 100324)
+  await page.waitForURL('https://www.evolutto.com/', { timeout: 10000 });
+  console.log(`      info: requisições externas no apex antes do redirect: ${[...new Set(log.externalOrdered)].join(', ') || 'nenhuma'}`);
+}, apexBase));
+
+await scenario('www não redireciona (sem loop)', () => run([201], '/consultoria/?utm_source=x', async ({ page, log }) => {
+  let navs = 0;
+  page.on('framenavigated', (f) => { if (f === page.mainFrame()) navs += 1; });
+  await page.waitForTimeout(1500);
+  assert.equal(page.url(), `${base}/consultoria/?utm_source=x`);
+  assert.equal(navs, 0);
+  assert.equal(log.wwwHttps.length, 0);
+}));
+
+await scenario('prévia/localhost não redirecionam', () => run([201], '/', async ({ page, log }) => {
+  await page.waitForTimeout(1000);
+  assert.ok(page.url().startsWith(previewBase));
+  assert.equal(log.wwwHttps.length, 0);
+}, previewBase));
+
+await scenario('links do blog (header, footer, home, 404) apontam para https://www.evolutto.com/blog/', () => run([201], '/', async ({ page }) => {
+  const hrefs = await page.$$eval('a', (as) => as.filter((a) => /blog/i.test(a.textContent) || /\/blog\/?$/.test(a.getAttribute('href') || '')).map((a) => a.getAttribute('href')));
+  const blog = hrefs.filter((h) => /\/blog\/?$/.test(h));
+  assert.ok(blog.length >= 3, `esperava >= 3 links do blog, achei ${blog.length}`);
+  assert.ok(blog.every((h) => h === 'https://www.evolutto.com/blog/'), `links divergentes: ${[...new Set(blog)].join(', ')}`);
+  await page.goto(`${base}/404.html`); // sem not_found_handling no wrangler.jsonc, a página 404 é servida só no próprio caminho
+  const h404 = await page.$$eval('a', (as) => as.map((a) => a.getAttribute('href')));
+  assert.ok(h404.includes('https://www.evolutto.com/blog/'), '404 sem link do blog absoluto');
+  const blogIdx = await page.goto(`${base}/blog/`);
+  assert.equal(blogIdx.status(), 200);
+}));
 
 await browser.close();
 server.close();

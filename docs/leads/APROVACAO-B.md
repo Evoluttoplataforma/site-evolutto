@@ -52,6 +52,11 @@ Revert de B = reverter só o commit 2.
 ### Inferido (alta confiança, não registrado pela API)
 - A versão `bb773b3a` foi gerada pelo build de `70569f5`: criada às 11:54:36, dentro da janela desse build; a versão não guarda o hash do commit. Coerente com o HTML publicado (sem as mudanças de `ea5a33d`/`5f2aa33`).
 
+### Decisão de escopo (19/10/2026)
+Opção 1 aprovada para preparação local: remover só a linha 4 de `public/_redirects` (commit `d993f98`) e incluir **explicitamente** no PR as mudanças não publicadas de `ea5a33d` e `5f2aa33` (ver `PR-fix-captura-leads.md`). `src/` e `public/` não são restaurados de `70569f5`.
+- Redirect apex → www passa a ser **só por JavaScript** (`Site.astro`): servidor responde 200; sem JS não há redirect. HTTP 301 exige Redirect Rule no Cloudflare (não alterada).
+- **Limitação**: validação local (build ok, `_redirects` sem origem absoluta) não comprova que o Cloudflare aceitará o deploy; só o build remoto comprova.
+
 ### Consequências para B
 - A branch parte de `5f2aa33`, que contém a linha 4: **o build de prévia da branch também falharia** (o `versions upload` valida o `_redirects`), e o build de produção após o merge falharia igual.
 - Se a linha for corrigida, o merge publica pela primeira vez as mudanças de `ea5a33d` e `5f2aa33` (links do blog absolutos em header, footer, home e 404; `BLOG_HOME`/`SITE_ORIGIN`; script que redireciona `evolutto.com` → `www`). Elas precisam entrar **explicitamente** no escopo do PR ou ser retiradas.
@@ -108,4 +113,4 @@ Procedimento:
 ## Evidências locais (19/10/2026)
 - `npm test`: 43/43 (formulário + trava por hostname + migração A).
 - `npm run build`: ok, 193 páginas.
-- `npm run test:e2e`: 10/10 (Edge real com hosts mapeados para o servidor local; toda rede externa interceptada — nenhum serviço real contatado), incluindo host de prévia e localhost bloqueados.
+- `npm run test:e2e`: 16/16 (Edge real com hosts mapeados para o servidor local; rede externa interceptada), incluindo trava (prévia/localhost), redirect do apex (caminho, query, hash, sem loop) e links do blog.
