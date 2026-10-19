@@ -7,7 +7,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "test:e2e": "node tests/browser/form.e2e.mjs"
   },
   "dependencies": {
     "astro": "^4.16.18",
@@ -17,10 +19,13 @@
   },
   "devDependencies": {
     "@astrojs/tailwind": "^5.1.5",
+    "@electric-sql/pglite": "^0.3.7",
     "@fontsource/instrument-sans": "^5.2.5",
     "@fontsource/inter": "^5.2.5",
     "@fontsource/newsreader": "^5.2.5",
     "@fontsource/playfair-display": "^5.2.5",
-    "tailwindcss": "^3.4.17"
+    "playwright-core": "^1.49.1",
+    "tailwindcss": "^3.4.17",
+    "vitest": "^3.2.4"
   }
 }
