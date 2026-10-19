@@ -40,7 +40,8 @@ Revert de B = reverter só o commit 2.
 ## Destino e procedimento de deploy
 - Destino: Cloudflare Worker `site-evolutto` (assets estáticos, `wrangler.jsonc`, `./dist`), domínio `www.evolutto.com`.
 - Integração: **Workers Builds** (Git do Cloudflare) ligada a `Evoluttoplataforma/site-evolutto`; sem GitHub Actions. Evidência: check "Workers Builds: site-evolutto" e comentários do bot `cloudflare-workers-and-pages` nos PRs #1 e #2.
-- Produção = `main` (bundle servido = build de `5f2aa33`).
+- **Produção = `70569f5`, não `main`** (corrigido em 19/10/2026). Último build com sucesso: `70569f5` (28/08/2026 11:54 UTC; Worker `site-evolutto` modificado no mesmo instante). **Os builds de `ea5a33d` (12:09 UTC) e `5f2aa33` (13:15 UTC) falharam** (check "Workers Builds: site-evolutto" = failure). O HTML publicado não tem as mudanças desses dois commits (links absolutos do blog, script de redirect do apex). Causa da falha não verificada: log só no painel; suspeita (não confirmada) na linha com URL absoluta adicionada ao `public/_redirects` em `ea5a33d`.
+- Consequência para B: a branch parte de `5f2aa33`. O build de prévia e o build de produção após o merge podem falhar pelo mesmo motivo; se não falharem, o merge publica **pela primeira vez** também as mudanças de `ea5a33d` e `5f2aa33`.
 - **Branches que não são de produção geram prévias** (versões com "Commit Preview URL" e "Branch Preview URL" em `*.templum.workers.dev`), sem publicar em produção (PR #1: a config da branch nunca chegou à produção).
 - **Não verificado sem acesso ao Cloudflare**: branch de produção configurada, comandos de build/deploy, variáveis de build (nomes), ID da versão ativa, configuração atual de prévias.
 
@@ -71,7 +72,7 @@ Os nomes de bundle abaixo são **evidência do build local de 19/10/2026, não c
 | Chunk do formulário | contém `evolutto_leads` e a mensagem "Não conseguimos registrar" |
 | Páginas | `/`, `/consultoria`, `/mentorias`, `/suporte`, `/carreiras`, `/indicacao`, `/erp-software`, `/quem-somos` com `data-tipo="diagnostico"`; `/bootcamp` `vaga_bootcamp`; `/do-zero-a-escala` `do-zero-a-escala`; todas `data-redirect="/obrigado"` |
 | Console do navegador | sem erros de JavaScript ao carregar e interagir (sem clicar em enviar) |
-| Evidência de referência | build local de B: home `hoisted.4OLeTFHj.js`, formulário `hoisted.BzqMeiX9.js`; produção antes de B: `hoisted.CrxbHxXf.js` (= build de `5f2aa33`) |
+| Evidência de referência | build local de B: home `hoisted.4OLeTFHj.js`, formulário `hoisted.BzqMeiX9.js`; produção antes de B: `hoisted.CrxbHxXf.js` (o chunk do formulário é idêntico em `70569f5`…`5f2aa33`; não identifica o commit) |
 
 Divergência de comportamento ou marcador = parar e investigar.
 
