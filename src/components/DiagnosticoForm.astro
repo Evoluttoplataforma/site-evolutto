@@ -44,6 +44,11 @@ const minhaEmpresa = [
 const consultores = ['Somente eu', '2 a 3 consultores', '4 a 5 consultores', '6 a 9 consultores', '10 a 15 consultores', 'Mais de 15 consultores'];
 const projetos = ['Nenhum', '1 a 5', '5 a 10', 'Acima de 10'];
 const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 100 mil/mês', 'R$ 100 a 250 mil/mês', 'R$ 250 a 500 mil/mês', 'Acima de R$ 500 mil/mês'];
+
+// Mesmos destinos da versão publicada (a remoção do Make e da chave fixa depende da auditoria/aprovação).
+const MAKE_WEBHOOK = 'https://hook.us1.make.com/c8r69t18t2c8wswjnewhfbdr7sv5kr32';
+const SUPA_URL = 'https://yfpdrckyuxltvznqfqgh.supabase.co';
+const SUPA_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmcGRyY2t5dXhsdHZ6bnFmcWdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTYwMDYsImV4cCI6MjA5MDAzMjAwNn0.PVMRz04lvMLepjv0ZCsr5mJ8K_Ux1fQlQgX1vOd4O2g';
 ---
 
 <section id={id} class="py-20 lg:py-28 bg-evolutto-black relative overflow-hidden">
@@ -66,7 +71,16 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
 
     <!-- Formulário -->
     <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-2xl">
-      <form id="form-diagnostico" class="space-y-4" data-tipo={tipo}>
+      <form
+        id="form-diagnostico"
+        class="space-y-4"
+        data-tipo={tipo}
+        data-redirect={redirectTo}
+        data-webhook={import.meta.env.PUBLIC_LEAD_WEBHOOK || ''}
+        data-make={MAKE_WEBHOOK}
+        data-supa-url={import.meta.env.PUBLIC_SUPABASE_URL || SUPA_URL}
+        data-anon-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY || SUPA_ANON_KEY}
+      >
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1.5" for="nome">Nome *</label>
@@ -160,6 +174,8 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
           <span class="text-[11px] text-gray-500 leading-relaxed">Autorizo o tratamento dos meus dados de acordo com a <a href="/politica-de-privacidade" target="_blank" rel="noopener" class="text-evolutto-blue font-medium hover:underline">Política de Privacidade</a> e concordo em ser contatado(a) pela Evolutto. *</span>
         </label>
 
+        <p id="form-erro" role="alert" aria-live="assertive" class="hidden text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl px-4 py-3"></p>
+
         <button type="submit" class="w-full inline-flex items-center justify-center gap-2 bg-evolutto-blue text-white text-sm font-bold uppercase tracking-widest px-8 py-4 rounded-full hover:brightness-110 hover:scale-[1.02] transition-all shadow-lg shadow-evolutto-blue/30">
           {buttonLabel} <i class="w-4 h-4" data-lucide="arrow-up-right"></i>
         </button>
@@ -175,74 +191,43 @@ const faturamento = ['Menos de R$ 15 mil/mês', 'R$ 15 a 50 mil/mês', 'R$ 50 a 
     </div>
   </div>
 
-  <script define:vars={{
-    redirectTo,
-    webhook: import.meta.env.PUBLIC_LEAD_WEBHOOK || '',
-    makeWebhook: 'https://hook.us1.make.com/c8r69t18t2c8wswjnewhfbdr7sv5kr32',
-    supaUrl: import.meta.env.PUBLIC_SUPABASE_URL || 'https://yfpdrckyuxltvznqfqgh.supabase.co',
-    anonKey: import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmcGRyY2t5dXhsdHZ6bnFmcWdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ0NTYwMDYsImV4cCI6MjA5MDAzMjAwNn0.PVMRz04lvMLepjv0ZCsr5mJ8K_Ux1fQlQgX1vOd4O2g',
-  }}>
+  <script>
+    import { buildLeadPayload, createLeadSubmitter } from '../lib/lead-submit.js';
+
     const form = document.getElementById('form-diagnostico');
-    form?.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!form.checkValidity()) { form.reportValidity(); return; }
+    if (form) {
       const btn = form.querySelector('button[type="submit"]');
-      const dados = Object.fromEntries(new FormData(form).entries());
-      // UTMs + origem
-      const p = new URLSearchParams(location.search);
-      dados.origem = location.pathname;
-      dados.tipo = form.dataset.tipo || 'diagnostico';
-      const utm = {}; ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(k => { if (p.get(k)) utm[k] = p.get(k); });
-      if (Object.keys(utm).length) dados.utm = utm;
-      try { sessionStorage.setItem('evolutto_lead', JSON.stringify(dados)); } catch (_) {}
-      if (btn) { btn.disabled = true; btn.style.opacity = '0.7'; }
-      // Tracking: dispara evento Lead (Meta Pixel + GA4 + Google Ads) com advanced matching
-      try { window.trk && window.trk.lead({ email: dados.email, phone: dados.telefone, name: dados.nome }); } catch (_) {}
-      // Envia também pro Make (automação) com TODOS os campos + dados de tracking, SEPARADOS (form-urlencoded).
-      // form-urlencoded é "simple request" → sem preflight CORS; no-cors evita erro de leitura; keepalive sobrevive ao redirect.
-      if (makeWebhook) {
-        try {
-          const td = (window.__trk && typeof window.__trk.get === 'function') ? (window.__trk.get() || {}) : {};
-          const u = dados.utm || {};
-          // 1) começa com TODOS os campos do tracking-kit (device, página, ids, journey) — sempre presentes
-          const campos = Object.assign({}, td);
-          // 2) garante os campos de lead/atribuição SEMPRE (vazios quando não houver) -> automação nunca quebra
-          ['nome','email','telefone','empresa','oque_faz','eu_sou','minha_empresa','consultores','projetos_entregues','projetos_ativos','faturamento','consentimento','tipo','origem','utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'].forEach(function (k) { if (campos[k] == null) campos[k] = ''; });
-          // 3) sobrescreve com os valores reais do formulário (menos o objeto utm aninhado)
-          Object.keys(dados).forEach(function (k) { if (k !== 'utm') campos[k] = dados[k]; });
-          // 4) utm + click ids
-          campos.utm_source = u.utm_source || campos.utm_source || '';
-          campos.utm_medium = u.utm_medium || campos.utm_medium || '';
-          campos.utm_campaign = u.utm_campaign || campos.utm_campaign || '';
-          campos.utm_content = u.utm_content || campos.utm_content || '';
-          campos.utm_term = u.utm_term || campos.utm_term || '';
-          campos.gclid = p.get('gclid') || campos.gclid || '';
-          campos.fbclid = p.get('fbclid') || campos.fbclid || '';
-          const usp = new URLSearchParams();
-          Object.keys(campos).forEach(function (k) {
-            const v = campos[k];
-            usp.append(k, v == null ? '' : (typeof v === 'object' ? JSON.stringify(v) : String(v)));
-          });
-          fetch(makeWebhook, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: usp.toString(), keepalive: true });
-        } catch (_) {}
-      }
-      // 1) tenta a função (insert + Mailchimp). 2) se falhar/não existir, grava direto no Supabase.
-      let salvo = false;
-      if (webhook) {
-        try { const r = await fetch(webhook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dados) }); salvo = r.ok; } catch (_) {}
-      }
-      if (!salvo && anonKey) {
-        try {
-          await fetch(`${supaUrl}/rest/v1/evolutto_leads`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', apikey: anonKey, Authorization: `Bearer ${anonKey}`, Prefer: 'return=minimal' },
-            body: JSON.stringify(dados),
-          });
-        } catch (_) {}
-      }
-      // dá tempo do evento Lead disparar (pixel + envio server com keepalive) antes de navegar
-      await new Promise((r) => setTimeout(r, 900));
-      window.location.href = redirectTo;
-    });
+      const erro = document.getElementById('form-erro');
+      const d = form.dataset;
+      const submit = createLeadSubmitter({
+        fetchImpl: (...args) => fetch(...args),
+        config: { hostname: location.hostname, redirectTo: d.redirect || '/obrigado', webhook: d.webhook || '', makeWebhook: d.make || '', supaUrl: d.supaUrl || '', anonKey: d.anonKey || '' },
+        ui: {
+          busy(on) {
+            if (!btn) return;
+            btn.disabled = on;
+            btn.style.opacity = on ? '0.7' : '';
+            btn.setAttribute('aria-busy', on ? 'true' : 'false');
+          },
+          error(msg) {
+            if (!erro) return;
+            erro.textContent = msg || '';
+            erro.classList.toggle('hidden', !msg);
+          },
+        },
+        // Evento Lead (Meta Pixel + GA4 + Google Ads + CAPI) só depois da persistência confirmada.
+        track: (lead) => window.trk && window.trk.lead(lead),
+        getTrackingData: () => (window.__trk && typeof window.__trk.get === 'function' ? window.__trk.get() || {} : {}),
+        storage: (() => { try { return sessionStorage; } catch (_) { return null; } })(),
+        redirect: (url) => { window.location.href = url; },
+      });
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        const dados = buildLeadPayload(new FormData(form).entries(), location, d.tipo);
+        submit(dados, location.search);
+      });
+    }
   </script>
 </section>
